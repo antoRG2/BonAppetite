@@ -4,17 +4,16 @@
 <meta charset="UTF-8" />
 <title>Canvas Drag and Drop Test</title>
 </head>
-<body>
-<section>
-
-<div>
-<canvas id="canvas" width="400" height="300">
-Add elements here
-</canvas>
-</div>
+	<body>
+		<section>
+			<div>
+				<canvas id="canvas" width="400" height="300">
+					Add elements here
+				</canvas>
+				<input type="button" value="Agregar" name="addTable" id="addTable">
+			</div>
 
 <script type="text/javascript">
-
 		var canvas;
 		var ctx;
 		var x = 75;
@@ -22,18 +21,18 @@ Add elements here
 		var WIDTH = 400;
 		var HEIGHT = 300;
 		var dragok = false;
-
+		
 		function rect(x,y,w,h) {
 		 ctx.beginPath();
 		 ctx.rect(x,y,w,h);
 		 ctx.closePath();
 		 ctx.fill();
 		}
-
+		
 		function clear() {
 		 ctx.clearRect(0, 0, WIDTH, HEIGHT);
 		}
-
+		
 		function init() {
 		 canvas = document.getElementById("canvas");
 		 ctx = canvas.getContext("2d");
@@ -41,11 +40,12 @@ Add elements here
 		}
 
 		function draw() {
-		 clear();
+		 //clear();
 		 ctx.fillStyle = "#FAF7F8";
 		 rect(0,0,WIDTH,HEIGHT);
 		 ctx.fillStyle = "#444444";
 		 rect(x - 15, y - 15, 30, 30);
+		
 		}
 
 		function myMove(e){
@@ -53,8 +53,9 @@ Add elements here
 			x = e.pageX - canvas.offsetLeft;
 			y = e.pageY - canvas.offsetTop;
 		 }
-		}
 
+		}
+		
 		function myDown(e){
 		 if (e.pageX < x + 15 + canvas.offsetLeft && e.pageX > x - 15 +
 		 canvas.offsetLeft && e.pageY < y + 15 + canvas.offsetTop &&
@@ -64,16 +65,25 @@ Add elements here
 			dragok = true;
 			canvas.onmousemove = myMove;
 		 }
-		}
 
+		}
+		
 		function myUp(){
 		 dragok = false;
 		 canvas.onmousemove = null;
 		}
 
+		document.getElementById("addTable").addEventListener('click', function(e){
+			draw();		
+		});
+		
 		init();
 		canvas.onmousedown = myDown;
 		canvas.onmouseup = myUp;
+		
+		canvas.addEventListener('dblclick', function(e) {
+        console.log('click: ' + e.offsetX + '/' + e.offsetY); 
+		}, false);
 
 	
 	</script>
