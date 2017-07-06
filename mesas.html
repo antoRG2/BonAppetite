@@ -1,141 +1,92 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
-<head>
-<meta charset="UTF-8" />
-<title>Canvas Drag and Drop Test</title>
-</head>
-<body>
-<section>
+    <head>       
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="css/Normalize.css"/>
+        <link rel="stylesheet" href="lib/Bootstrap/css/bootstrap.css" />
+    </head>
+    <body>
+        <section>   
+            <div class="canvas-container">
+                <canvas id="canvas" ></canvas>              
+            </div>
+       </section>
+       <input type="button" class="btn btn-success" value="Agregar Mesa" id="addTable"  data-target="#myModal">
+      
+          <!--Modal New Table-->
+        <div class="modal fade" id="newTableModal" role="dialog">
+            <div class="modal-dialog">
 
-<div>
-<canvas id="canvas" width="400" height="300" style="border:1px solid black" >
-Add elements here
-</canvas>
-<input type="button" value="Agregar" name="addTable" id="addTable">
-</div>
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Nueva Mesa</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>                       
+                    </div>
 
-<script src="fabric.min.js"></script>
-<script src="jquery-3.2.1.min.js"></script>
-<script type="text/javascript">
+                    <div class="modal-body">
+                        <form role="form">
+                            <div class="form-group">
+                                <label for="numeroMesa"></span>Numero de Mesa</label>
+                                <input type="number" class="form-control" id="numeroMesa">
+                            </div>
+                            <div class="form-group">
+                                <label for="sillas">Cantidad de Sillas</label>
+                                <input type="number" class="form-control" id="sillas">
+                            </div>                            
+                        </form>
+                    </div>
 
-	var canvas = this.__canvas = new fabric.Canvas('canvas');    
+                    <div class="modal-footer">
+                        <button type="submit"  id="addTableModal"class="btn btn-success pull-left"></span> Agregar</button>
+                        <button type="submit" class="btn btn-warning  pull-right" data-dismiss="modal">Cancelar</button>                        
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <!--end modal-->
 
-	$('#addTable').click(function() {
-		  var rect = new fabric.Rect({
-			  width: 50,
-			  height: 50,
-			  left: 50,
-			  top: 50,
-			  fill: 'rgb(255,0,0)'
-			  })
-		 canvas.getObjects();
-		 canvas.add(rect);
-		 canvas.selection = true;
-		 canvas.renderAll();
-		 canvas.calcOffset();      
-	});
 
-	canvas.on({
-		'object:selected': function() {
-			console.log("test succesfully");
-		  /*fabric.util.toArray(document.getElementsByTagName('input'))
-							  .forEach(function(el){ el.disabled = false; })
+        <script src="lib/fabric-1.7.15.min.js"></script>
+        <script src="lib/jquery-3.2.1.min.js"></script>   
+        <script src="lib/Bootstrap/js/bootstrap.js"></script>
+        <script type="text/javascript">
 
-		  var filters = ['grayscale', 'invert', 'remove-color', 'sepia', 'brownie',
-						  'brightness', 'contrast', 'saturation', 'noise', 'vintage', 'pixelate',
-						  'blur', 'sharpen', 'emboss', 'technicolor', 'polaroid', 'blend-color',
-						  'gamma', 'kodachrome', 'blackwhite'];
+            var canvas = this.__canvas = new fabric.Canvas('canvas',{ width: 500, height: 500 });//900 600
+            canvas.backgroundColor = "#FAF7F8";
+            canvas.renderAll();
 
-		  for (var i = 0; i < filters.length; i++) {
-			filters[i] && (
-			$(filters[i]).checked = !!canvas.getActiveObject().filters[i]);
-		  }*/
-		}
-	  });
-			
-		
-		
-		
-		/*
-		var canvas;
-		var ctx;
-		var x = 75;
-		var y = 50;
-		var WIDTH = 400;
-		var HEIGHT = 300;
-		var dragok = false;
-		
-		function rect(x,y,w,h) {
-		 ctx.beginPath();
-		 ctx.rect(x,y,w,h);
-		 ctx.closePath();
-		 ctx.fill();
-		}
-		
-		function clear() {
-		 ctx.clearRect(0, 0, WIDTH, HEIGHT);
-		}
-		
-		function init() {
-		 canvas = document.getElementById("canvas");
-		 ctx = canvas.getContext("2d");
-		 return setInterval(draw, 10);
-		}
 
-		function draw() {
-		 //clear();
-		 ctx.fillStyle = "#FAF7F8";
-		 rect(0,0,WIDTH,HEIGHT);
-		 ctx.fillStyle = "#444444";
-		 rect(x - 15, y - 15, 30, 30);
-		 
-		 
-		ctx.getObjects();
-		ctx.add(rect);
-		ctx.selection = true;
-		ctx.renderAll();
-		ctx.calcOffset();
-		
-		
-		}
+	        canvas.on({
+		        'object:selected': function() {
+		            $("#newTableModal").modal();
+		            var test = canvas.getActiveObject();
+		            var testType = canvas.getActiveObject().get('type');
+		            debugger;
+		        }
+	        });
 
-		function myMove(e){
-		 if (dragok){
-			x = e.pageX - canvas.offsetLeft;
-			y = e.pageY - canvas.offsetTop;
-		 }
+	        $('#addTable').click(function () {
+	            $("#newTableModal").modal();
+	        });
 
-		}
-		
-		function myDown(e){
-		 if (e.pageX < x + 15 + canvas.offsetLeft && e.pageX > x - 15 +
-		 canvas.offsetLeft && e.pageY < y + 15 + canvas.offsetTop &&
-		 e.pageY > y -15 + canvas.offsetTop){
-			x = e.pageX - canvas.offsetLeft;
-			y = e.pageY - canvas.offsetTop;
-			dragok = true;
-			canvas.onmousemove = myMove;
-		 }
+	        $('#addTableModal').click(function () {
+	            var rect = new fabric.Rect({
+	                width: 50,
+	                height: 50,
+	                left: 50,
+	                top: 50,
+	                fill: 'rgb(146,99,5)'
+	            })
+	            canvas.getObjects();
+	            canvas.add(rect);
+	            canvas.selection = true;
+	            canvas.renderAll();
+	            canvas.calcOffset();
 
-		}
-		
-		function myUp(){
-		 dragok = false;
-		 canvas.onmousemove = null;
-		}
+	            $('#newTableModal').modal('toggle');
+	        });
 
-		document.getElementById("addTable").addEventListener('click', function(e){
-			draw();		
-		});
-		
-		init();
-		canvas.onmousedown = myDown;
-		canvas.onmouseup = myUp;
-		
-		canvas.addEventListener('dblclick', function(e) {
-        console.log('click: ' + e.offsetX + '/' + e.offsetY); 
-		}, false);
-	*/
-	</script>
-
+	    </script>
+    </body>
 </html>
