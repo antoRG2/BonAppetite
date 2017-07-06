@@ -4,16 +4,59 @@
 <meta charset="UTF-8" />
 <title>Canvas Drag and Drop Test</title>
 </head>
-	<body>
-		<section>
-			<div>
-				<canvas id="canvas" width="400" height="300">
-					Add elements here
-				</canvas>
-				<input type="button" value="Agregar" name="addTable" id="addTable">
-			</div>
+<body>
+<section>
 
+<div>
+<canvas id="canvas" width="400" height="300" style="border:1px solid black" >
+Add elements here
+</canvas>
+<input type="button" value="Agregar" name="addTable" id="addTable">
+</div>
+
+<script src="fabric.min.js"></script>
+<script src="jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
+
+	var canvas = this.__canvas = new fabric.Canvas('canvas');    
+
+	$('#addTable').click(function() {
+		  var rect = new fabric.Rect({
+			  width: 50,
+			  height: 50,
+			  left: 50,
+			  top: 50,
+			  fill: 'rgb(255,0,0)'
+			  })
+		 canvas.getObjects();
+		 canvas.add(rect);
+		 canvas.selection = true;
+		 canvas.renderAll();
+		 canvas.calcOffset();      
+	});
+
+	canvas.on({
+		'object:selected': function() {
+			console.log("test succesfully");
+		  /*fabric.util.toArray(document.getElementsByTagName('input'))
+							  .forEach(function(el){ el.disabled = false; })
+
+		  var filters = ['grayscale', 'invert', 'remove-color', 'sepia', 'brownie',
+						  'brightness', 'contrast', 'saturation', 'noise', 'vintage', 'pixelate',
+						  'blur', 'sharpen', 'emboss', 'technicolor', 'polaroid', 'blend-color',
+						  'gamma', 'kodachrome', 'blackwhite'];
+
+		  for (var i = 0; i < filters.length; i++) {
+			filters[i] && (
+			$(filters[i]).checked = !!canvas.getActiveObject().filters[i]);
+		  }*/
+		}
+	  });
+			
+		
+		
+		
+		/*
 		var canvas;
 		var ctx;
 		var x = 75;
@@ -45,6 +88,14 @@
 		 rect(0,0,WIDTH,HEIGHT);
 		 ctx.fillStyle = "#444444";
 		 rect(x - 15, y - 15, 30, 30);
+		 
+		 
+		ctx.getObjects();
+		ctx.add(rect);
+		ctx.selection = true;
+		ctx.renderAll();
+		ctx.calcOffset();
+		
 		
 		}
 
@@ -84,7 +135,7 @@
 		canvas.addEventListener('dblclick', function(e) {
         console.log('click: ' + e.offsetX + '/' + e.offsetY); 
 		}, false);
-
-	
+	*/
 	</script>
+
 </html>
