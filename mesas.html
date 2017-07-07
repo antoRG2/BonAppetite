@@ -13,11 +13,9 @@
        </section>
        <input type="button" class="btn btn-success" value="Agregar Mesa" id="addTable"  data-target="#myModal">
       
-          <!--Modal New Table-->
+        <!-- New Table Modal content-->
         <div class="modal fade" id="newTableModal" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
+            <div class="modal-dialog">              
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4>Nueva Mesa</h4>
@@ -46,9 +44,38 @@
         </div> 
         <!--end modal-->
 
+        <!-- Account Check Modal content-->
+        <div class="modal fade" id="accountCheckModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Cuenta Mesa 1</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <ul>
+                            <li>1 x Entrada Sopa de Tomate</li>
+                            <li>1 x Entrada Papas Fritas</li>
+                            <li>2 x Gaseosas</li>
+                            <li>2 x Pasta Bolognesa</li>
+                        </ul>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" id="addTableModal" class="btn btn-success pull-left"></span>Pagar</button>
+                        <button type="submit" class="btn btn-warning  pull-right" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end modal-->
+
+
 
         <script src="lib/fabric-1.7.15.min.js"></script>
         <script src="lib/jquery-3.2.1.min.js"></script>   
+        <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
         <script src="lib/Bootstrap/js/bootstrap.js"></script>
         <script type="text/javascript">
 
@@ -57,20 +84,29 @@
             canvas.renderAll();
 
 
-	        canvas.on({
-		        'object:selected': function() {
-		            $("#newTableModal").modal();
-		            var test = canvas.getActiveObject();
-		            var testType = canvas.getActiveObject().get('type');
-		            debugger;
-		        }
-	        });
+	        //canvas.on({
+		    //    'object:selected': function() {
+		    //        $("#accountCheckModal").modal();
+		    //        var test = canvas.getActiveObject();
+		    //        var testType = canvas.getActiveObject().get('type');
+		    //        debugger;
+		    //    }
+	        //});
 
-	        $('#addTable').click(function () {
+	        //canvas.on('mouse:over', function () {
+	        //    this.target.setFill('rgb(41,190,230)');
+	        //    canvas.renderAll();
+	        //});
+	        //canvas.on('mouse:out', function () {
+	        //    this.target.setFill('rgb(146,99,5)');
+	        //    canvas.renderAll();
+	        //});
+
+	        $('#addTable').on("click",function () {
 	            $("#newTableModal").modal();
 	        });
 
-	        $('#addTableModal').click(function () {
+	        $('#addTableModal').on("click",function () {
 	            var rect = new fabric.Rect({
 	                width: 50,
 	                height: 50,
@@ -78,12 +114,26 @@
 	                top: 50,
 	                fill: 'rgb(146,99,5)'
 	            })
+	            //text= new fabric.Text('I love fabricjs', {
+	            //    left: rect.left, //Take the block's position
+	            //    top: rect.top,
+	            //    fill: 'white'
+	            //});
+	          
+	            //	            var caption = new fabric.Text(canvas.getActiveObject().canvas._objects.lenght +1, {
+	            //    fontFamily: 'Arial'
+	            //});
+	            //var group = new fabric.Group([rect, caption], { left: left, top: top });
+	            //canvas.add(group);
+	            
 	            canvas.getObjects();
 	            canvas.add(rect);
+	            //canvas.add(text);
 	            canvas.selection = true;
 	            canvas.renderAll();
 	            canvas.calcOffset();
 
+	           //canvas.getActiveObject().canvas._objects[0].active
 	            $('#newTableModal').modal('toggle');
 	        });
 
