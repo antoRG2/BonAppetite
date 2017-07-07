@@ -11,3 +11,6 @@ http://jsfiddle.net/beewayne/z0qn35Lo/
 
 responsive canvas 
 https://stackoverflow.com/questions/21931271/how-to-enable-responsive-design-for-fabric-js
+
+get canvas from database 
+https://stackoverflow.com/questions/38812000/fabric-js-loadfromjson-issue
