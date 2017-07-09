@@ -1,0 +1,146 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="css/Normalize.css" />
+    <link rel="stylesheet" href="css/site.css" />
+    <link rel="stylesheet" href="lib/Bootstrap/css/bootstrap.css" />
+    <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
+</head>
+<body>
+    <article>
+        <header>
+            <h1>Restaurante Mediterraneo</h1>
+            <p>Ingredientes</p>
+        </header>
+    </article>
+
+    <div class="wrapper">
+        <div class="panel panel-default">
+            <!-- Table -->
+            <table class="table">
+                <thead> 
+                    <tr> 
+                        <th>Codigo</th> 
+                        <th>Descripcion</th> 
+                        <th>UM</th> 
+                        <th>Costo</th>
+                        <th>Cantidad</th>                     
+                    </tr> 
+                </thead>
+                    <tbody> 
+                        <tr  id="openEdit"> 
+                            <td>0101003</td>
+                            <td>Aceite de Oliva</td>
+                            <td>ML</td>
+                            <td>2.06</td>
+                            <td>29.57</td>   
+                        </tr> 
+                        <tr>
+                            <td>0601040</td>
+                            <td>Papa Precocida</td>
+                            <td>GRS</td>
+                            <td>2.06</td>
+                            <td>100.00</td>  
+                        </tr> 
+                        <tr> 
+                            <td>0586305</td>
+                            <td>Arroz Tio Pelon</td>
+                            <td>GRS</td>
+                            <td>0.47</td>
+                            <td>80.00</td>
+                        </tr> 
+                        <tr>
+                            <td>0586305</td>
+                            <td>Mantequilla con sal</td>
+                            <td>GRS</td>
+                            <td>1.71</td>
+                            <td>10.00</td>
+                        </tr> 
+                    </tbody>
+            </table>
+        </div>
+        <div class="text-center">
+            <input type="button" class="btn btn-success add-product" value="Agregar Ingrediente" id="addProduct" data-target="#myModal">
+        </div>
+    </div>
+
+    <!-- New product Modal content-->
+    <div class="modal fade" id="newProduct" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Ingrediente</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="numeroMesa"></span>Codigo</label>
+                            <input type="number" class="form-control" id="codigo" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="sillas">Descripcion</label>
+                            <input type="text" class="form-control" id="descrip">
+                        </div>
+                        <div class="form-group">
+                            <label for="sillas">UM</label>
+                            <input type="text" class="form-control" id="um">
+                        </div>
+                        <div class="form-group">
+                            <label for="sillas">Costo</label>
+                            <input type="number" class="form-control" id="costo">
+                        </div>
+                        <div class="form-group">
+                            <label for="sillas">Cantidad</label>
+                            <input type="number" class="form-control" id="cant">
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" id="addProductModal" class="btn btn-success pull-left"></span> Agregar</button>
+                    <button type="submit" class="btn btn-warning  pull-right" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end modal-->
+
+
+    <script src="lib/jquery-3.2.1.min.js"></script>
+    <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
+    <script src="lib/Bootstrap/js/bootstrap.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#addProduct').on("click", function () {
+                $("#addProductModal").text("Agregar");
+                $("#codigo").val("");
+                $("#descrip").val("");
+                $("#um").val("");
+                $("#costo").val("");
+                $("#cant").val("");
+                $("#newProduct").modal();
+            });
+
+            $('#openEdit').on("click", function () {
+                $("#newProduct").modal();
+                $("#codigo").val(0101003);
+                $("#descrip").val("Aceite de Oliva");
+                $("#um").val("ML");
+                $("#costo").val(2.06);
+                $("#cant").val(29.57);
+                $("#addProductModal").text("Editar");
+
+            });
+
+        });
+    </script>
+
+    <footer>
+        <p>Todos los derechos reservados
+    </footer>
+</body>
+</html>
