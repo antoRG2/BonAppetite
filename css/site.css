@@ -1,9 +1,48 @@
-﻿#canvas {
+﻿/*Site*/
+body {
+    background-color: #D3E5D3 !important;
+}
+
+header {
+    background-color: #419641;
+    color: #FFFFEB;
+    padding:1% 3%;
+    font-family: 'Dancing Script', cursive;
+}
+
+header p {
+    font-family:sans-serif;
+ }
+
+footer {
+    background-color: #419641;
+    width: 100%;
+    bottom: 0;
+    position: fixed;
+}
+
+    footer p {
+    color: #FFFFEB;
+    padding: 1% 0 0 2%;
+    }
+ /*Site*/  
+  
+/* Salon - Configuracion de Mesas*/       
+#canvas {
     width:700em;    
     height:700em;
 }
 
 .canvas-container {
-    margin: 3% auto !important;
+    margin: 5% auto;
 }
 
+.ul-account-check {
+  list-style: none;
+}
+
+.ul-account-check li:before {
+  content: '✓';
+  color:forestgreen;
+}
+/* Salon - Configuracion de Mesas*/       
