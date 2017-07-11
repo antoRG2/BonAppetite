@@ -14,3 +14,7 @@ https://stackoverflow.com/questions/21931271/how-to-enable-responsive-design-for
 
 get canvas from database 
 https://stackoverflow.com/questions/38812000/fabric-js-loadfromjson-issue
+
+NavBar options:
+https://bootsnipp.com/snippets/V0epV
+https://bootsnipp.com/snippets/featured/responsive-navigation-menu
