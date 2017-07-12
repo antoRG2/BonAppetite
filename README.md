@@ -15,11 +15,8 @@ https://stackoverflow.com/questions/21931271/how-to-enable-responsive-design-for
 get canvas from database 
 https://stackoverflow.com/questions/38812000/fabric-js-loadfromjson-issue
 
-<<<<<<< HEAD
-boostrap menu sample 
-https://bootsnipp.com/snippets/featured/minimal-menu
-=======
+
 NavBar options:
 https://bootsnipp.com/snippets/V0epV
 https://bootsnipp.com/snippets/featured/responsive-navigation-menu
->>>>>>> ea155f1642e569bcdd45705234e3f1c9317bda9e
+
