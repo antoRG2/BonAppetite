@@ -2,10 +2,6 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <link rel="stylesheet" href="css/Normalize.css" />
-        <link rel="stylesheet" href="css/site.css" />
-        <link rel="stylesheet" href="lib/Bootstrap/css/bootstrap.css" />
-        <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
     </head>
     <body>
         <article>
@@ -14,30 +10,28 @@
             </header>
         </article>
   
-        <form class="login">
+        <form class="login" id="loginForm">
             <div class="group">
-                <input type="text" name="user"  placeholder="Usuario"><br>
-                <input type="password" name="password"  placeholder="Contrasena"><br>             
+                <input type="text" name="user" id="user" placeholder="Usuario"><br>
+                <input type="password" name="password" id="password" placeholder="Contrasena"><br>             
             </div>
             <div class="text-center">
-                <a type="button" class="btn btn-warning button" href="Main.html">
+                <a type="button" class="btn btn-warning button" id="enter">
                     Ingresar
                 </a>
             </div>
         </form>
 
-
-
-        <script src="lib/jquery-3.2.1.min.js"></script>
+        <!--Librerias & Estilos-->
+        <link rel="stylesheet" href="../Css/Normalize.css" />
+        <link rel="stylesheet" href="../Css/Lib/Boostrap/bootstrap.css" />
+        <link rel="stylesheet" href="../Css/site.css" />
+        <link rel="stylesheet" href="../Css/logIn.css" />
+        <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
+        <script src="../Js/Lib/jquery-3.2.1.min.js"></script>
         <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
-        <script src="lib/Bootstrap/js/bootstrap.js"></script>
-        
-        <script type="text/javascript">
-            $(document).ready(function () { });
-        </script>
+        <script src="../Js/Lib/Bootstrap/bootstrap.js"></script>
+        <script src="../Js/logIn.js"></script>
 
-        <footer>
-            <p>Todos los derechos reservados
-        </footer>
     </body>
 </html>

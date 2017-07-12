@@ -1,0 +1,99 @@
+{
+	"files": {
+		"Less/configuracionSalones.less": {
+			"engines": [
+				{
+					"compiler": "less",
+					"output": "../configuracionSalones.css",
+					"options": {
+						"compress": false,
+						"ieCompat": false,
+						"strictMath": false,
+						"strictUnits": false,
+						"javascriptEnabled": false,
+						"sourceMap": true
+					}
+				}
+			],
+			"sources": [
+				"configuracionSalones.less"
+			]
+		},
+		"Less/configuracionIngredientes.less": {
+			"engines": [
+				{
+					"compiler": "less",
+					"output": "../configuracionIngredientes.css",
+					"options": {
+						"compress": false,
+						"ieCompat": false,
+						"strictMath": false,
+						"strictUnits": false,
+						"javascriptEnabled": false,
+						"sourceMap": true
+					}
+				}
+			],
+			"sources": [
+				"configuracionIngredientes.less"
+			]
+		},
+		"Less/inicio.less": {
+			"engines": [
+				{
+					"compiler": "less",
+					"output": "../inicio.css",
+					"options": {
+						"compress": false,
+						"ieCompat": false,
+						"strictMath": false,
+						"strictUnits": false,
+						"javascriptEnabled": false,
+						"sourceMap": true
+					}
+				}
+			],
+			"sources": [
+				"inicio.less"
+			]
+		},
+		"Less/logIn.less": {
+			"engines": [
+				{
+					"compiler": "less",
+					"output": "../logIn.css",
+					"options": {
+						"compress": false,
+						"ieCompat": false,
+						"strictMath": false,
+						"strictUnits": false,
+						"javascriptEnabled": false,
+						"sourceMap": true
+					}
+				}
+			],
+			"sources": [
+				"logIn.less"
+			]
+		},
+		"Less/site.less": {
+			"engines": [
+				{
+					"compiler": "less",
+					"output": "../site.css",
+					"options": {
+						"compress": false,
+						"ieCompat": false,
+						"strictMath": false,
+						"strictUnits": false,
+						"javascriptEnabled": false,
+						"sourceMap": true
+					}
+				}
+			],
+			"sources": [
+				"site.less"
+			]
+		}
+	}
+}
