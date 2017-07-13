@@ -20,3 +20,6 @@ NavBar options:
 https://bootsnipp.com/snippets/V0epV
 https://bootsnipp.com/snippets/featured/responsive-navigation-menu
 
+highlight validation
+https://stackoverflow.com/questions/15602814/how-to-highlight-invalid-section-twitter-bootstrap-jquery-validate-plugin
+
