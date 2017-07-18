@@ -2,9 +2,40 @@
 <html>
 	<head>
 		<meta charset="UTF-8" />
+        <link rel="stylesheet" href="../Css/Normalize.css" />
+        <link rel="stylesheet" href="../Css/Lib/Boostrap/bootstrap.css" />
+        <link rel="stylesheet" href="../Css/site.css" />
+        <link rel="stylesheet" href="../Css/configuracionIngredientes.css" />
+        <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
 
 	</head>
 	<body>
+
+        <div class="nav-side-menu">
+            <div class="brand">Opciones</div>
+            <i class="toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+            <div class="menu-list">
+                <ul id="menu-content" class="menu-content collapse out">
+                    <li>
+                        <a href="configuracionPlatillos.html">
+                            <div>Platillos</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="configuracionIngredientes.html">
+                            <div>Ingredientes</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="configuracionMedidas.html">
+                            <div>Unidades de Medida</div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="b-cont">
 		<article>
 			<header>
 				<h1>Restaurante Mediterraneo</h1>
@@ -70,50 +101,49 @@
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 					</div>
 					<div class="modal-body">
-						<form role="form">
-							<div class="form-group">
-								<label for="codigo"></span>Codigo</label>
-								<input type="number" class="form-control" id="codigo" min="1">
-							</div>
+						<form data-toggle="validator" role="form">
+							<div class="row form-group">
+								<div class="col-md-6">
+                                    <label for="codigo">Codigo</label>
+								    <input type="number" class="form-control" id="codigo" min="0" required disable="true">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="um">UM</label>
+                                    <input type="text" class="form-control" id="um" required disable="true">
+                                </div>
+                            </div>
 							<div class="form-group">
 								<label for="descripcion">Descripcion</label>
-								<input type="text" class="form-control" id="descrip">
+								<input type="text" class="form-control" id="descrip" required disable="true">
 							</div>
-							<div class="form-group">
-								<label for="um">UM</label>
-								<input type="text" class="form-control" id="um">
-							</div>
-							<div class="form-group">
-								<label for="costo">Costo</label>
-								<input type="number" class="form-control" id="costo">
-							</div>
-							<div class="form-group">
-								<label for="cantidad">Cantidad</label>
-								<input type="number" class="form-control" id="cant">
-							</div>
+                            <div class="row form-group">                                
+                                <div class="col-md-6">
+                                    <label for="costo">Costo</label>
+                                    <input type="number" class="form-control" id="costo"  min="1" required disable="true">                                    
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="cantidad">Cantidad</label>
+                                    <input type="number" class="form-control" id="cant" min="1" required disable="true">
+                                </div>
+                            </div>	
+                            <div class="modal-footer">
+                                <button type="submit" id="addIngredient" class="btn btn-success pull-left">Guardar</button>
+                                <button type="button" class="btn btn-warning  pull-right" data-dismiss="modal">Cancelar</button>
+                            </div>
 						</form>
-					</div>
-
-					<div class="modal-footer">
-						<button type="submit" id="addIngredient" class="btn btn-success pull-left"></span>Guardar</button>
-                        <button type="button" id="deleteIngredient" class="btn btn-danger pull-left">Eliminar</button>
-						<button type="submit" class="btn btn-warning  pull-right" data-dismiss="modal">Cancelar</button>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!--Modal-->
-
+        </div>
 
         <!--Librerias & Estilos-->
-        <link rel="stylesheet" href="../Css/Normalize.css" />    
-        <link rel="stylesheet" href="../Css/Lib/Boostrap/bootstrap.css" />
-        <link rel="stylesheet" href="../Css/site.css" />
-        <link rel="stylesheet" href="../Css/configuracionIngredientes.css" />
-        <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
+
 		<script src="../Js/Lib/jquery-3.2.1.min.js"></script>
 		<script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
 		<script src="../Js/Lib/Bootstrap/bootstrap.js"></script>
         <script src="../Js/configuracionIngredientes.js"></script>
+        <script src="../Js/Lib/validator.min.js"></script>
 	</body>
 </html>

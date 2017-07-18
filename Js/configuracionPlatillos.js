@@ -1,15 +1,47 @@
 $(document).ready(function () {
 
-	//carga los platillos en la tabla 
-	loadDishes();
+    loadDishes();
+
+    //carga tabla
+    function loadDishes() {
+        $.ajax({
+            url: "api/Productos/",
+            type: 'GET',
+            dataType: "json",
+            success: function (response) {
+                jQuery.each(name, function (i, data) {
+                    $("#dishes tbody").append(
+                        "<tr><th>" + data.nombrePlatillo + "</th>" +
+                        "<th>" + data.descripcion + "</th>" +
+                        "<th>" + data.precioVenta + "</th>" +
+                        "<th>" + data.utilidad + "</th></tr>");
+                });
+            }
+        });
+    }
 
 	//abre pop-up de cada fila en la tabla
 	$("#dishes").delegate('tr', 'click', function () {
-		//Aqui va el ajax call que llena el pop-up formulario con
-		//la informacion del Platillo
-
-		//abre el pop-up
-		$("#dish").modal();
+        var code = $(this).closest("tr").find('td:eq(0)').text();
+        $.ajax({
+            url: "api/Productos/",
+            type: 'GET',
+            data: "cod_Producto=" + code,
+            dataType: "json",
+            success: function (response) {
+                if (response != null) {
+                    jQuery.each(name, function (i, data) {
+                        $("#nombrePlatillo").val(data.nombrePlatillo);
+                        $("#descripcion").val(data.descripcion);
+                        $("#precioVenta").val(data.precioVenta);
+                        $("#precioCosto").val(data.precioCosto);
+                        $("#utilidad").val(data.utilidad);
+                    });
+                    //abre el pop-up
+                    $("#dish").modal();
+                }
+            }
+        });  
 	});
 
 	//abre pop-up para nuevo Platillo
@@ -21,19 +53,24 @@ $(document).ready(function () {
 
 	//Guarda nuevo Platillo
 	$('#saveDish').on("click", function () {
-		
-		//Aqui va el ajax call que guarda la informacion
-		
-		//cierra pop up
-		cleanPopUp();
-		$("#dish").modal('toggle');
+        e.preventDefault();
+        var nombrePlatillo= $("#nombrePlatillo").val();
+        var descripcion= $("#descripcion").val();
+        var precioVenta= $("#precioVenta").val();
+        var precioCosto = $("#precioCosto").val();
+        var utilidad= $("#utilidad").val();
 
-	});
+        var dataString = 'nombrePlatillo=' + nombrePlatillo + '&descripcion=' + descripcion +
+            '&precioVenta=' + precioVenta + '&precioCosto=' + precioCosto + '&utilidad=' + utilidad;
 
-	//Elimina Platillo
-	$('#deletedish').on("click", function () {
-		//Aqui va el ajax call que elimina el Platillo
-
+        $.ajax({
+            type: 'POST',
+            data: dataString,
+            url: "api/Productos/",
+            success: function (data) {
+                alert(data);
+            }
+        });
 		//cierra pop up
 		cleanPopUp();
 		$("#dish").modal('toggle');
@@ -41,32 +78,11 @@ $(document).ready(function () {
 
 	//limpia campos pop-up 
 	function cleanPopUp() {
-		$("#codigo").val("");
-		$("#descrip").val("");
-		$("#um").val("");
-		$("#costo").val("");
-		$("#cant").val("");
+        $("#nombrePlatillo").val("");
+        $("#descripcion").val("");
+        $("#precioVenta").val("");
+        $("#precioCosto").val("");
+        $("#utilidad").val("");
 	}
 
-	function loadDishes() {
-		//Aqui va la funcion que carga los platillos
-		//cuando la pagina abre 
-		//aca dejo un ejemplo
-		//$.ajax({
-		//	type: "POST",
-		//	url: "/users/index/friendsnamefromids",
-		//	data: "IDS=" + requests,
-		//	dataType: "json",
-		//	success: function (response) {
-		//		var name = response;				
-		//		var yourTableHTML = "";
-		//		jQuery.each(name, function (i, data) {
-		//			$("#dishes tbody").append("<tr><td>" + data + "</td></tr>");
-		//		});
-		//	}
-		//});
-	}
-
-	//NOTA: LOS PLATILLOS EN LA TABLA ESTAN QUEMADOS EN ESTE MOMENTO
-	//AL TERMINAR LOS AJAX CALL POR FAVOR RECUERDE QUITARLOS DEL HTML, GRACIAS.
 });

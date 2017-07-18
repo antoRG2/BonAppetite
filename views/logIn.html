@@ -10,12 +10,13 @@
             </header>
         </article>
   
-        <form class="login" id="loginForm">
-            <div class="group">
-                <input type="text" name="user" id="user" placeholder="Usuario"><br>
-                <input type="password" name="password" id="password" placeholder="Contrasena"><br>             
+        <form class="login" id="loginForm" data-toggle="validator" role="form">
+            <div class="form-group">
+               <input  type="text" name="user" id="user" placeholder="Usuario" required disable="true"><br>
+                <input type="password" name="password" id="password" placeholder="Contrasena" required disable="true"><br>         
             </div>
             <div class="text-center">
+                <!--<button type="submit" id="enter" class="btn btn-warning">Ingresar</button>-->
                 <a type="button" class="btn btn-warning button" id="enter">
                     Ingresar
                 </a>
@@ -32,6 +33,7 @@
         <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
         <script src="../Js/Lib/Bootstrap/bootstrap.js"></script>
         <script src="../Js/logIn.js"></script>
+        <script src="../Js/Lib/validator.min.js"></script>
 
     </body>
 </html>

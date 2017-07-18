@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\css"
+    "\\Css",
+    "\\Js",
+    "\\Views"
   ],
+  "SelectedNode": "\\Views\\configuracionMedidas.html",
   "PreviewInSolutionExplorer": false
 }

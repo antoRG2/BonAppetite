@@ -1,15 +1,43 @@
 $(document).ready(function () {
-
-    //carga los platillos en la tabla 
+        
     loadMesuration();
+
+    //carga tabla
+    function loadMesuration() {
+        $.ajax({
+            url: "api/Medida/",
+            type: 'GET',
+            dataType: "json",
+            success: function (response) {
+                jQuery.each(name, function (i, data) {
+                    $("#mensurations tbody").append(
+                        "<tr><th>" + data.idUnidadMedida + "</th>" +
+                        "<th>" + data.nombre + "</th></tr>");
+                });
+            }
+        });
+    }
 
     //abre pop-up de cada fila en la tabla
     $("#mensurations").delegate('tr', 'click', function () {
-        //Aqui va el ajax call que llena el pop-up formulario con
-        //la informacion del Platillo
-
-        //abre el pop-up
-        $("#mensuration").modal();
+        var code = $(this).closest("tr").find('td:eq(0)').text();
+        $.ajax({
+            url: "api/Medida/",
+            type: 'GET',
+            data: "cod_Producto=" + code,
+            dataType: "json",
+            success: function (response) {
+                if (response != null) {
+                    jQuery.each(name, function (i, data) {
+                        $("#id").val(data.idUnidadMedida);
+                        $("#NombreUnidad").val(data.nombre);
+                        
+                    });
+                    //abre el pop-up
+                    $("#mensuration").modal();
+                }
+            }
+        });        
     });
 
     //abre pop-up para nueva medida
@@ -19,21 +47,22 @@ $(document).ready(function () {
         $("#mensuration").modal();
     });
 
-    //Guarda nuevo Platillo
+    //Guarda nueva medida
     $('#saveMensuration').on("click", function () {
+        e.preventDefault();
+        var id = $("#id").val();
+        var descrip = $("#NombreUnidad").val();
 
-        //Aqui va el ajax call que guarda la informacion
+        var dataString = 'idUnidadMedida=' + id + '&nombre=' + descrip;
 
-        //cierra pop up
-        cleanPopUp();
-        $("#mensuration").modal('toggle');
-
-    });
-
-    //Elimina Platillo
-    $('#deleteMensuration').on("click", function () {
-        //Aqui va el ajax call que elimina el Platillo
-
+        $.ajax({
+            type: 'POST',
+            data: dataString,
+            url: "api/Medida/",
+            success: function (data) {
+                alert(data);
+            }
+        });
         //cierra pop up
         cleanPopUp();
         $("#mensuration").modal('toggle');
@@ -41,32 +70,9 @@ $(document).ready(function () {
 
     //limpia campos pop-up 
     function cleanPopUp() {
-        $("#codigo").val("");
-        $("#descrip").val("");
-        $("#um").val("");
-        $("#costo").val("");
-        $("#cant").val("");
+        $("#id").val("");
+        $("#NombreUnidad").val("");
     }
 
-    function loadMesuration() {
-        //Aqui va la funcion que carga las medidas
-        //cuando la pagina abre 
-        //aca dejo un ejemplo
-        //$.ajax({
-        //	type: "POST",
-        //	url: "/users/index/friendsnamefromids",
-        //	data: "IDS=" + requests,
-        //	dataType: "json",
-        //	success: function (response) {
-        //		var name = response;				
-        //		var yourTableHTML = "";
-        //		jQuery.each(name, function (i, data) {
-        //			$("#dishes tbody").append("<tr><td>" + data + "</td></tr>");
-        //		});
-        //	}
-        //});
-    }
 
-    //NOTA: Las MEDIDAS EN LA TABLA ESTAN QUEMADOS EN ESTE MOMENTO
-    //AL TERMINAR LOS AJAX CALL POR FAVOR RECUERDE QUITARLOS DEL HTML, GRACIAS.
 });
