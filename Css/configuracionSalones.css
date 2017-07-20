@@ -1,0 +1,19 @@
+.add-table {
+  width: 11em;
+}
+#canvas {
+  width: 700em;
+  height: 700em;
+}
+.canvas-container {
+  margin: 5% auto;
+}
+.ul-account-check {
+  list-style: none;
+}
+.ul-account-check li:before {
+  content: '✓';
+  color: forestgreen;
+}
+
+/*# sourceMappingURL=configuracionSalones.css.map */

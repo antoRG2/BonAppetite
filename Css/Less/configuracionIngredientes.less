@@ -1,0 +1,25 @@
+@hover-row-color:#FFF2DF;
+@background-table-color:white;
+
+.ingredients {
+	background-color:@background-table-color;
+	tbody{
+		 tr:hover {
+		   background-color: @hover-row-color;
+		}
+	}
+}
+
+@media (min-width: 768px) {
+	.wrapper{
+	    width: 44em;
+	    margin: 10% auto;
+	}	
+}
+
+@media (min-width: 1330px){
+	.wrapper{
+		width: 75em;
+		margin: 5% auto;
+	}
+}
