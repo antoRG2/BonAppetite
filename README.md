@@ -21,3 +21,5 @@ https://bootsnipp.com/snippets/featured/responsive-navigation-menu
 highlight validation:
 http://1000hz.github.io/bootstrap-validator/#validator
 
+grid sample for menu 
+http://jsfiddle.net/CVVE6/11/
