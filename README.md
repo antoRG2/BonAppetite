@@ -18,8 +18,8 @@ https://stackoverflow.com/questions/38812000/fabric-js-loadfromjson-issue
 NavBar options:
 https://bootsnipp.com/snippets/featured/responsive-navigation-menu
 
-highlight validation:
-http://1000hz.github.io/bootstrap-validator/#validator
+validation:
+http://1000hz.github.io/bootstrap-validator/
 
 grid sample for menu 
 http://jsfiddle.net/CVVE6/11/
