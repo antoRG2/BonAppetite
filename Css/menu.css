@@ -1,0 +1,25 @@
+#container {
+    padding: 1% 23%;
+}
+.container {
+margin: 1% auto;
+}
+
+.menu {
+    margin-right: 12em;
+}
+
+.accounts-open {
+    background-color:white;
+}
+
+.existingClients {
+    width: 80%;
+    margin: 0 auto;
+    border-style: solid;
+    border-color: #808080;
+}
+
+.pay-but {
+    margin:3em auto;
+}
