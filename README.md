@@ -26,3 +26,6 @@ http://jsfiddle.net/CVVE6/11/
 
 NaBar Tabs for menu
 https://v4-alpha.getbootstrap.com/components/navs/
+
+simpLESS compiler:
+http://1000hz.github.io/bootstrap-validator/
