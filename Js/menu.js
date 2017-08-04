@@ -14,61 +14,51 @@ $(document).ready(function () {
     //TODO: esta lista deberia ser una lista de objetos con el nombre y el id de la categoria
     var categorias = ["carnes", "arroz", "ensaladas", "entradas", "postres"]
     var productos = ["tiramisu", "brownie", "helado", "pastel"]
+    var alter = [
+        { id: 1, value: 'a' },
+        { id: 2, value: 'b' },
+        { id: 3, value: 'c' },
+        { id: 4, value: 'd' },
+    ];
 
-    var grid = function (list, size, pixelsPerSide, colors) {
+    var grid = new MenuGrid(3, 4, alter);
 
-        numberPerSide = 3;
-        var svg = document.createSvg("svg");
-        svg.setAttribute("width", pixelsPerSide);
-        svg.setAttribute("height", pixelsPerSide);
-        svg.setAttribute("viewBox", [0, 0, numberPerSide * size, numberPerSide * size].join(" "));
-
-        for (var i = 0; i < list.length; i++) {
-            for (var j = 0; j < numberPerSide; j++) {
-                var color1 = colors[(i + j) % colors.length];
-                var color2 = colors[(i + j + 1) % colors.length];
-                var g = document.createSvg("g");
-
-                g.setAttribute("transform", ["translate(", i * size, ",", j * size, ")"].join(""));
-                var number = numberPerSide * i + j;
-                var box = document.createSvg("rect");
-                box.setAttribute("width", size);
-                box.setAttribute("height", size);
-                box.setAttribute("fill", color1);
-                box.setAttribute("id", "b" + number);
-                g.appendChild(box);
-
-                var text = document.createSvg("text");
-                text.appendChild(document.createTextNode(i * numberPerSide + j));
-                text.setAttribute("fill", color2);
-                text.setAttribute("font-size", 3);
-                text.setAttribute("x", 0);
-                text.setAttribute("y", size / 2);
-                text.setAttribute("id", "t" + number);
-                text.textContent = list[i];
-                
-                g.appendChild(text);
-                svg.appendChild(g);
-            }
-        }
-
-        svg.addEventListener(
-            "click",
-            function (e) {
-                var id = e.target.id;
-                if (id) {
-                    $('#clients li').find('.active div').text(list[3]);
-                    //loadProducts(id)
-
-                }
-            },
-            false);
-        return svg;
+    grid.rowsDef = {
+        autoRows: true,
+        height: 'auto'
     };
 
-    var container = document.getElementById("container");
-    container.appendChild(grid(categorias, 15, 200, ["white", "green"]));
+    // si los items enviados no son texto o numero hay que crear un dataformatter
+    grid.itemsDef.dataFormatter = function (item) {
+        // este formater es exclusivo para los objetos de alter
+        return 'id-' + item.id + '-value-' + item.value;
+    }
 
+    // evento que se ejecuta cuando uno de los divs internos recibe un click
+    grid.columnsDef.itemsCallback = function (event, item) {
+        console.log('Item clicked', event, item);
+    }
+
+    grid.actionsDef = [{
+        value: 'Atras',
+        action: function () {
+            console.log('Atras happened');
+        }
+    }];
+
+
+
+    // si create no tiene parametros usa la configuracion por defecto
+    var gridElement = grid.create();
+
+
+
+
+    grid.toString();
+
+    //
+    var container = document.getElementById("container");
+    container.appendChild(gridElement);
 
     $('#addClient').on("click", function () {
         //abre modal
@@ -90,7 +80,7 @@ $(document).ready(function () {
     function loadClients(client) {
         $(this).closest('li').before('<li><a>New Tab</a><span>x</span></li>');
         $('#clients').append('<div class="tab-pane">new tab</div>');
-        
+
 
     }
 
