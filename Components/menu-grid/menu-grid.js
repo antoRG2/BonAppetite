@@ -79,13 +79,14 @@ MenuGrid.prototype.generateDom = function (gridConfiguration) {
     grid.classList.add('grid-container');
     let styles = `
         display: grid;
-        grid-template-columns: repeat(${cols}, 1fr);
         grid-gap: 10px;
-    `
+    `;
+    let stylesCol = `grid-template-columns: repeat(${cols}, 1fr);`;
+    let stylesRows = '';
     if (gridConfiguration.rowsDef.autoRows) {
-        styles += 'grid-auto-rows: minmax(100px, auto);'
+        stylesRows += 'grid-auto-rows: minmax(100px, auto);'
     } else {
-        styles += `grid-template-rows: repeat(${rows}, 1fr);`
+        stylesRows += `grid-template-rows: repeat(${rows}, 1fr);`
     }
 
     if (gridConfiguration.items) {
@@ -101,10 +102,12 @@ MenuGrid.prototype.generateDom = function (gridConfiguration) {
             grid.appendChild(gItem);
         });
     }
+    grid.setAttribute('style', [styles, stylesCol, stylesRows].join(';') );
+
 
     let actionsRow = document.createElement('div');
-    actionsRow.setAttribute('style','grid-column: 1 / last ;grid-row: last-line;');
-    actionsRow.classList.add(['actions-row']);
+    
+    actionsRow.classList.add(['grid-actions']);
     let actions = gridConfiguration.actionsDef;
     
     if (actions && actions.length) {
@@ -119,11 +122,9 @@ MenuGrid.prototype.generateDom = function (gridConfiguration) {
 
             actionsRow.appendChild(gItem);
         });
-
-        grid.appendChild( actionsRow) ;
     }
 
-    grid.setAttribute('style', styles);
+    actionsRow.setAttribute('style', [styles, stylesCol].join(';') );
 
     // event listeners
     grid.addEventListener('click', (event) => {
@@ -133,9 +134,13 @@ MenuGrid.prototype.generateDom = function (gridConfiguration) {
             }
         }
     }, true);
+    
+    let wrapper = document.createElement('div');
+    wrapper.classList.add(['grid-wrapper']);
+    wrapper.appendChild( grid );
+    wrapper.appendChild( actionsRow );
 
-
-    return grid;
+    return wrapper;
 }
 
 

@@ -1,0 +1,37 @@
+.grid-wrapper {
+    width: 100%;
+}
+
+.grid-wrapper > .grid-container > .grid-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    word-break: break-word;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.grid-wrapper > .grid-container > .grid-cell:nth-child(even) {
+    background-color: white;
+}
+
+.grid-wrapper > .grid-container > .grid-cell:nth-child(odd) {
+    background-color: green;
+}
+
+.grid-actions {
+    margin-top: 10px;
+}
+
+.grid-actions > .action-cell {
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    word-break: break-word;
+    padding: 5px;
+    box-sizing: border-box;
+    background-color: rosybrown;
+}
