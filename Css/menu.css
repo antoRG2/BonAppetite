@@ -1,12 +1,9 @@
-#container {
-    padding: 1% 23%;
-}
 .container {
 margin: 1% auto;
 }
 
 .menu {
-    margin-right: 12em;
+    width: 500px;
 }
 
 .accounts-open {
