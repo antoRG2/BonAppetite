@@ -43,16 +43,13 @@ $(document).ready(function () {
     // evento que se ejecuta cuando uno de los divs internos recibe un click
     grid.columnsDef.itemsCallback = (function (event, item) {
         console.log('Item clicked', event, item, this.items);
-        // // TODO
-        // clear the grid
-        // recreate children
-
+        this.updateContent( item.children );
     }).bind(grid);
 
     grid.actionsDef = [{
         value: 'Atras',
         action: function () {
-            console.log('Atras happened');
+            grid.updateContent( alter );
         }
     }];
 
