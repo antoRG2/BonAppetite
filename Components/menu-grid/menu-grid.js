@@ -1,4 +1,5 @@
 function MenuGrid(columns, rows, items) {
+    this.domElement;
     this.columns = columns;
     this.rows = rows;
     this.items = items;
@@ -58,9 +59,8 @@ MenuGrid.prototype.create = function (gridConfiguration) {
     // with input parameters of the clicked item and the DOM element 
     //
 
-    let dom = this.generateDom(grid);
-
-    return dom;
+    this.domElement = this.generateDom(grid);
+    return this.domElement;
 }
 
 MenuGrid.prototype.valueFormatterCallback = function (item) {
@@ -71,7 +71,8 @@ MenuGrid.prototype.valueFormatterCallback = function (item) {
     }
 }
 
-MenuGrid.prototype.generateDom = function (gridConfiguration) {
+
+MenuGrid.prototype.createContentContainer = function( gridConfiguration ) {
     let cols = gridConfiguration.columns;
     let rows = gridConfiguration.rows;
 
@@ -89,8 +90,14 @@ MenuGrid.prototype.generateDom = function (gridConfiguration) {
         stylesRows += `grid-template-rows: repeat(${rows}, 1fr);`
     }
 
-    if (gridConfiguration.items) {
-        gridConfiguration.items.forEach((element) => {
+    grid.setAttribute('style', [styles, stylesCol, stylesRows].join(';') );
+
+    return { grid, styles, stylesCol, stylesRows};
+}
+
+MenuGrid.prototype.createContent = function( gridContentDomElement, items ) {
+    if ( items ) {
+        items.forEach((element) => {
             let gItem = document.createElement('div');
             gItem.setAttribute('clickable', 'true');
             gItem.data = element;
@@ -99,16 +106,22 @@ MenuGrid.prototype.generateDom = function (gridConfiguration) {
                 gItem.innerText = this.valueFormatterCallback(element);
             }
 
-            grid.appendChild(gItem);
+            gridContentDomElement.appendChild(gItem);
         });
     }
-    grid.setAttribute('style', [styles, stylesCol, stylesRows].join(';') );
+}
 
+MenuGrid.prototype.updateContent = function( items ) {
+    let content = this.domElement.querySelector( '.grid-container' );
+    this.clearContent();
+    this.createContent( content, items );
+}
 
+MenuGrid.prototype.createActions = function( actionsDef, styles, stylesCol ) {
     let actionsRow = document.createElement('div');
     
     actionsRow.classList.add(['grid-actions']);
-    let actions = gridConfiguration.actionsDef;
+    let actions = actionsDef;
     
     if (actions && actions.length) {
         actions.forEach((action) => {
@@ -126,8 +139,19 @@ MenuGrid.prototype.generateDom = function (gridConfiguration) {
 
     actionsRow.setAttribute('style', [styles, stylesCol].join(';') );
 
+    return actionsRow;
+}
+
+
+MenuGrid.prototype.generateDom = function (gridConfiguration) {
+    
+    let gridProps = this.createContentContainer( gridConfiguration );
+    let content = this.createContent( gridProps.grid, gridConfiguration.items );
+    let actionsRow = this.createActions( gridConfiguration.actionsDef,
+                             gridProps.styles, gridProps.stylesCol );
+
     // event listeners
-    grid.addEventListener('click', (event) => {
+    gridProps.grid.addEventListener('click', (event) => {
         if (event.target && event.target.hasAttribute('clickable')) {
             if (typeof (this.itemsCallback) === 'function') {
                 this.itemsCallback(event, event.target.data);
@@ -135,21 +159,26 @@ MenuGrid.prototype.generateDom = function (gridConfiguration) {
         }
     }, true);
     
+
     let wrapper = document.createElement('div');
     wrapper.classList.add(['grid-wrapper']);
-    wrapper.appendChild( grid );
+
+    wrapper.appendChild( gridProps.grid );
     wrapper.appendChild( actionsRow );
 
     return wrapper;
 }
 
+MenuGrid.prototype.clearContent = function(  ) {
+    let content = this.domElement.querySelector( '.grid-container' );
+    content.innerHTML = '';
+}
 
 MenuGrid.prototype.itemsCallback = function () {
     if (this.columnsDef && typeof (this.columnsDef.itemsCallback) === 'function') {
         this.columnsDef.itemsCallback(event, event.target.data);
     }
 }
-
 
 MenuGrid.prototype.toString = function () {
     console.log(`
