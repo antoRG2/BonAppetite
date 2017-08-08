@@ -1,3 +1,5 @@
+import style from './menu-grid.css';
+
 function MenuGrid(columns, rows, items) {
     this.domElement;
     this.columns = columns;
@@ -224,3 +226,7 @@ MenuGrid.prototype.toString = function () {
 //         },
 //     ]
 // };
+
+let MenuGridComponent = MenuGrid;
+
+export { MenuGridComponent }

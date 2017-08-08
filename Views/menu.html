@@ -1,14 +1,15 @@
 ﻿<!doctype html>
 <html>
+
 <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="../Css/Normalize.css" />
     <link rel="stylesheet" href="../Css/Lib/Boostrap/bootstrap.css" />
     <link rel="stylesheet" href="../Css/site.css" />
     <link rel="stylesheet" href="../Css/menu.css" />
-    <link rel="stylesheet" href="../Components/menu-grid/menu-grid.css" />
     <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
 </head>
+
 <body>
 
     <div class="nav-side-menu">
@@ -47,84 +48,89 @@
             <div class="text-center pay-but">
                 <button type="button" id="backMenu" class="btn btn-warning pull-right">Regresar a Salon</button>
             </div>
-                <div class="row">
-                    <div class="col-xs-6 menu">
-                        <div id="container"></div>                        
-                            <button type="submit" id="addProduct" class="btn btn-success pull-left">+</button>
-                            <button type="submit" id="removeProduct" class="btn btn-success pull-right">-</button>                        
-                    </div>
-                    <div class="col-xs-6 accounts-open">   
-                        <div>
-                            <ul class="nav nav-tabs" id="clients">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Cliente 1 </a>
-                                    <div style="height:10em"></div>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Cliente 2</a>
-                                    <div style="height:10em"></div>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Cliente 3</a>
-                                    <div style="height:10em"></div>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Cliente 4</a>
-                                    <div style="height:10em"></div>
-                                </li>
-                            </ul>
-                        </div>
-                        <button type="button" id="addClient" class="btn btn-warning pull-right">Nuevo clientes</button>
-                    </div>
+            <div class="row">
+                <div class="col-xs-6 menu">
+                    <div id="container"></div>
+                    <button type="submit" id="addProduct" class="btn btn-success pull-left">+</button>
+                    <button type="submit" id="removeProduct" class="btn btn-success pull-right">-</button>
                 </div>
-            <div class="text-center pay-but">
-                <button type="button"  id="payButton" class="btn btn-success">Pagar Factura</button>
-            </div>
-         </div>
-        
-    </div>
-        <!-- Agregar Cliente Modal-->
-        <div class="modal fade" id="clientModal" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4>Agregar Cliente</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="col-xs-6 accounts-open">
+                    <div>
+                        <div id="app">
+                            <span>
+                                {{message}}
+                            </span>
+                        </div>
+                        <ul class="nav nav-tabs" id="clients">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Cliente 1 </a>
+                                <div style="height:10em"></div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Cliente 2</a>
+                                <div style="height:10em"></div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Cliente 3</a>
+                                <div style="height:10em"></div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Cliente 4</a>
+                                <div style="height:10em"></div>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="modal-body">
-                        <form data-toggle="validator" role="form">
-                            <div class="row form-group">
-                                <div class="col-md-6">
-                                    <label for="nombre">Nombre</label>
-                                    <input type="text" class="form-control" id="nombreCliente" minlength="1" required disable="true">
-                                </div>
-                                <div class="col-md-6">
-                                    <br />
-                                    <button type="button" class="btn btn-warning pull-right" data-dismiss="modal">
+                    <button type="button" id="addClient" class="btn btn-warning pull-right">Nuevo clientes</button>
+                </div>
+            </div>
+            <div class="text-center pay-but">
+                <button type="button" id="payButton" class="btn btn-success">Pagar Factura</button>
+            </div>
+        </div>
+
+    </div>
+    <!-- Agregar Cliente Modal-->
+    <div class="modal fade" id="clientModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Agregar Cliente</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form data-toggle="validator" role="form">
+                        <div class="row form-group">
+                            <div class="col-md-6">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" class="form-control" id="nombreCliente" minlength="1" required disable="true">
+                            </div>
+                            <div class="col-md-6">
+                                <br />
+                                <button type="button" class="btn btn-warning pull-right" data-dismiss="modal">
                                         Buscar
                                     </button>
-                                </div>
                             </div>
-                            <div class="existingClients text-center">
-                                <div class="row">
-                                    <div class="col-6">John</div>
-                                    <div class="col-6">Doe</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">John</div>
-                                    <div class="col-6">Doe</div>
-                                </div>
+                        </div>
+                        <div class="existingClients text-center">
+                            <div class="row">
+                                <div class="col-6">John</div>
+                                <div class="col-6">Doe</div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="submit" id="saveClient" class="btn btn-success pull-left">Agregar</button>
-                                <button type="button" class="btn btn-warning pull-right" data-dismiss="modal">Cancelar</button>
+                            <div class="row">
+                                <div class="col-6">John</div>
+                                <div class="col-6">Doe</div>
                             </div>
-                        </form>                        
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="saveClient" class="btn btn-success pull-left">Agregar</button>
+                            <button type="button" class="btn btn-warning pull-right" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-        <!--Modal-->
+    </div>
+    <!--Modal-->
 
     <!-- Paga factura Modal-->
     <div class="modal fade" id="pagoFacturaModal" role="dialog">
@@ -139,21 +145,22 @@
                         <input type="checkbox">Cliente 1<br>
                         <input type="checkbox">Cliente 2<br>
                         <input type="checkbox">Cliente 3<br>
-                        <input type="checkbox">Cliente 4<br>                       
+                        <input type="checkbox">Cliente 4<br>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="addClient" class="btn btn-warning pull-right">Pagar</button>
-                 </div>
                 </div>
+            </div>
         </div>
     </div>
     <!--Modal-->
-        <script src="../Js/Lib/jquery-3.2.1.min.js"></script>
-        <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
-        <script src="../Js/Lib/Bootstrap/bootstrap.js"></script>
-        <script src="../Components/menu-grid/menu-grid.js"></script>
-        <script src="../Js/menu.js"></script>
-        
+    <script src="../Js/Lib/jquery-3.2.1.min.js"></script>
+    <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
+    <script src="../Js/Lib/Bootstrap/bootstrap.js"></script>
+    <script src="../Js/Lib/vue.min.js"></script>
+    <script src="../Js/menu.js"></script>
+
 </body>
+
 </html>
