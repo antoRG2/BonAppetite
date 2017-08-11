@@ -1,11 +1,26 @@
+import './vue-tabs/vue-tabs.js';
+import './vue-tabs/vue-tabs.css';
+import './menu/styles/menu.css';
+
 import menuService from './menu/service/menu.service';
 import clientsService from './menu/service/clients.service';
 
+
 $(document).ready(function () {
+  
+    let _clients = [
+                      {
+                        id:"1", 
+                        name: "Client 1",
+                        selected: true
+                      }
+                    ];
+  
     var app = new Vue({
         el: '#app',
         data: {
-            message: 'You loaded this page on ' + new Date()
+            message: 'You loaded this page on ' + new Date(),
+            clients: _clients
         }
     })
     
@@ -24,14 +39,22 @@ $(document).ready(function () {
         window.location = "../Views/salon.html";
     });
 
-    $('#saveClient').on("click", function () {
-        debugger;
-        clients.push($('#nombreCliente').val());
-        loadClients($('#nombreCliente').val());
-        saveClientsDB(clients);
+    $('#saveClient').on("click", function ( e ) {
+        
+        let _client = {
+          id: _clients.length + 1,
+          name: $('#nombreCliente').val(),
+          selected: false
+        };
+        console.log( _client );
+        _clients.push( _client );
         $('#clientModal').modal('toggle');
+        
+        e.preventDefault();
     });
-
+    
+    
+    
     function loadClients(client) {
         $(this).closest('li').before('<li><a>New Tab</a><span>x</span></li>');
         $('#clients').append('<div class="tab-pane">new tab</div>');

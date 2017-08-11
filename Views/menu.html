@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html>
 
 <head>
@@ -54,32 +54,20 @@
                     <button type="submit" id="addProduct" class="btn btn-success pull-left">+</button>
                     <button type="submit" id="removeProduct" class="btn btn-success pull-right">-</button>
                 </div>
-                <div class="col-xs-6 accounts-open">
-                    <div>
-                        <div id="app">
-                            <span>
-                                {{message}}
-                            </span>
-                        </div>
-                        <ul class="nav nav-tabs" id="clients">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Cliente 1 </a>
-                                <div style="height:10em"></div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Cliente 2</a>
-                                <div style="height:10em"></div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Cliente 3</a>
-                                <div style="height:10em"></div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Cliente 4</a>
-                                <div style="height:10em"></div>
-                            </li>
-                        </ul>
+                
+                <div id="app">
+                    <div class="tabs-container">
+                         <vue-tabs>
+                            <v-tab v-for="client in clients" :key="client">
+                              <div slot="title">{{client.name}}</div>
+                              {{client.id}}
+                            </v-tab>
+                        </vue-tabs>
                     </div>
+                </div>
+                
+              
+                <div class="col-xs-6 accounts-open">
                     <button type="button" id="addClient" class="btn btn-warning pull-right">Nuevo clientes</button>
                 </div>
             </div>

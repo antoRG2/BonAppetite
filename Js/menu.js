@@ -76,21 +76,42 @@ module.exports = __webpack_require__(1);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__menu_service_menu_service__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menu_service_clients_service__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_tabs_vue_tabs_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_tabs_vue_tabs_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__vue_tabs_vue_tabs_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vue_tabs_vue_tabs_css__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vue_tabs_vue_tabs_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__vue_tabs_vue_tabs_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menu_styles_menu_css__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menu_styles_menu_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__menu_styles_menu_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__menu_service_menu_service__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__menu_service_clients_service__ = __webpack_require__(9);
+
+
+
+
+
 
 
 
 $(document).ready(function () {
+  
+    let _clients = [
+                      {
+                        id:"1", 
+                        name: "Client 1",
+                        selected: true
+                      }
+                    ];
+  
     var app = new Vue({
         el: '#app',
         data: {
-            message: 'You loaded this page on ' + new Date()
+            message: 'You loaded this page on ' + new Date(),
+            clients: _clients
         }
     })
     
     // execute the menu-service init 
-    __WEBPACK_IMPORTED_MODULE_0__menu_service_menu_service__["a" /* default */].gridInit();
+    __WEBPACK_IMPORTED_MODULE_3__menu_service_menu_service__["a" /* default */].gridInit();
     //
 
 
@@ -104,14 +125,22 @@ $(document).ready(function () {
         window.location = "../Views/salon.html";
     });
 
-    $('#saveClient').on("click", function () {
-        debugger;
-        clients.push($('#nombreCliente').val());
-        loadClients($('#nombreCliente').val());
-        saveClientsDB(clients);
+    $('#saveClient').on("click", function ( e ) {
+        
+        let _client = {
+          id: _clients.length + 1,
+          name: $('#nombreCliente').val(),
+          selected: false
+        };
+        console.log( _client );
+        _clients.push( _client );
         $('#clientModal').modal('toggle');
+        
+        e.preventDefault();
     });
-
+    
+    
+    
     function loadClients(client) {
         $(this).closest('li').before('<li><a>New Tab</a><span>x</span></li>');
         $('#clients').append('<div class="tab-pane">new tab</div>');
@@ -1067,6 +1096,434 @@ ClientsService.prototype.addClient = function (_client) {
 
 /* unused harmony default export */ var _unused_webpack_default_export = ({ ClientsService });
 
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*!
+ * vue-nav-tabs v0.5.1
+ * (c) 2017-present cristij <joracristi@gmail.com>
+ * Released under the MIT License.
+ */
+(function (global, factory) {
+   true ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (factory((global.vueTabs = global.vueTabs || {})));
+}(this, (function (exports) { 'use strict';
+
+var VueTabs = {
+    name: 'vue-tabs',
+    props: {
+        activeTabColor: String,
+        activeTextColor: String,
+        /**
+         * Tab title position: center | bottom | top
+         */
+        textPosition: {
+            type: String,
+            default: 'center'
+        },
+        /**
+         * Tab type: tabs | pills
+         */
+        type: {
+            type: String,
+            default: 'tabs'
+        },
+        direction: {
+            type: String,
+            default: 'horizontal'
+        },
+        /**
+         * Centers the tabs and makes the container div full width
+         */
+        centered: Boolean,
+        value: [String, Number, Object]
+    },
+    data: function data() {
+        return {
+            activeTabIndex: 0,
+            tabs: []
+        };
+    },
+
+    computed: {
+        isTabShape: function isTabShape() {
+            return this.type === 'tabs';
+        },
+        isStacked: function isStacked() {
+            return this.direction === 'vertical';
+        },
+        classList: function classList() {
+            var navType = this.isTabShape ? 'nav-tabs' : 'nav-pills';
+            var centerClass = this.centered ? 'nav-justified' : '';
+            var isStacked = this.isStacked ? 'nav-stacked' : '';
+            return 'nav ' + navType + ' ' + centerClass + ' ' + isStacked;
+        },
+        stackedClass: function stackedClass() {
+            return this.isStacked ? 'stacked' : '';
+        },
+        activeTabStyle: function activeTabStyle() {
+            return {
+                backgroundColor: this.activeTabColor,
+                color: this.activeTextColor
+            };
+        }
+    },
+    methods: {
+        navigateToTab: function navigateToTab(index, route) {
+            this.changeTab(this.activeTabIndex, index, route);
+        },
+        activateTab: function activateTab(index) {
+            this.activeTabIndex = index;
+            var tab = this.tabs[index];
+            tab.active = true;
+            this.$emit('input', tab.title);
+        },
+        changeTab: function changeTab(oldIndex, newIndex, route) {
+            this.activeTabIndex = newIndex;
+            var oldTab = this.tabs[oldIndex];
+            var newTab = this.tabs[newIndex];
+            oldTab.active = false;
+            newTab.active = true;
+            this.$emit('input', this.tabs[newIndex].title);
+            this.$emit('tab-change', newIndex, newTab, oldTab);
+            this.tryChangeRoute(route);
+        },
+        tryChangeRoute: function tryChangeRoute(route) {
+            if (this.$router && route) {
+                this.$router.push(route);
+            }
+        },
+        addTab: function addTab(item) {
+            var index = this.$slots.default.indexOf(item.$vnode);
+            this.tabs.splice(index, 0, item);
+        },
+        removeTab: function removeTab(item) {
+            var tabs = this.tabs;
+            var index = tabs.indexOf(item);
+            if (index > -1) {
+                tabs.splice(index, 1);
+            }
+        },
+        getTabs: function getTabs() {
+            if (this.$slots.default) {
+                return this.$slots.default.filter(function (comp) {
+                    return comp.componentOptions;
+                });
+            }
+            return [];
+        },
+        findTabAndActivate: function findTabAndActivate(tabNameOrIndex) {
+            var indexToActivate = this.tabs.findIndex(function (tab, index) {
+                return tab.title === tabNameOrIndex || index === tabNameOrIndex;
+            });
+            if (indexToActivate != -1) {
+                this.changeTab(this.activeTabIndex, indexToActivate);
+            } else {
+                this.changeTab(this.activeTabIndex, 0);
+            }
+        },
+        renderTabTitle: function renderTabTitle(index) {
+            var position = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'top';
+            var h = this.$createElement;
+
+            if (this.tabs.length === 0) return;
+            var tab = this.tabs[index];
+            var active = tab.active,
+                title = tab.title;
+
+            var titleStyles = { color: this.activeTabColor };
+            if (position === 'center') titleStyles.color = this.activeTextColor;
+            var simpleTitle = h(
+                'span',
+                { 'class': 'title title_' + position, style: active ? titleStyles : {} },
+                [position === 'center' && this.renderIcon(index), '\xA0', title]
+            );
+
+            if (tab.$slots.title) return tab.$slots.title;
+            return simpleTitle;
+        },
+        renderIcon: function renderIcon(index) {
+            var h = this.$createElement;
+
+            if (this.tabs.length === 0) return;
+            var tab = this.tabs[index];
+            var icon = tab.icon;
+
+            var simpleIcon = h(
+                'i',
+                { 'class': icon },
+                []
+            );
+            if (!tab.$slots.title && icon) return simpleIcon;
+        },
+        renderTabs: function renderTabs() {
+            var _this = this;
+
+            var h = this.$createElement;
+
+            return this.tabs.map(function (tab, index) {
+                if (!tab) return;
+                var route = tab.route,
+                    id = tab.id,
+                    title = tab.title,
+                    icon = tab.icon;
+
+                var active = _this.activeTabIndex === index;
+                return h(
+                    'li',
+                    {
+                        attrs: { name: 'tab',
+                            role: 'presentation' },
+                        on: {
+                            'click': function click() {
+                                return _this.navigateToTab(index, route);
+                            }
+                        },
+                        'class': ['tab', { active: active }],
+                        key: title },
+                    [_this.textPosition === 'top' && _this.renderTabTitle(index, _this.textPosition), h(
+                        'a',
+                        {
+                            attrs: { href: 'javascript:void(0)',
+
+                                'aria-selected': active,
+                                'aria-controls': '#' + id,
+                                role: 'tab' },
+                            on: {
+                                'click': function click() {
+                                    return _this.navigateToTab(index);
+                                }
+                            },
+
+                            style: active ? _this.activeTabStyle : {},
+                            'class': { 'active_tab': active } },
+                        [_this.textPosition !== 'center' && !tab.$slots.title && _this.renderIcon(index), _this.textPosition === 'center' && _this.renderTabTitle(index, _this.textPosition)]
+                    ), _this.textPosition === 'bottom' && _this.renderTabTitle(index, _this.textPosition)]
+                );
+            });
+        }
+    },
+    render: function render() {
+        var h = arguments[0];
+
+        var tabList = this.renderTabs();
+        return h(
+            'div',
+            { 'class': ['vue-tabs', this.stackedClass] },
+            [h(
+                'div',
+                { 'class': [{ 'nav-tabs-navigation': !this.isStacked }, { 'left-vertical-tabs': this.isStacked }] },
+                [h(
+                    'div',
+                    { 'class': ['nav-tabs-wrapper', this.stackedClass] },
+                    [h(
+                        'ul',
+                        { 'class': this.classList, attrs: { role: 'tablist' }
+                        },
+                        [tabList]
+                    )]
+                )]
+            ), h(
+                'div',
+                { 'class': ['tab-content', { 'right-text-tabs': this.isStacked }] },
+                [this.$slots.default]
+            )]
+        );
+    },
+
+    watch: {
+        tabs: function tabs(newList) {
+            if (newList.length > 0 && !this.value) {
+                this.activateTab(this.activeTabIndex);
+            }
+            if (newList.length > 0 && this.value) {
+                this.findTabAndActivate(this.value);
+            }
+        },
+        value: function value(newVal) {
+            this.findTabAndActivate(newVal);
+        }
+    }
+};
+
+var VTab = {
+    name: 'v-tab',
+    props: {
+        title: {
+            type: String,
+            default: ''
+        },
+        icon: {
+            type: String,
+            default: ''
+        },
+        /***
+         * Function to execute before tab switch. Return value must be boolean
+         * If the return result is false, tab switch is restricted
+         */
+        beforeChange: {
+            type: Function
+        },
+        id: String,
+        route: {
+            type: [String, Object]
+        },
+        transitionName: String,
+        transitionMode: String
+    },
+    computed: {
+        isValidParent: function isValidParent() {
+            return this.$parent.$options.name === 'vue-tabs';
+        },
+        hash: function hash() {
+            return '#' + this.id;
+        }
+    },
+    data: function data() {
+        return {
+            active: false,
+            validationError: null
+        };
+    },
+    mounted: function mounted() {
+        this.$parent.addTab(this);
+    },
+    destroyed: function destroyed() {
+        if (this.$el && this.$el.parentNode) {
+            this.$el.parentNode.removeChild(this.$el);
+        }
+        this.$parent.removeTab(this);
+    },
+    render: function render() {
+        var h = arguments[0];
+
+        return h(
+            'section',
+            { 'class': 'tab-container',
+                attrs: { role: 'tabpanel' },
+                directives: [{
+                    name: 'show',
+                    value: this.active
+                }]
+            },
+            [this.$slots.default]
+        );
+    }
+};
+
+var VueTabsPlugin = {
+  install: function install(Vue) {
+    Vue.component('vue-tabs', VueTabs);
+    Vue.component('v-tab', VTab);
+  }
+};
+// Automatic installation if Vue has been added to the global scope.
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(VueTabsPlugin);
+  window.VueTabs = VueTabsPlugin;
+}
+
+exports['default'] = VueTabsPlugin;
+exports.VueTabs = VueTabs;
+exports.VTab = VTab;
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(12);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"attrs":{"id":"id"}}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(7)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../node_modules/css-loader/index.js!./vue-tabs.css", function() {
+			var newContent = require("!!../node_modules/css-loader/index.js!./vue-tabs.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(6)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".vue-tabs.stacked {\n  display: flex\n}\n\n.vue-tabs a {\n  text-decoration: none;\n  color: gray\n}\n\n.vue-tabs .nav {\n  margin-bottom: 0;\n  margin-top: 0;\n  padding-left: 0;\n  list-style: none\n}\n\n.vue-tabs .nav:before,\n.vue-tabs .nav:after {\n  content: \" \";\n  display: table\n}\n\n.vue-tabs .nav:after {\n  clear: both\n}\n\n.vue-tabs .nav>li {\n  position: relative;\n  display: block\n}\n\n.vue-tabs .nav>li>a {\n  position: relative;\n  display: block;\n  padding: 10px 15px\n}\n\n.vue-tabs .nav>li>a:hover,\n.vue-tabs .nav>li>a:focus {\n  text-decoration: none;\n  background-color: #eee\n}\n\n.vue-tabs .nav>li span.title {\n  display: flex;\n  justify-content: center\n}\n\n.vue-tabs .nav>li.disabled>a {\n  color: #777\n}\n\n.vue-tabs .nav>li.disabled>a:hover,\n.vue-tabs .nav>li.disabled>a:focus {\n  color: #777;\n  text-decoration: none;\n  background-color: transparent;\n  cursor: not-allowed\n}\n\n.vue-tabs .nav .nav-divider {\n  height: 1px;\n  margin: 9px 0;\n  overflow: hidden;\n  background-color: #e5e5e5\n}\n\n.vue-tabs .nav>li>a>img {\n  max-width: none\n}\n\n.vue-tabs .nav-tabs {\n  border-bottom: 1px solid #ddd\n}\n\n.vue-tabs .nav-tabs>li {\n  float: left;\n  margin-bottom: -1px\n}\n\n.vue-tabs .nav-tabs>li>a {\n  margin-right: 2px;\n  line-height: 1.42857;\n  border: 1px solid transparent;\n  border-radius: 4px 4px 0 0\n}\n\n.vue-tabs .nav-tabs>li>a:hover {\n  border-color: #eee #eee #ddd\n}\n\n.vue-tabs .nav-tabs>li.active>a,\n.vue-tabs .nav-tabs>li.active>a:hover,\n.vue-tabs .nav-tabs>li.active>a:focus {\n  color: #fff;\n  background-color: #f0ad4e;\n  border: 1px solid #ddd;\n  border-bottom-color: transparent;\n  cursor: default\n}\n\n.vue-tabs .nav-pills>li {\n  float: left\n}\n\n.vue-tabs .nav-pills>li>a {\n  border-radius: 4px\n}\n\n.vue-tabs .nav-pills>li+li {\n  margin-left: 2px\n}\n\n.vue-tabs .nav-pills>li.active>a,\n.vue-tabs .nav-pills>li.active>a:hover,\n.vue-tabs .nav-pills>li.active>a:focus {\n  color: #fff;\n  background-color: #337ab7\n}\n\n.vue-tabs .nav-stacked>li {\n  float: none\n}\n\n.vue-tabs .nav-stacked>li+li {\n  margin-top: 2px;\n  margin-left: 0\n}\n\n.vue-tabs .nav-justified,\n.vue-tabs .nav-tabs.nav-justified {\n  width: 100%\n}\n\n.vue-tabs .nav-justified>li,\n.vue-tabs .nav-tabs.nav-justified>li {\n  float: none\n}\n\n.vue-tabs .nav-justified>li>a,\n.vue-tabs .nav-tabs.nav-justified>li>a {\n  text-align: center;\n  margin-bottom: 5px\n}\n\n.vue-tabs .nav-justified>.dropdown .dropdown-menu {\n  top: auto;\n  left: auto\n}\n\n@media (min-width: 768px) {\n  .vue-tabs .nav-justified>li,\n  .vue-tabs .nav-tabs.nav-justified>li {\n    display: table-cell;\n    width: 1%\n  }\n  .vue-tabs .nav-justified>li>a,\n  .vue-tabs .nav-tabs.nav-justified>li>a {\n    margin-bottom: 0\n  }\n}\n\n.vue-tabs .nav-tabs-justified,\n.vue-tabs .nav-tabs.nav-justified {\n  border-bottom: 0\n}\n\n.vue-tabs .nav-tabs-justified>li>a,\n.vue-tabs .nav-tabs.nav-justified>li>a {\n  margin-right: 0;\n  border-radius: 4px\n}\n\n.vue-tabs .nav-tabs-justified>.active>a,\n.vue-tabs .nav-tabs.nav-justified>.active>a,\n.vue-tabs .nav-tabs-justified>.active>a:hover,\n.vue-tabs .nav-tabs.nav-justified>.active>a:hover,\n.vue-tabs .nav-tabs-justified>.active>a:focus,\n.vue-tabs .nav-tabs.nav-justified>.active>a:focus {\n  border: 1px solid #ddd\n}\n\n@media (min-width: 768px) {\n  .vue-tabs .nav-tabs-justified>li>a,\n  .vue-tabs .nav-tabs.nav-justified>li>a {\n    border-bottom: 1px solid #ddd;\n    border-radius: 4px 4px 0 0\n  }\n  .vue-tabs .nav-tabs-justified>.active>a,\n  .vue-tabs .nav-tabs.nav-justified>.active>a,\n  .vue-tabs .nav-tabs-justified>.active>a:hover,\n  .vue-tabs .nav-tabs.nav-justified>.active>a:hover,\n  .vue-tabs .nav-tabs-justified>.active>a:focus,\n  .vue-tabs .nav-tabs.nav-justified>.active>a:focus {\n    border-bottom-color: #fff\n  }\n}\n\n.vue-tabs .tab-content>.tab-pane {\n  display: none\n}\n\n.vue-tabs .tab-content>.active {\n  display: block\n}\n\n.vue-tabs section[aria-hidden=\"true\"] {\n  display: none\n}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 13 */,
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(15);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"attrs":{"id":"id"}}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(7)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!./menu.css", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!./menu.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(6)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".tabs-container {\n  background: white;\n}\n\nli.active > a.active_tab {\n  background-color: #f0ad4e;\n}", ""]);
+
+// exports
 
 
 /***/ })
