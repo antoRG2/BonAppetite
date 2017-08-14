@@ -60,483 +60,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(1);
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_tabs_vue_tabs_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_tabs_vue_tabs_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__vue_tabs_vue_tabs_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vue_tabs_vue_tabs_css__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vue_tabs_vue_tabs_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__vue_tabs_vue_tabs_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menu_styles_menu_css__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menu_styles_menu_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__menu_styles_menu_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__menu_service_menu_service__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__menu_service_clients_service__ = __webpack_require__(9);
-
-
-
-
-
-
-
-
-$(document).ready(function () {
-  
-    let _clients = [
-                      {
-                        id:"1", 
-                        name: "Client 1",
-                        selected: true
-                      }
-                    ];
-  
-    var app = new Vue({
-        el: '#app',
-        data: {
-            message: 'You loaded this page on ' + new Date(),
-            clients: _clients
-        }
-    })
-    
-    // execute the menu-service init 
-    __WEBPACK_IMPORTED_MODULE_3__menu_service_menu_service__["a" /* default */].gridInit();
-    //
-
-
-
-    $('#addClient').on("click", function () {
-        //abre modal
-        $("#clientModal").modal();
-    });
-
-    $('#backMenu').on("click", function () {
-        window.location = "../Views/salon.html";
-    });
-
-    $('#saveClient').on("click", function ( e ) {
-        
-        let _client = {
-          id: _clients.length + 1,
-          name: $('#nombreCliente').val(),
-          selected: false
-        };
-        console.log( _client );
-        _clients.push( _client );
-        $('#clientModal').modal('toggle');
-        
-        e.preventDefault();
-    });
-    
-    
-    
-    function loadClients(client) {
-        $(this).closest('li').before('<li><a>New Tab</a><span>x</span></li>');
-        $('#clients').append('<div class="tab-pane">new tab</div>');
-    }
-
-    function saveClientsDB(clientsList) {
-        //Aqui va el ajax que guarda los clientes en DB
-    }
-
-    function loadCategories() {
-        //ajax que carga categorias
-    }
-
-    function loadProducts(idCategory) {
-        //ajax que carga productos
-        debugger;
-        var container = document.getElementById("container");
-        var groups = container.getElementsByTagName("g");
-        container.removeChild(groups);
-        container.appendChild(grid(productos, 15, 200, ["white", "green"]));
-    }
-
-    $('#clients li').on("click", function () {
-        $('#clients li').find('.active').removeClass('active');
-        $(this).find('a').addClass('active');
-    });
-
-    $('#payButton').on("click", function () {
-        //abre modal
-        $("#pagoFacturaModal").modal();
-    });
-});
-
-/***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-let MenuGrid = __webpack_require__(3);
-
-function gridInit() {
-    //TODO: esta lista deberia ser una lista de objetos con el nombre y el id de la categoria
-    var categorias = ["carnes", "arroz", "ensaladas", "entradas", "postres"]
-    var productos = ["tiramisu", "brownie", "helado", "pastel"]
-    var alter = [
-        {
-            id: '1', value: 'carnes', children: [
-                { id: '12', value: 'hamburguesa' },
-                { id: '13', value: 'filet' },
-                { id: '14', value: 'pescado' },
-                { id: '15', value: 'pollo' }
-            ]
-        },
-        {
-            id: '2', value: 'arroz', children: [
-                { id: '22', value: 'arroz frito' },
-                { id: '23', value: 'arroz con coco' },
-                { id: '24', value: 'chino' },
-                { id: '25', value: 'arroz y salsa' }
-            ]
-        },
-        { id: '3', value: 'ensaladas' },
-        { id: '4', value: 'entradas' },
-        { id: '5', value: 'postres' }
-    ];
-
-    var grid = new MenuGrid.MenuGridComponent(3, 4, alter);
-
-    grid.rowsDef = {
-        autoRows: true,
-        height: 'auto'
-    };
-
-    // si los items enviados no son texto o numero hay que crear un dataformatter
-    grid.itemsDef.dataFormatter = function (item) {
-        // este formater es exclusivo para los objetos de alter
-        return item.value;
-    }
-
-    // evento que se ejecuta cuando uno de los divs internos recibe un click
-    grid.columnsDef.itemsCallback = (function (event, item) {
-        console.log('Item clicked', event, item, this.items);
-        if (item.children) {
-            this.updateContent(item.children);
-        }
-    }).bind(grid);
-
-    grid.actionsDef = [{
-        value: 'Atras',
-        action: function () {
-            grid.updateContent(alter);
-        }
-    }];
-
-    // si create no tiene parametros usa la configuracion por defecto
-    var gridElement = grid.create();
-    grid.toString();
-
-
-    var container = document.getElementById("container");
-    container.appendChild(gridElement);
-
-    //
-}
-
-/* harmony default export */ __webpack_exports__["a"] = ({ gridInit });
-
-/***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MenuGridComponent", function() { return MenuGridComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__menu_grid_css__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__menu_grid_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__menu_grid_css__);
-
-
-function MenuGrid(columns, rows, items) {
-    this.domElement;
-    this.columns = columns;
-    this.rows = rows;
-    this.items = items;
-    this.itemsDef = {
-        dataFormatter: function (item) {
-            if (typeof (item) === 'string' || typeof (item) === 'number') {
-                return item;
-            }
-        }
-    };
-    this.rowsDef = {
-        autoRows: false,
-        height: 'auto'
-    };
-    this.columnsDef = {
-        width: 'auto'
-    }
-
-    this.defaultProps = {
-        columns: 1,
-        rows: 0,
-        rowsDef: {
-            autoRows: false,
-            height: 'auto'
-        },
-        columnsDef: {
-            width: 'auto'
-        }
-    }
-}
-
-MenuGrid.prototype.create = function (gridConfiguration) {
-    let gConf = gridConfiguration || this.defaultProps;
-
-    if (!gridConfiguration) {
-        gConf.columns = this.columns || this.defaultProps.columns;
-        gConf.rows = this.rows || this.defaultProps.rows;
-        gConf.rowsDef = this.rowsDef || this.defaultProps.rowsDef;
-    }
-
-    let grid = {
-        columns: gConf.columns || this.columns,
-        rows: gConf.rows || this.rows,
-        items: gConf.items || this.items || [],
-        rowsDef: gConf.rowsDef || this.defaultProps.rowsDef,
-        columnsDef: gConf.columnsDef || this.defaultProps.columnsDef,
-        actionsDef: gConf.actionsDef || this.actionsDef
-    }
-
-    // the grid needs to be draw with the information from the 
-    // items with the specied number of rows and columns
-
-    // the grid most have an actions sections, initially with back button
-    // 
-
-    // when an item is clicked it needs to execute the selection input callback
-    // with input parameters of the clicked item and the DOM element 
-    //
-
-    this.domElement = this.generateDom(grid);
-    return this.domElement;
-}
-
-MenuGrid.prototype.valueFormatterCallback = function (item) {
-    if (this.itemsDef && this.itemsDef.dataFormatter) {
-        return this.itemsDef.dataFormatter(item);
-    } else {
-        return item;
-    }
-}
-
-
-MenuGrid.prototype.createContentContainer = function( gridConfiguration ) {
-    let cols = gridConfiguration.columns;
-    let rows = gridConfiguration.rows;
-
-    let grid = document.createElement('div');
-    grid.classList.add('grid-container');
-    let styles = `
-        display: grid;
-        grid-gap: 10px;
-    `;
-    let stylesCol = `grid-template-columns: repeat(${cols}, 1fr);`;
-    let stylesRows = '';
-    if (gridConfiguration.rowsDef.autoRows) {
-        stylesRows += 'grid-auto-rows: minmax(100px, auto);'
-    } else {
-        stylesRows += `grid-template-rows: repeat(${rows}, 1fr);`
-    }
-
-    grid.setAttribute('style', [styles, stylesCol, stylesRows].join(';') );
-
-    return { grid, styles, stylesCol, stylesRows};
-}
-
-MenuGrid.prototype.createContent = function( gridContentDomElement, items ) {
-    if ( items ) {
-        items.forEach((element) => {
-            let gItem = document.createElement('div');
-            gItem.setAttribute('clickable', 'true');
-            gItem.data = element;
-            gItem.classList.add(['grid-cell']);
-            if (this.valueFormatterCallback) {
-                gItem.innerText = this.valueFormatterCallback(element);
-            }
-
-            gridContentDomElement.appendChild(gItem);
-        });
-    }
-}
-
-MenuGrid.prototype.updateContent = function( items ) {
-    let content = this.domElement.querySelector( '.grid-container' );
-    this.clearContent();
-    this.createContent( content, items );
-}
-
-MenuGrid.prototype.createActions = function( actionsDef, styles, stylesCol ) {
-    let actionsRow = document.createElement('div');
-    
-    actionsRow.classList.add(['grid-actions']);
-    let actions = actionsDef;
-    
-    if (actions && actions.length) {
-        actions.forEach((action) => {
-            let gItem = document.createElement('div');
-            gItem.data = action;
-            gItem.classList.add(['action-cell']);
-            gItem.innerText = action.value;
-            gItem.addEventListener('click', function() {
-                action.action();
-            });            
-
-            actionsRow.appendChild(gItem);
-        });
-    }
-
-    actionsRow.setAttribute('style', [styles, stylesCol].join(';') );
-
-    return actionsRow;
-}
-
-
-MenuGrid.prototype.generateDom = function (gridConfiguration) {
-    
-    let gridProps = this.createContentContainer( gridConfiguration );
-    let content = this.createContent( gridProps.grid, gridConfiguration.items );
-    let actionsRow = this.createActions( gridConfiguration.actionsDef,
-                             gridProps.styles, gridProps.stylesCol );
-
-    // event listeners
-    gridProps.grid.addEventListener('click', (event) => {
-        if (event.target && event.target.hasAttribute('clickable')) {
-            if (typeof (this.itemsCallback) === 'function') {
-                this.itemsCallback(event, event.target.data);
-            }
-        }
-    }, true);
-    
-
-    let wrapper = document.createElement('div');
-    wrapper.classList.add(['grid-wrapper']);
-
-    wrapper.appendChild( gridProps.grid );
-    wrapper.appendChild( actionsRow );
-
-    return wrapper;
-}
-
-MenuGrid.prototype.clearContent = function(  ) {
-    let content = this.domElement.querySelector( '.grid-container' );
-    content.innerHTML = '';
-}
-
-MenuGrid.prototype.itemsCallback = function () {
-    if (this.columnsDef && typeof (this.columnsDef.itemsCallback) === 'function') {
-        this.columnsDef.itemsCallback(event, event.target.data);
-    }
-}
-
-MenuGrid.prototype.toString = function () {
-    console.log(`
-        columns: ${this.columns}
-        rows: ${this.rows}
-        items: ${this.items}
-    `);
-}
-
-// // minimal Example configuration for full grid
-// //
-// var grid_conf = {
-//     rows: 3,
-//     columns: 2,
-//     items: [
-//         {
-//             id: '1',
-//             value: 'a1'
-//         },
-//         {
-//             id: '2',
-//             value: 'a2'
-//         },
-//         {
-//             id: '3',
-//             value: 'a3'
-//         },
-//         {
-//             id: '1',
-//             value: 'a1'
-//         },
-//         {
-//             id: '1',
-//             value: 'a1'
-//         },
-//         {
-//             id: '1',
-//             value: 'a1'
-//         },
-//         {
-//             id: '1',
-//             value: 'a1'
-//         },
-//     ]
-// };
-
-let MenuGridComponent = MenuGrid;
-
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(5);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {"attrs":{"id":"id"}}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(7)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!./menu-grid.css", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!./menu-grid.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(6)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, ".grid-wrapper {\n    width: 100%;\n}\n\n.grid-wrapper > .grid-container > .grid-cell {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    overflow: hidden;\n    word-break: break-word;\n    padding: 5px;\n    box-sizing: border-box;\n}\n\n.grid-wrapper > .grid-container > .grid-cell:nth-child(even) {\n    background-color: white;\n}\n\n.grid-wrapper > .grid-container > .grid-cell:nth-child(odd) {\n    background-color: green;\n}\n\n.grid-actions {\n    margin-top: 10px;\n}\n\n.grid-actions > .action-cell {\n    height: 100px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    overflow: hidden;\n    word-break: break-word;\n    padding: 5px;\n    box-sizing: border-box;\n    background-color: rosybrown;\n}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 6 */
 /***/ (function(module, exports) {
 
 /*
@@ -618,7 +146,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 7 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -664,7 +192,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(8);
+var	fixUrls = __webpack_require__(7);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -977,129 +505,117 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports) {
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
 
-
-/**
- * When source maps are enabled, `style-loader` uses a link element with a data-uri to
- * embed the css on the page. This breaks all relative urls because now they are relative to a
- * bundle instead of the current page.
- *
- * One solution is to only use full urls, but that may be impossible.
- *
- * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
- *
- * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
- *
- */
-
-module.exports = function (css) {
-  // get current location
-  var location = typeof window !== "undefined" && window.location;
-
-  if (!location) {
-    throw new Error("fixUrls requires window.location");
-  }
-
-	// blank or null?
-	if (!css || typeof css !== "string") {
-	  return css;
-  }
-
-  var baseUrl = location.protocol + "//" + location.host;
-  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
-
-	// convert each url(...)
-	/*
-	This regular expression is just a way to recursively match brackets within
-	a string.
-
-	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
-	   (  = Start a capturing group
-	     (?:  = Start a non-capturing group
-	         [^)(]  = Match anything that isn't a parentheses
-	         |  = OR
-	         \(  = Match a start parentheses
-	             (?:  = Start another non-capturing groups
-	                 [^)(]+  = Match anything that isn't a parentheses
-	                 |  = OR
-	                 \(  = Match a start parentheses
-	                     [^)(]*  = Match anything that isn't a parentheses
-	                 \)  = Match a end parentheses
-	             )  = End Group
-              *\) = Match anything and then a close parens
-          )  = Close non-capturing group
-          *  = Match anything
-       )  = Close capturing group
-	 \)  = Match a close parens
-
-	 /gi  = Get all matches, not the first.  Be case insensitive.
-	 */
-	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
-		// strip quotes (if they exist)
-		var unquotedOrigUrl = origUrl
-			.trim()
-			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
-			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
-
-		// already a full url? no change
-		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
-		  return fullMatch;
-		}
-
-		// convert the url to a full url
-		var newUrl;
-
-		if (unquotedOrigUrl.indexOf("//") === 0) {
-		  	//TODO: should we add protocol?
-			newUrl = unquotedOrigUrl;
-		} else if (unquotedOrigUrl.indexOf("/") === 0) {
-			// path should be relative to the base url
-			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
-		} else {
-			// path should be relative to current directory
-			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
-		}
-
-		// send back the fixed url(...)
-		return "url(" + JSON.stringify(newUrl) + ")";
-	});
-
-	// send back the fixed css
-	return fixedCss;
-};
+module.exports = __webpack_require__(3);
 
 
 /***/ }),
-/* 9 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_tabs_vue_tabs_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_tabs_vue_tabs_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__vue_tabs_vue_tabs_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vue_tabs_vue_tabs_css__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vue_tabs_vue_tabs_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__vue_tabs_vue_tabs_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menu_styles_menu_css__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menu_styles_menu_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__menu_styles_menu_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__menu_service_menu_service__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__menu_service_clients_service__ = __webpack_require__(14);
 
 
 
-let ClientsService = function () {
-    this.clients = [];
-}
 
-ClientsService.prototype.createClient = function (_name) {
-    return {
-        name: _name,
-        orders: []
+
+
+
+
+$(document).ready(function () {
+
+    let _data = {
+        clients: [],
+        clientsService: __WEBPACK_IMPORTED_MODULE_4__menu_service_clients_service__["a" /* default */].service,
+        activeClient: {},
+        activeTabIndex: -1
+    };
+
+
+    var app = new Vue({
+        el: '#app',
+        data: _data,
+        created: function () {
+            // application init
+            this.clientsService.clients = this.clients;
+        },
+        methods: {
+            tabChanged: function( activeTabIndex, newTab, oldTab ) {
+                this.activeTabIndex = activeTabIndex;
+                this.activeClient = this.clients[activeTabIndex];
+                this.clientsService.activeClient = this.activeClient;
+            }
+        }
+    })
+
+    // execute the menu-service init 
+    __WEBPACK_IMPORTED_MODULE_3__menu_service_menu_service__["a" /* default */].gridInit( app );
+    //
+
+    $('#addClient').on("click", function () {
+        //abre modal
+        $("#clientModal").modal();
+    });
+
+    $('#backMenu').on("click", function () {
+        window.location = "../Views/salon.html";
+    });
+
+    $('#saveClient').on("click", function (e) {
+        e.preventDefault();
+        let _name = $('#nombreCliente').val();
+        app.$data.clientsService.createClient(_name);
+
+        if(app.$data.clientsService.clients.length === 1) {
+            app.$data.activeClient = app.$data.clients[0];
+            app.$data.clientsService.activeClient = app.$data.activeClient;
+        }
+
+        console.log(app.$data.activeTab);
+        $('#clientModal').modal('toggle');
+    });
+
+    function loadClients(client) {
+        $(this).closest('li').before('<li><a>New Tab</a><span>x</span></li>');
+        $('#clients').append('<div class="tab-pane">new tab</div>');
     }
-}
 
-ClientsService.prototype.addClient = function (_client) {
-    this.clients.push(_client);
-}
+    function saveClientsDB(clientsList) {
+        //Aqui va el ajax que guarda los clientes en DB
+    }
 
-/* unused harmony default export */ var _unused_webpack_default_export = ({ ClientsService });
+    function loadCategories() {
+        //ajax que carga categorias
+    }
 
+    function loadProducts(idCategory) {
+        //ajax que carga productos
+        debugger;
+        var container = document.getElementById("container");
+        var groups = container.getElementsByTagName("g");
+        container.removeChild(groups);
+        container.appendChild(grid(productos, 15, 200, ["white", "green"]));
+    }
 
+    $('#payButton').on("click", function () {
+        //abre modal
+        $("#pagoFacturaModal").modal();
+    });
+});
 
 /***/ }),
-/* 10 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -1180,7 +696,7 @@ var VueTabs = {
             this.activeTabIndex = index;
             var tab = this.tabs[index];
             tab.active = true;
-            this.$emit('input', tab.title);
+            this.$emit('input', index);
         },
         changeTab: function changeTab(oldIndex, newIndex, route) {
             this.activeTabIndex = newIndex;
@@ -1188,7 +704,7 @@ var VueTabs = {
             var newTab = this.tabs[newIndex];
             oldTab.active = false;
             newTab.active = true;
-            this.$emit('input', this.tabs[newIndex].title);
+            //this.$emit('input', newIndex);
             this.$emit('tab-change', newIndex, newTab, oldTab);
             this.tryChangeRoute(route);
         },
@@ -1436,13 +952,13 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 /***/ }),
-/* 11 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(12);
+var content = __webpack_require__(6);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1450,7 +966,7 @@ var transform;
 var options = {"attrs":{"id":"id"}}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(7)(content, options);
+var update = __webpack_require__(1)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -1467,10 +983,10 @@ if(false) {
 }
 
 /***/ }),
-/* 12 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(6)(undefined);
+exports = module.exports = __webpack_require__(0)(undefined);
 // imports
 
 
@@ -1481,14 +997,108 @@ exports.push([module.i, ".vue-tabs.stacked {\n  display: flex\n}\n\n.vue-tabs a 
 
 
 /***/ }),
-/* 13 */,
-/* 14 */
+/* 7 */
+/***/ (function(module, exports) {
+
+
+/**
+ * When source maps are enabled, `style-loader` uses a link element with a data-uri to
+ * embed the css on the page. This breaks all relative urls because now they are relative to a
+ * bundle instead of the current page.
+ *
+ * One solution is to only use full urls, but that may be impossible.
+ *
+ * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
+ *
+ * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
+ *
+ */
+
+module.exports = function (css) {
+  // get current location
+  var location = typeof window !== "undefined" && window.location;
+
+  if (!location) {
+    throw new Error("fixUrls requires window.location");
+  }
+
+	// blank or null?
+	if (!css || typeof css !== "string") {
+	  return css;
+  }
+
+  var baseUrl = location.protocol + "//" + location.host;
+  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
+
+	// convert each url(...)
+	/*
+	This regular expression is just a way to recursively match brackets within
+	a string.
+
+	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
+	   (  = Start a capturing group
+	     (?:  = Start a non-capturing group
+	         [^)(]  = Match anything that isn't a parentheses
+	         |  = OR
+	         \(  = Match a start parentheses
+	             (?:  = Start another non-capturing groups
+	                 [^)(]+  = Match anything that isn't a parentheses
+	                 |  = OR
+	                 \(  = Match a start parentheses
+	                     [^)(]*  = Match anything that isn't a parentheses
+	                 \)  = Match a end parentheses
+	             )  = End Group
+              *\) = Match anything and then a close parens
+          )  = Close non-capturing group
+          *  = Match anything
+       )  = Close capturing group
+	 \)  = Match a close parens
+
+	 /gi  = Get all matches, not the first.  Be case insensitive.
+	 */
+	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
+		// strip quotes (if they exist)
+		var unquotedOrigUrl = origUrl
+			.trim()
+			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
+			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
+
+		// already a full url? no change
+		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
+		  return fullMatch;
+		}
+
+		// convert the url to a full url
+		var newUrl;
+
+		if (unquotedOrigUrl.indexOf("//") === 0) {
+		  	//TODO: should we add protocol?
+			newUrl = unquotedOrigUrl;
+		} else if (unquotedOrigUrl.indexOf("/") === 0) {
+			// path should be relative to the base url
+			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
+		} else {
+			// path should be relative to current directory
+			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
+		}
+
+		// send back the fixed url(...)
+		return "url(" + JSON.stringify(newUrl) + ")";
+	});
+
+	// send back the fixed css
+	return fixedCss;
+};
+
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(15);
+var content = __webpack_require__(9);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1496,7 +1106,7 @@ var transform;
 var options = {"attrs":{"id":"id"}}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(7)(content, options);
+var update = __webpack_require__(1)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -1513,10 +1123,10 @@ if(false) {
 }
 
 /***/ }),
-/* 15 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(6)(undefined);
+exports = module.exports = __webpack_require__(0)(undefined);
 // imports
 
 
@@ -1524,6 +1134,374 @@ exports = module.exports = __webpack_require__(6)(undefined);
 exports.push([module.i, ".tabs-container {\n  background: white;\n}\n\nli.active > a.active_tab {\n  background-color: #f0ad4e;\n}", ""]);
 
 // exports
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+let MenuGrid = __webpack_require__(11);
+
+function gridInit(app) {
+    //TODO: esta lista deberia ser una lista de objetos con el nombre y el id de la categoria
+    var categorias = ["carnes", "arroz", "ensaladas", "entradas", "postres"]
+    var productos = ["tiramisu", "brownie", "helado", "pastel"]
+    var alter = [
+        {
+            id: '1', value: 'carnes', children: [
+                { id: '12', value: 'hamburguesa' },
+                { id: '13', value: 'filet' },
+                { id: '14', value: 'pescado' },
+                { id: '15', value: 'pollo' }
+            ]
+        },
+        {
+            id: '2', value: 'arroz', children: [
+                { id: '22', value: 'arroz frito' },
+                { id: '23', value: 'arroz con coco' },
+                { id: '24', value: 'chino' },
+                { id: '25', value: 'arroz y salsa' }
+            ]
+        },
+        { id: '3', value: 'ensaladas' },
+        { id: '4', value: 'entradas' },
+        { id: '5', value: 'postres' }
+    ];
+
+    var grid = new MenuGrid.MenuGridComponent(3, 4, alter);
+
+    grid.rowsDef = {
+        autoRows: true,
+        height: 'auto'
+    };
+
+    // si los items enviados no son texto o numero hay que crear un dataformatter
+    grid.itemsDef.dataFormatter = function (item) {
+        // este formater es exclusivo para los objetos de alter
+        return item.value;
+    }
+
+    // evento que se ejecuta cuando uno de los divs internos recibe un click
+    grid.columnsDef.itemsCallback = (function (event, item) {
+        console.log('Item clicked', event, item, this.items);
+        if (item.children) {
+            this.updateContent(item.children);
+        } else { // no children
+            // TODO: Make this return callback to decouple logic
+            if(app.activeClient.orders) {
+                app.activeClient.orders.push({ name: item.value });
+            } else {
+                alert('no active client');
+            }
+        }
+    }).bind(grid);
+
+    grid.actionsDef = [{
+        value: 'Atras',
+        action: function () {
+            grid.updateContent(alter);
+        }
+    }];
+
+    // si create no tiene parametros usa la configuracion por defecto
+    var gridElement = grid.create();
+    grid.toString();
+
+
+    var container = document.getElementById("container");
+    container.appendChild(gridElement);
+
+    //
+}
+
+/* harmony default export */ __webpack_exports__["a"] = ({ gridInit });
+
+/***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MenuGridComponent", function() { return MenuGridComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__menu_grid_css__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__menu_grid_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__menu_grid_css__);
+
+
+function MenuGrid(columns, rows, items) {
+    this.domElement;
+    this.columns = columns;
+    this.rows = rows;
+    this.items = items;
+    this.itemsDef = {
+        dataFormatter: function (item) {
+            if (typeof (item) === 'string' || typeof (item) === 'number') {
+                return item;
+            }
+        }
+    };
+    this.rowsDef = {
+        autoRows: false,
+        height: 'auto'
+    };
+    this.columnsDef = {
+        width: 'auto'
+    }
+
+    this.defaultProps = {
+        columns: 1,
+        rows: 0,
+        rowsDef: {
+            autoRows: false,
+            height: 'auto'
+        },
+        columnsDef: {
+            width: 'auto'
+        }
+    }
+}
+
+MenuGrid.prototype.create = function (gridConfiguration) {
+    let gConf = gridConfiguration || this.defaultProps;
+
+    if (!gridConfiguration) {
+        gConf.columns = this.columns || this.defaultProps.columns;
+        gConf.rows = this.rows || this.defaultProps.rows;
+        gConf.rowsDef = this.rowsDef || this.defaultProps.rowsDef;
+    }
+
+    let grid = {
+        columns: gConf.columns || this.columns,
+        rows: gConf.rows || this.rows,
+        items: gConf.items || this.items || [],
+        rowsDef: gConf.rowsDef || this.defaultProps.rowsDef,
+        columnsDef: gConf.columnsDef || this.defaultProps.columnsDef,
+        actionsDef: gConf.actionsDef || this.actionsDef
+    }
+
+    // the grid needs to be draw with the information from the 
+    // items with the specied number of rows and columns
+
+    // the grid most have an actions sections, initially with back button
+    // 
+
+    // when an item is clicked it needs to execute the selection input callback
+    // with input parameters of the clicked item and the DOM element 
+    //
+
+    this.domElement = this.generateDom(grid);
+    return this.domElement;
+}
+
+MenuGrid.prototype.valueFormatterCallback = function (item) {
+    if (this.itemsDef && this.itemsDef.dataFormatter) {
+        return this.itemsDef.dataFormatter(item);
+    } else {
+        return item;
+    }
+}
+
+
+MenuGrid.prototype.createContentContainer = function( gridConfiguration ) {
+    let cols = gridConfiguration.columns;
+    let rows = gridConfiguration.rows;
+
+    let grid = document.createElement('div');
+    grid.classList.add('grid-container');
+    let styles = `
+        display: grid;
+        grid-gap: 10px;
+    `;
+    let stylesCol = `grid-template-columns: repeat(${cols}, 1fr);`;
+    let stylesRows = '';
+    if (gridConfiguration.rowsDef.autoRows) {
+        stylesRows += 'grid-auto-rows: minmax(100px, auto);'
+    } else {
+        stylesRows += `grid-template-rows: repeat(${rows}, 1fr);`
+    }
+
+    grid.setAttribute('style', [styles, stylesCol, stylesRows].join(';') );
+
+    return { grid, styles, stylesCol, stylesRows};
+}
+
+MenuGrid.prototype.createContent = function( gridContentDomElement, items ) {
+    if ( items ) {
+        items.forEach((element) => {
+            let gItem = document.createElement('div');
+            gItem.setAttribute('clickable', 'true');
+            gItem.data = element;
+            gItem.classList.add(['grid-cell']);
+            if (this.valueFormatterCallback) {
+                gItem.innerText = this.valueFormatterCallback(element);
+            }
+
+            gridContentDomElement.appendChild(gItem);
+        });
+    }
+}
+
+MenuGrid.prototype.updateContent = function( items ) {
+    let content = this.domElement.querySelector( '.grid-container' );
+    this.clearContent();
+    this.createContent( content, items );
+}
+
+MenuGrid.prototype.createActions = function( actionsDef, styles, stylesCol ) {
+    let actionsRow = document.createElement('div');
+    
+    actionsRow.classList.add(['grid-actions']);
+    let actions = actionsDef;
+    
+    if (actions && actions.length) {
+        actions.forEach((action) => {
+            let gItem = document.createElement('div');
+            gItem.data = action;
+            gItem.classList.add(['action-cell']);
+            gItem.innerText = action.value;
+            gItem.addEventListener('click', function() {
+                action.action();
+            });            
+
+            actionsRow.appendChild(gItem);
+        });
+    }
+
+    actionsRow.setAttribute('style', [styles, stylesCol].join(';') );
+
+    return actionsRow;
+}
+
+
+MenuGrid.prototype.generateDom = function (gridConfiguration) {
+    
+    let gridProps = this.createContentContainer( gridConfiguration );
+    let content = this.createContent( gridProps.grid, gridConfiguration.items );
+    let actionsRow = this.createActions( gridConfiguration.actionsDef,
+                             gridProps.styles, gridProps.stylesCol );
+
+    // event listeners
+    gridProps.grid.addEventListener('click', (event) => {
+        if (event.target && event.target.hasAttribute('clickable')) {
+            if (typeof (this.itemsCallback) === 'function') {
+                this.itemsCallback(event, event.target.data);
+            }
+        }
+    }, true);
+    
+
+    let wrapper = document.createElement('div');
+    wrapper.classList.add(['grid-wrapper']);
+
+    wrapper.appendChild( gridProps.grid );
+    wrapper.appendChild( actionsRow );
+
+    return wrapper;
+}
+
+MenuGrid.prototype.clearContent = function(  ) {
+    let content = this.domElement.querySelector( '.grid-container' );
+    content.innerHTML = '';
+}
+
+MenuGrid.prototype.itemsCallback = function () {
+    if (this.columnsDef && typeof (this.columnsDef.itemsCallback) === 'function') {
+        this.columnsDef.itemsCallback(event, event.target.data);
+    }
+}
+
+MenuGrid.prototype.toString = function () {
+    console.log(`
+        columns: ${this.columns}
+        rows: ${this.rows}
+        items: ${this.items}
+    `);
+}
+
+let MenuGridComponent = MenuGrid;
+
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(13);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"attrs":{"id":"id"}}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!./menu-grid.css", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!./menu-grid.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".grid-wrapper {\n    width: 100%;\n}\n\n.grid-wrapper > .grid-container > .grid-cell {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    overflow: hidden;\n    word-break: break-word;\n    padding: 5px;\n    box-sizing: border-box;\n}\n\n.grid-wrapper > .grid-container > .grid-cell:nth-child(even) {\n    background-color: white;\n}\n\n.grid-wrapper > .grid-container > .grid-cell:nth-child(odd) {\n    background-color: green;\n}\n\n.grid-actions {\n    margin-top: 10px;\n}\n\n.grid-actions > .action-cell {\n    height: 100px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    overflow: hidden;\n    word-break: break-word;\n    padding: 5px;\n    box-sizing: border-box;\n    background-color: rosybrown;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+
+let ClientsService = function () {
+    this.clients = [];
+}
+
+ClientsService.prototype.buildClient = function (_name) {
+
+    let _client = {
+            id: this.clients.length + 1,
+            name: _name,
+            orders: []
+        };
+
+    return _client;
+}
+
+ClientsService.prototype.addClient = function ( _client ) {
+    this.clients.push( _client );
+}
+
+ClientsService.prototype.createClient = function( _name ) {
+    this.addClient( this.buildClient( _name ) );
+}
+
+
+let service = new ClientsService();
+
+/* harmony default export */ __webpack_exports__["a"] = ({ service });
+
 
 
 /***/ })

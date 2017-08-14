@@ -57,10 +57,15 @@
                 
                 <div id="app">
                     <div class="tabs-container">
-                         <vue-tabs>
-                            <v-tab v-for="client in clients" :key="client">
+                         <vue-tabs v-on:tab-change="tabChanged" >
+                            <v-tab v-for="client in clients" :key="client" >
                               <div slot="title">{{client.name}}</div>
-                              {{client.id}}
+                              <div class="orders">
+                                  <span>Ordenes</span>
+                                  <div v-for="order in client.orders" :key="order"  class="orders">
+                                    {{ order.name }}
+                                  </div>
+                              </div>
                             </v-tab>
                         </vue-tabs>
                     </div>

@@ -3,32 +3,38 @@ import './vue-tabs/vue-tabs.css';
 import './menu/styles/menu.css';
 
 import menuService from './menu/service/menu.service';
-import clientsService from './menu/service/clients.service';
+import ClientsService from './menu/service/clients.service';
 
 
 $(document).ready(function () {
-  
-    let _clients = [
-                      {
-                        id:"1", 
-                        name: "Client 1",
-                        selected: true
-                      }
-                    ];
-  
+
+    let _data = {
+        clients: [],
+        clientsService: ClientsService.service,
+        activeClient: {},
+        activeTabIndex: -1
+    };
+
+
     var app = new Vue({
         el: '#app',
-        data: {
-            message: 'You loaded this page on ' + new Date(),
-            clients: _clients
+        data: _data,
+        created: function () {
+            // application init
+            this.clientsService.clients = this.clients;
+        },
+        methods: {
+            tabChanged: function( activeTabIndex, newTab, oldTab ) {
+                this.activeTabIndex = activeTabIndex;
+                this.activeClient = this.clients[activeTabIndex];
+                this.clientsService.activeClient = this.activeClient;
+            }
         }
     })
-    
+
     // execute the menu-service init 
-    menuService.gridInit();
+    menuService.gridInit( app );
     //
-
-
 
     $('#addClient').on("click", function () {
         //abre modal
@@ -39,22 +45,20 @@ $(document).ready(function () {
         window.location = "../Views/salon.html";
     });
 
-    $('#saveClient').on("click", function ( e ) {
-        
-        let _client = {
-          id: _clients.length + 1,
-          name: $('#nombreCliente').val(),
-          selected: false
-        };
-        console.log( _client );
-        _clients.push( _client );
-        $('#clientModal').modal('toggle');
-        
+    $('#saveClient').on("click", function (e) {
         e.preventDefault();
+        let _name = $('#nombreCliente').val();
+        app.$data.clientsService.createClient(_name);
+
+        if(app.$data.clientsService.clients.length === 1) {
+            app.$data.activeClient = app.$data.clients[0];
+            app.$data.clientsService.activeClient = app.$data.activeClient;
+        }
+
+        console.log(app.$data.activeTab);
+        $('#clientModal').modal('toggle');
     });
-    
-    
-    
+
     function loadClients(client) {
         $(this).closest('li').before('<li><a>New Tab</a><span>x</span></li>');
         $('#clients').append('<div class="tab-pane">new tab</div>');
@@ -76,11 +80,6 @@ $(document).ready(function () {
         container.removeChild(groups);
         container.appendChild(grid(productos, 15, 200, ["white", "green"]));
     }
-
-    $('#clients li').on("click", function () {
-        $('#clients li').find('.active').removeClass('active');
-        $(this).find('a').addClass('active');
-    });
 
     $('#payButton').on("click", function () {
         //abre modal

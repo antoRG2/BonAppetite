@@ -1,6 +1,6 @@
 let MenuGrid = require('../menu-grid/menu-grid.js');
 
-function gridInit() {
+function gridInit(app) {
     //TODO: esta lista deberia ser una lista de objetos con el nombre y el id de la categoria
     var categorias = ["carnes", "arroz", "ensaladas", "entradas", "postres"]
     var productos = ["tiramisu", "brownie", "helado", "pastel"]
@@ -44,6 +44,13 @@ function gridInit() {
         console.log('Item clicked', event, item, this.items);
         if (item.children) {
             this.updateContent(item.children);
+        } else { // no children
+            // TODO: Make this return callback to decouple logic
+            if(app.activeClient.orders) {
+                app.activeClient.orders.push({ name: item.value });
+            } else {
+                alert('no active client');
+            }
         }
     }).bind(grid);
 

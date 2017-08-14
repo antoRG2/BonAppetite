@@ -76,7 +76,7 @@ var VueTabs = {
             this.activeTabIndex = index;
             var tab = this.tabs[index];
             tab.active = true;
-            this.$emit('input', tab.title);
+            this.$emit('input', index);
         },
         changeTab: function changeTab(oldIndex, newIndex, route) {
             this.activeTabIndex = newIndex;
@@ -84,7 +84,7 @@ var VueTabs = {
             var newTab = this.tabs[newIndex];
             oldTab.active = false;
             newTab.active = true;
-            this.$emit('input', this.tabs[newIndex].title);
+            //this.$emit('input', newIndex);
             this.$emit('tab-change', newIndex, newTab, oldTab);
             this.tryChangeRoute(route);
         },
