@@ -1,0 +1,7 @@
+.tabs-container {
+  background: white;
+}
+
+li.active > a.active_tab {
+  background-color: #f0ad4e;
+}

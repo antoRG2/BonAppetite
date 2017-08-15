@@ -1,3 +1,5 @@
+import style from './menu-grid.css';
+
 function MenuGrid(columns, rows, items) {
     this.domElement;
     this.columns = columns;
@@ -188,39 +190,6 @@ MenuGrid.prototype.toString = function () {
     `);
 }
 
-// // minimal Example configuration for full grid
-// //
-// var grid_conf = {
-//     rows: 3,
-//     columns: 2,
-//     items: [
-//         {
-//             id: '1',
-//             value: 'a1'
-//         },
-//         {
-//             id: '2',
-//             value: 'a2'
-//         },
-//         {
-//             id: '3',
-//             value: 'a3'
-//         },
-//         {
-//             id: '1',
-//             value: 'a1'
-//         },
-//         {
-//             id: '1',
-//             value: 'a1'
-//         },
-//         {
-//             id: '1',
-//             value: 'a1'
-//         },
-//         {
-//             id: '1',
-//             value: 'a1'
-//         },
-//     ]
-// };
+let MenuGridComponent = MenuGrid;
+
+export { MenuGridComponent }
