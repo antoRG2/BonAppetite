@@ -1,6 +1,6 @@
 let MenuGrid = require('../menu-grid/menu-grid.js');
 
-function gridInit(app) {
+function gridInit( _addOrderCallback ) {
     //TODO: esta lista deberia ser una lista de objetos con el nombre y el id de la categoria
     var categorias = ["carnes", "arroz", "ensaladas", "entradas", "postres"]
     var productos = ["tiramisu", "brownie", "helado", "pastel"]
@@ -30,7 +30,8 @@ function gridInit(app) {
 
     grid.rowsDef = {
         autoRows: true,
-        height: 'auto'
+        height: 'auto',
+        minmax: '80px'
     };
 
     // si los items enviados no son texto o numero hay que crear un dataformatter
@@ -41,13 +42,13 @@ function gridInit(app) {
 
     // evento que se ejecuta cuando uno de los divs internos recibe un click
     grid.columnsDef.itemsCallback = (function (event, item) {
-        console.log('Item clicked', event, item, this.items);
         if (item.children) {
             this.updateContent(item.children);
         } else { // no children
             // TODO: Make this return callback to decouple logic
-            if(app.activeClient.orders) {
-                app.activeClient.orders.push({ name: item.value });
+            if(_addOrderCallback) {
+                let _order = { name: item.value };
+                _addOrderCallback( _order );
             } else {
                 alert('no active client');
             }
@@ -70,6 +71,8 @@ function gridInit(app) {
     container.appendChild(gridElement);
 
     //
+
+    return grid;
 }
 
 export default { gridInit };

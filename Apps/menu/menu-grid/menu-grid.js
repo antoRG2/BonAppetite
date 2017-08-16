@@ -12,20 +12,24 @@ function MenuGrid(columns, rows, items) {
             }
         }
     };
+    
     this.rowsDef = {
         autoRows: false,
-        height: 'auto'
+        height: 'auto',
+        minmax: '80px'
     };
+    
     this.columnsDef = {
         width: 'auto'
-    }
+    };
 
     this.defaultProps = {
         columns: 1,
         rows: 0,
         rowsDef: {
             autoRows: false,
-            height: 'auto'
+            height: 'auto',
+            minmax: '80px'
         },
         columnsDef: {
             width: 'auto'
@@ -51,16 +55,6 @@ MenuGrid.prototype.create = function (gridConfiguration) {
         actionsDef: gConf.actionsDef || this.actionsDef
     }
 
-    // the grid needs to be draw with the information from the 
-    // items with the specied number of rows and columns
-
-    // the grid most have an actions sections, initially with back button
-    // 
-
-    // when an item is clicked it needs to execute the selection input callback
-    // with input parameters of the clicked item and the DOM element 
-    //
-
     this.domElement = this.generateDom(grid);
     return this.domElement;
 }
@@ -74,7 +68,7 @@ MenuGrid.prototype.valueFormatterCallback = function (item) {
 }
 
 
-MenuGrid.prototype.createContentContainer = function( gridConfiguration ) {
+MenuGrid.prototype.createContentContainer = function (gridConfiguration) {
     let cols = gridConfiguration.columns;
     let rows = gridConfiguration.rows;
 
@@ -87,18 +81,18 @@ MenuGrid.prototype.createContentContainer = function( gridConfiguration ) {
     let stylesCol = `grid-template-columns: repeat(${cols}, 1fr);`;
     let stylesRows = '';
     if (gridConfiguration.rowsDef.autoRows) {
-        stylesRows += 'grid-auto-rows: minmax(100px, auto);'
+        stylesRows += `grid-auto-rows: minmax(${gridConfiguration.rowsDef.minmax}, auto);`;
     } else {
         stylesRows += `grid-template-rows: repeat(${rows}, 1fr);`
     }
 
-    grid.setAttribute('style', [styles, stylesCol, stylesRows].join(';') );
+    grid.setAttribute('style', [styles, stylesCol, stylesRows].join(';'));
 
-    return { grid, styles, stylesCol, stylesRows};
+    return { grid, styles, stylesCol, stylesRows };
 }
 
-MenuGrid.prototype.createContent = function( gridContentDomElement, items ) {
-    if ( items ) {
+MenuGrid.prototype.createContent = function (gridContentDomElement, items) {
+    if (items) {
         items.forEach((element) => {
             let gItem = document.createElement('div');
             gItem.setAttribute('clickable', 'true');
@@ -113,44 +107,44 @@ MenuGrid.prototype.createContent = function( gridContentDomElement, items ) {
     }
 }
 
-MenuGrid.prototype.updateContent = function( items ) {
-    let content = this.domElement.querySelector( '.grid-container' );
+MenuGrid.prototype.updateContent = function (items) {
+    let content = this.domElement.querySelector('.grid-container');
     this.clearContent();
-    this.createContent( content, items );
+    this.createContent(content, items);
 }
 
-MenuGrid.prototype.createActions = function( actionsDef, styles, stylesCol ) {
+MenuGrid.prototype.createActions = function (actionsDef, styles, stylesCol) {
     let actionsRow = document.createElement('div');
-    
+
     actionsRow.classList.add(['grid-actions']);
     let actions = actionsDef;
-    
+
     if (actions && actions.length) {
         actions.forEach((action) => {
             let gItem = document.createElement('div');
             gItem.data = action;
             gItem.classList.add(['action-cell']);
             gItem.innerText = action.value;
-            gItem.addEventListener('click', function() {
+            gItem.addEventListener('click', function () {
                 action.action();
-            });            
+            });
 
             actionsRow.appendChild(gItem);
         });
     }
 
-    actionsRow.setAttribute('style', [styles, stylesCol].join(';') );
+    actionsRow.setAttribute('style', [styles, stylesCol].join(';'));
 
     return actionsRow;
 }
 
 
 MenuGrid.prototype.generateDom = function (gridConfiguration) {
-    
-    let gridProps = this.createContentContainer( gridConfiguration );
-    let content = this.createContent( gridProps.grid, gridConfiguration.items );
-    let actionsRow = this.createActions( gridConfiguration.actionsDef,
-                             gridProps.styles, gridProps.stylesCol );
+
+    let gridProps = this.createContentContainer(gridConfiguration);
+    let content = this.createContent(gridProps.grid, gridConfiguration.items);
+    let actionsRow = this.createActions(gridConfiguration.actionsDef,
+        gridProps.styles, gridProps.stylesCol);
 
     // event listeners
     gridProps.grid.addEventListener('click', (event) => {
@@ -160,19 +154,19 @@ MenuGrid.prototype.generateDom = function (gridConfiguration) {
             }
         }
     }, true);
-    
+
 
     let wrapper = document.createElement('div');
     wrapper.classList.add(['grid-wrapper']);
 
-    wrapper.appendChild( gridProps.grid );
-    wrapper.appendChild( actionsRow );
+    wrapper.appendChild(gridProps.grid);
+    wrapper.appendChild(actionsRow);
 
     return wrapper;
 }
 
-MenuGrid.prototype.clearContent = function(  ) {
-    let content = this.domElement.querySelector( '.grid-container' );
+MenuGrid.prototype.clearContent = function () {
+    let content = this.domElement.querySelector('.grid-container');
     content.innerHTML = '';
 }
 

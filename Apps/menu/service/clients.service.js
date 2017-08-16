@@ -20,7 +20,13 @@ ClientsService.prototype.addClient = function ( _client ) {
 }
 
 ClientsService.prototype.createClient = function( _name ) {
-    this.addClient( this.buildClient( _name ) );
+    let client = this.buildClient( _name );
+    this.addClient( client );
+    return client;
+}
+
+ClientsService.prototype.addOrderToClient = function( _client,  _order ) {
+    _client.orders.push(_order);
 }
 
 
