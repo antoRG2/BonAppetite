@@ -16,19 +16,48 @@ $(document).ready(function () {
     };
 
 
+    Vue.component('inline-edit', {
+        props:[
+            'text'
+        ],
+        template: `
+            <div>
+                <span v-if="!editVisible">
+                    {{text}}
+                    <span v-on:click="editVisible = true">&#9998;</span>
+                </span>
+                <div v-if="editVisible">
+                    <input type="text" v-model="text">
+                    <span v-on:click="updateText()">&#10004;</span>
+                </div>
+            </div>
+        `,
+        data: function () {
+            return {
+                editVisible:false
+            }
+        },
+        methods: {
+            updateText: function() {
+                this.editVisible = false;
+                this.$emit('changed', this.text);
+            }
+        }
+    })
+
     var app = new Vue({
         el: '#app',
         data: _data,
         created: function () {
             // application init
             this.clientsService.clients = this.clients;
-            
+
             //create an initial client and set it as active
             this.activeClient = this.clientsService.createClient('Client 1');
             this.clientsService.activeClient = this.activeClient;
         },
         methods: {
-            tabChanged: function( activeTabIndex, newTab, oldTab ) {
+            tabChanged: function (activeTabIndex, newTab, oldTab) {
                 this.activeTabIndex = activeTabIndex;
                 this.activeClient = this.clients[activeTabIndex];
                 this.clientsService.activeClient = this.activeClient;
@@ -36,9 +65,9 @@ $(document).ready(function () {
         }
     })
 
-    let addOrderToClientCallback = function( _order ) {
-        if( app.$data.activeClient && app.$data.activeClient.orders ) {
-            app.$data.clientsService.addOrderToClient( app.$data.activeClient, _order );
+    let addOrderToClientCallback = function (_order) {
+        if (app.$data.activeClient && app.$data.activeClient.orders) {
+            app.$data.clientsService.addOrderToClient(app.$data.activeClient, _order);
         } else {
             alert('There are no selected clients')
         }
@@ -46,7 +75,7 @@ $(document).ready(function () {
 
 
     // execute the menu-service init 
-    menuService.gridInit( addOrderToClientCallback );
+    menuService.gridInit(addOrderToClientCallback);
     //
 
     $('#addClient').on("click", function () {
@@ -63,7 +92,7 @@ $(document).ready(function () {
         let _name = $('#nombreCliente').val();
         app.$data.clientsService.createClient(_name);
 
-        if(app.$data.clientsService.clients.length === 1) {
+        if (app.$data.clientsService.clients.length === 1) {
             app.$data.activeClient = app.$data.clients[0];
             app.$data.clientsService.activeClient = app.$data.activeClient;
         }
