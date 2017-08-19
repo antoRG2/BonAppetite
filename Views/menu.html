@@ -35,119 +35,125 @@
             </ul>
         </div>
     </div>
+    <div id="app">
+        <div class="b-cont">
+            <article>
+                <header>
+                    <h1>Restaurante Mediterraneo</h1>
+                    <p>Menu</p>
+                </header>
+            </article>
 
-    <div class="b-cont">
-        <article>
-            <header>
-                <h1>Restaurante Mediterraneo</h1>
-                <p>Menu</p>
-            </header>
-        </article>
-
-        <div class="container">
-            <div class="text-center pay-but">
-                <button type="button" id="backMenu" class="btn btn-warning pull-right">Regresar a Salon</button>
-            </div>
-            <div class="row">
-                <div class="col-xs-6 menu">
-                    <div id="container"></div>
-                    <button type="submit" id="addProduct" class="btn btn-success pull-left">+</button>
-                    <button type="submit" id="removeProduct" class="btn btn-success pull-right">-</button>
+            <div class="container">
+                <div class="text-center pay-but">
+                    <button type="button" id="backMenu" class="btn btn-warning pull-right">Regresar a Salon</button>
                 </div>
-                
-                <div id="app">
-                    <div class="tabs-container">
-                         <vue-tabs v-on:tab-change="tabChanged" >
-                            <v-tab v-for="client in clients" :key="client" >
-                              <div slot="title">{{client.name}}</div>
-                              <div class="orders">
-                                  <span>Ordenes</span>
-                                  <div v-for="order in client.orders" :key="order"  class="orders">
-                                    {{ order.name }}
-                                  </div>
-                              </div>
-                            </v-tab>
-                        </vue-tabs>
+                <div class="row">
+                    <div class="col-xs-6 menu">
+                        <div id="container"></div>
+                        <button type="submit" id="addProduct" class="btn btn-success pull-left">+</button>
+                        <button type="submit" id="removeProduct" class="btn btn-success pull-right">-</button>
+                    </div>
+                    <div class="col-xs-6 accounts-open">
+                        <div class="actions-row">
+                            <button type="button" id="addClient" class="btn btn-warning pull-right">Nuevo clientes</button>
+                        </div>
+                        <div class="tabs-container">
+                            <vue-tabs v-on:tab-change="tabChanged">
+                                <v-tab v-for="client in clients" :key="client">
+                                    <div slot="title">
+                                        <inline-edit v-bind:text="client.name" v-on:changed="val => client.name = val"></inline-edit>
+                                    </div>
+                                    <div class="orders">
+                                        <span>Ordenes</span>
+                                        <div v-for="order in client.orders" :key="order" class="orders">
+                                            {{ order.name }}
+                                        </div>
+                                    </div>
+                                </v-tab>
+                            </vue-tabs>
+                        </div>
                     </div>
                 </div>
-                
-              
-                <div class="col-xs-6 accounts-open">
-                    <button type="button" id="addClient" class="btn btn-warning pull-right">Nuevo clientes</button>
+                <div class="text-center pay-but">
+                    <button type="button" id="payButton" class="btn btn-success">Pagar Factura</button>
                 </div>
             </div>
-            <div class="text-center pay-but">
-                <button type="button" id="payButton" class="btn btn-success">Pagar Factura</button>
-            </div>
-        </div>
 
-    </div>
-    <!-- Agregar Cliente Modal-->
-    <div class="modal fade" id="clientModal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4>Agregar Cliente</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form data-toggle="validator" role="form">
-                        <div class="row form-group">
-                            <div class="col-md-6">
-                                <label for="nombre">Nombre</label>
-                                <input type="text" class="form-control" id="nombreCliente" minlength="1" required disable="true">
-                            </div>
-                            <div class="col-md-6">
-                                <br />
-                                <button type="button" class="btn btn-warning pull-right" data-dismiss="modal">
+        </div>
+        <!-- Agregar Cliente Modal-->
+        <div class="modal fade" id="clientModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Agregar Cliente</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form data-toggle="validator" role="form">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" id="buscarCliente" minlength="1" required disable="true">
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="button" class="btn btn-warning pull-right">
                                         Buscar
                                     </button>
-                            </div>
-                        </div>
-                        <div class="existingClients text-center">
-                            <div class="row">
-                                <div class="col-6">John</div>
-                                <div class="col-6">Doe</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">John</div>
-                                <div class="col-6">Doe</div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" id="saveClient" class="btn btn-success pull-left">Agregar</button>
-                            <button type="button" class="btn btn-warning pull-right" data-dismiss="modal">Cancelar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Modal-->
+                                    </div>
+                                </div>
 
-    <!-- Paga factura Modal-->
-    <div class="modal fade" id="pagoFacturaModal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4>Pago de Factura</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <input type="checkbox">Cliente 1<br>
-                        <input type="checkbox">Cliente 2<br>
-                        <input type="checkbox">Cliente 3<br>
-                        <input type="checkbox">Cliente 4<br>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="addClient" class="btn btn-warning pull-right">Pagar</button>
+                            </div>
+                            <div class="container clients-detail-area">
+                                <div class="client-row col-12" v-for="client in clients" :key="client">
+                                    {{client.name}}
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" id="nombreCliente" minlength="1" required disable="true" placeholder="Nombre del cliente">
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="submit" id="saveClient" class="btn btn-success pull-left">Agregar</button>
+                                        <button type="button" class="btn btn-warning pull-right" data-dismiss="modal">Cerrar</button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+        <!--Modal-->
+
+        <!-- Paga factura Modal-->
+        <div class="modal fade" id="pagoFacturaModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Pago de Factura</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <input type="checkbox">Cliente 1<br>
+                            <input type="checkbox">Cliente 2<br>
+                            <input type="checkbox">Cliente 3<br>
+                            <input type="checkbox">Cliente 4<br>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="addClient" class="btn btn-warning pull-right">Pagar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Modal-->
     </div>
-    <!--Modal-->
+
     <script src="../Js/Lib/jquery-3.2.1.min.js"></script>
     <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
     <script src="../Js/Lib/Bootstrap/bootstrap.js"></script>
