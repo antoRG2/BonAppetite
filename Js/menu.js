@@ -525,6 +525,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menu_styles_menu_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__menu_styles_menu_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__menu_service_menu_service__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__menu_service_clients_service__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__menu_components_inline_edit_component__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__menu_components_inline_edit_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__menu_components_inline_edit_component__);
 
 
 
@@ -541,36 +543,6 @@ $(document).ready(function () {
         activeClient: {},
         activeTabIndex: -1
     };
-
-
-    Vue.component('inline-edit', {
-        props:[
-            'text'
-        ],
-        template: `
-            <div>
-                <span v-if="!editVisible">
-                    {{text}}
-                    <span v-on:click="editVisible = true">&#9998;</span>
-                </span>
-                <div v-if="editVisible">
-                    <input type="text" v-model="text">
-                    <span v-on:click="updateText()">&#10004;</span>
-                </div>
-            </div>
-        `,
-        data: function () {
-            return {
-                editVisible:false
-            }
-        },
-        methods: {
-            updateText: function() {
-                this.editVisible = false;
-                this.$emit('changed', this.text);
-            }
-        }
-    })
 
     var app = new Vue({
         el: '#app',
@@ -1231,8 +1203,7 @@ function gridInit( _addOrderCallback ) {
         } else { // no children
             // TODO: Make this return callback to decouple logic
             if(_addOrderCallback) {
-                let _order = { name: item.value };
-                _addOrderCallback( _order );
+                _addOrderCallback( item );
             } else {
                 alert('no active client');
             }
@@ -1500,7 +1471,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, ".grid-wrapper {\n    width: 100%;\n}\n\n.grid-wrapper > .grid-container > .grid-cell {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    overflow: hidden;\n    word-break: break-word;\n    padding: 5px;\n    box-sizing: border-box;\n}\n\n.grid-wrapper > .grid-container > .grid-cell:nth-child(even) {\n    background-color: white;\n}\n\n.grid-wrapper > .grid-container > .grid-cell:nth-child(odd) {\n    background-color: green;\n}\n\n.grid-actions {\n    margin-top: 10px;\n}\n\n.grid-actions > .action-cell {\n    height: 80px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    overflow: hidden;\n    word-break: break-word;\n    padding: 5px;\n    box-sizing: border-box;\n    background-color: rosybrown;\n}", ""]);
+exports.push([module.i, ".grid-wrapper {\n    width: 100%;\n}\n\n.grid-wrapper > .grid-container > .grid-cell {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    overflow: hidden;\n    word-break: break-word;\n    padding: 5px;\n    box-sizing: border-box;\n    user-select: none;\n    cursor: pointer;\n}\n\n.grid-wrapper > .grid-container > .grid-cell:nth-child(even) {\n    background-color: white;\n}\n\n.grid-wrapper > .grid-container > .grid-cell:nth-child(odd) {\n    background-color: green;\n}\n\n.grid-actions {\n    margin-top: 10px;\n}\n\n.grid-actions > .action-cell {\n    height: 80px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    overflow: hidden;\n    word-break: break-word;\n    padding: 5px;\n    box-sizing: border-box;\n    background-color: rosybrown;\n    user-select: none;\n    cursor: pointer;\n}", ""]);
 
 // exports
 
@@ -1519,26 +1490,35 @@ let ClientsService = function () {
 ClientsService.prototype.buildClient = function (_name) {
 
     let _client = {
-            id: this.clients.length + 1,
-            name: _name,
-            orders: []
-        };
+        id: this.clients.length + 1,
+        name: _name,
+        orders: []
+    };
 
     return _client;
 }
 
-ClientsService.prototype.addClient = function ( _client ) {
-    this.clients.push( _client );
+ClientsService.prototype.addClient = function (_client) {
+    this.clients.push(_client);
 }
 
-ClientsService.prototype.createClient = function( _name ) {
-    let client = this.buildClient( _name );
-    this.addClient( client );
+ClientsService.prototype.createClient = function (_name) {
+    let client = this.buildClient(_name);
+    this.addClient(client);
     return client;
 }
 
-ClientsService.prototype.addOrderToClient = function( _client,  _order ) {
-    _client.orders.push(_order);
+ClientsService.prototype.addOrderToClient = function (_client, _order) {
+    let found = _client.orders.filter(order => {
+        return order.id == _order.id;
+    });
+
+    if (found.length > 0) {
+        found[0].amount = found[0].amount + 1;
+    } else {
+        _order.amount = 1;
+        _client.orders.push(_order);
+    }
 }
 
 
@@ -1547,6 +1527,39 @@ let service = new ClientsService();
 /* harmony default export */ __webpack_exports__["a"] = ({ service });
 
 
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+Vue.component('inline-edit', {
+    props: [
+        'text'
+    ],
+    template: `
+            <div>
+                <span v-if="!editVisible">
+                    {{text}}
+                    <span v-on:click="editVisible = true">&#9998;</span>
+                </span>
+                <div v-if="editVisible">
+                    <input type="text" v-model="text">
+                    <span v-on:click="updateText()">&#10004;</span>
+                </div>
+            </div>
+        `,
+    data: function () {
+        return {
+            editVisible: false
+        }
+    },
+    methods: {
+        updateText: function () {
+            this.editVisible = false;
+            this.$emit('changed', this.text);
+        }
+    }
+});
 
 /***/ })
 /******/ ]);

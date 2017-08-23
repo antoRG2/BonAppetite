@@ -23,5 +23,18 @@ margin: 1% auto;
     margin:3em auto;
 }
 
+.orders-table {
+    margin: 10px 0 0 0;
+}
 
+.orders-table-header {
+    border-bottom: solid 1px #a0a0a0;
+}
 
+.orders-table-row {
+    border-bottom: solid 1px #c3c3c3;
+}
+
+.orders-table-row div:last-child {
+    text-align: center;
+}

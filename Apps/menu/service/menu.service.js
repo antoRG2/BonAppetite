@@ -47,8 +47,7 @@ function gridInit( _addOrderCallback ) {
         } else { // no children
             // TODO: Make this return callback to decouple logic
             if(_addOrderCallback) {
-                let _order = { name: item.value };
-                _addOrderCallback( _order );
+                _addOrderCallback( item );
             } else {
                 alert('no active client');
             }

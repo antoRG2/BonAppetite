@@ -4,7 +4,7 @@ import './menu/styles/menu.css';
 
 import menuService from './menu/service/menu.service';
 import ClientsService from './menu/service/clients.service';
-
+import './menu/components/inline-edit.component';
 
 $(document).ready(function () {
 
@@ -14,36 +14,6 @@ $(document).ready(function () {
         activeClient: {},
         activeTabIndex: -1
     };
-
-
-    Vue.component('inline-edit', {
-        props:[
-            'text'
-        ],
-        template: `
-            <div>
-                <span v-if="!editVisible">
-                    {{text}}
-                    <span v-on:click="editVisible = true">&#9998;</span>
-                </span>
-                <div v-if="editVisible">
-                    <input type="text" v-model="text">
-                    <span v-on:click="updateText()">&#10004;</span>
-                </div>
-            </div>
-        `,
-        data: function () {
-            return {
-                editVisible:false
-            }
-        },
-        methods: {
-            updateText: function() {
-                this.editVisible = false;
-                this.$emit('changed', this.text);
-            }
-        }
-    })
 
     var app = new Vue({
         el: '#app',
