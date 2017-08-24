@@ -66,14 +66,15 @@
                                     <div class="container-fluid orders-table">
                                         <div class="row orders-table-header">
                                             <div class="col-7">Orden</div>
-                                            <div class="col-3">Cantidad</div>
+                                            <div class="col-3 text-center">Cantidad</div>
                                             <div class="col-2"></div>
                                         </div>
                                         <div v-for="order in client.orders" :key="order" class="row orders-table-row">
                                             <div class="col-7">{{ order.value }}</div>
-                                            <div class="col-3">x{{order.amount}}</div>
+                                            <div class="col-3 text-center">x{{order.amount}} </div>
                                             <div class="col-2">
-                                                <i class="icon-user icons"></i>
+                                                <i class="icon-minus icons" v-on:click="actionOrder('minus',client, order)"></i>
+                                                <i class="icon-plus icons" v-on:click="actionOrder('plus',client, order)"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -101,34 +102,18 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-6">
-                                        <input type="text" class="form-control" id="buscarCliente" minlength="1" required disable="true">
-                                    </div>
-                                    <div class="col-6">
-                                        <button type="button" class="btn btn-warning pull-right">
-                                        Buscar
-                                    </button>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="container clients-detail-area">
-                                <div class="client-row col-12" v-for="client in clients" :key="client">
-                                    {{client.name}}
-                                </div>
-                            </div>
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-6">
                                         <input type="text" class="form-control" id="nombreCliente" minlength="1" required disable="true" placeholder="Nombre del cliente">
                                     </div>
                                     <div class="col-6">
                                         <button type="submit" id="saveClient" class="btn btn-success pull-left">Agregar</button>
                                         <button type="button" class="btn btn-warning pull-right" data-dismiss="modal">Cerrar</button>
-                                        
                                     </div>
                                 </div>
-
-
+                            </div>
+                            <div class="container clients-detail-area">
+                                <div class="client-row col-12" v-for="client in clients" :key="client">
+                                    {{client.name}}
+                                </div>
                             </div>
                         </form>
                     </div>

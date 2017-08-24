@@ -38,6 +38,20 @@ ClientsService.prototype.addOrderToClient = function (_client, _order) {
     }
 }
 
+ClientsService.prototype.substractOrderToClient = function (_client, _order) {
+    let found = _client.orders.filter(order => {
+        return order.id == _order.id;
+    });
+
+    if (found.length > 0) {
+        if(_order.amount == 1){
+            _client.orders.splice( _client.orders.indexOf(_order), 1);
+        } else {
+            found[0].amount = found[0].amount - 1;
+        }
+    }
+}
+
 
 let service = new ClientsService();
 

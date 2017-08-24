@@ -32,6 +32,13 @@ $(document).ready(function () {
                 this.activeTabIndex = activeTabIndex;
                 this.activeClient = this.clients[activeTabIndex];
                 this.clientsService.activeClient = this.activeClient;
+            },
+            actionOrder: function(action, client, order) {
+                if(action== 'plus') {
+                    this.clientsService.addOrderToClient(client, order);
+                } else if(action == 'minus') {
+                    this.clientsService.substractOrderToClient(client, order);
+                }
             }
         }
     })

@@ -569,6 +569,13 @@ $(document).ready(function () {
                 this.activeTabIndex = activeTabIndex;
                 this.activeClient = this.clients[activeTabIndex];
                 this.clientsService.activeClient = this.activeClient;
+            },
+            actionOrder: function(action, client, order) {
+                if(action== 'plus') {
+                    this.clientsService.addOrderToClient(client, order);
+                } else if(action == 'minus') {
+                    this.clientsService.substractOrderToClient(client, order);
+                }
             }
         }
     })
@@ -1596,6 +1603,20 @@ ClientsService.prototype.addOrderToClient = function (_client, _order) {
     } else {
         _order.amount = 1;
         _client.orders.push(_order);
+    }
+}
+
+ClientsService.prototype.substractOrderToClient = function (_client, _order) {
+    let found = _client.orders.filter(order => {
+        return order.id == _order.id;
+    });
+
+    if (found.length > 0) {
+        if(_order.amount == 1){
+            _client.orders.splice( _client.orders.indexOf(_order), 1);
+        } else {
+            found[0].amount = found[0].amount - 1;
+        }
     }
 }
 
