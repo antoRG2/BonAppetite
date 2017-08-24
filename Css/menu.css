@@ -30,6 +30,9 @@ margin: 1% auto;
 .orders-table-header {
     border-bottom: solid 1px #a0a0a0;
 }
+.orders-table-header div:last-child {
+    text-align: center;
+}
 
 .orders-table-row {
     border-bottom: solid 1px #c3c3c3;

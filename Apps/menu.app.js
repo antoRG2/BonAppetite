@@ -1,6 +1,7 @@
 import './vue-tabs/vue-tabs.js';
 import './vue-tabs/vue-tabs.css';
 import './menu/styles/menu.css';
+import "./node_modules/simple-line-icons/less/simple-line-icons.less";
 
 import menuService from './menu/service/menu.service';
 import ClientsService from './menu/service/clients.service';

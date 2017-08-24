@@ -51,8 +51,6 @@
                 <div class="row">
                     <div class="col-6 menu">
                         <div id="container"></div>
-                        <button type="submit" id="addProduct" class="btn btn-success pull-left">+</button>
-                        <button type="submit" id="removeProduct" class="btn btn-success pull-right">-</button>
                     </div>
                     <div class="col-6 accounts-open">
                         <div class="actions-row">
@@ -67,12 +65,16 @@
 
                                     <div class="container-fluid orders-table">
                                         <div class="row orders-table-header">
-                                            <div class="col-8">Orden</div>
-                                            <div class="col-4">Cantidad</div>
+                                            <div class="col-7">Orden</div>
+                                            <div class="col-3">Cantidad</div>
+                                            <div class="col-2"></div>
                                         </div>
                                         <div v-for="order in client.orders" :key="order" class="row orders-table-row">
-                                            <div class="col-8">{{ order.value }}</div>
-                                            <div class="col-4">x{{order.amount}}</div>
+                                            <div class="col-7">{{ order.value }}</div>
+                                            <div class="col-3">x{{order.amount}}</div>
+                                            <div class="col-2">
+                                                <i class="icon-user icons"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </v-tab>
@@ -122,6 +124,7 @@
                                     <div class="col-6">
                                         <button type="submit" id="saveClient" class="btn btn-success pull-left">Agregar</button>
                                         <button type="button" class="btn btn-warning pull-right" data-dismiss="modal">Cerrar</button>
+                                        
                                     </div>
                                 </div>
 
