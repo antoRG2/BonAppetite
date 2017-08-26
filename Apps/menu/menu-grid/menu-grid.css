@@ -10,6 +10,8 @@
     word-break: break-word;
     padding: 5px;
     box-sizing: border-box;
+    user-select: none;
+    cursor: pointer;
 }
 
 .grid-wrapper > .grid-container > .grid-cell:nth-child(even) {
@@ -34,4 +36,6 @@
     padding: 5px;
     box-sizing: border-box;
     background-color: rosybrown;
+    user-select: none;
+    cursor: pointer;
 }

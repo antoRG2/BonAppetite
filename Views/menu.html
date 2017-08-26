@@ -49,12 +49,10 @@
                     <button type="button" id="backMenu" class="btn btn-warning pull-right">Regresar a Salon</button>
                 </div>
                 <div class="row">
-                    <div class="col-xs-6 menu">
+                    <div class="col-6 menu">
                         <div id="container"></div>
-                        <button type="submit" id="addProduct" class="btn btn-success pull-left">+</button>
-                        <button type="submit" id="removeProduct" class="btn btn-success pull-right">-</button>
                     </div>
-                    <div class="col-xs-6 accounts-open">
+                    <div class="col-6 accounts-open">
                         <div class="actions-row">
                             <button type="button" id="addClient" class="btn btn-warning pull-right">Nuevo clientes</button>
                         </div>
@@ -64,10 +62,20 @@
                                     <div slot="title">
                                         <inline-edit v-bind:text="client.name" v-on:changed="val => client.name = val"></inline-edit>
                                     </div>
-                                    <div class="orders">
-                                        <span>Ordenes</span>
-                                        <div v-for="order in client.orders" :key="order" class="orders">
-                                            {{ order.name }}
+
+                                    <div class="container-fluid orders-table">
+                                        <div class="row orders-table-header">
+                                            <div class="col-7">Orden</div>
+                                            <div class="col-3 text-center">Cantidad</div>
+                                            <div class="col-2"></div>
+                                        </div>
+                                        <div v-for="order in client.orders" :key="order" class="row orders-table-row">
+                                            <div class="col-7">{{ order.value }}</div>
+                                            <div class="col-3 text-center">x{{order.amount}} </div>
+                                            <div class="col-2">
+                                                <i class="icon-minus icons" v-on:click="actionOrder('minus',client, order)"></i>
+                                                <i class="icon-plus icons" v-on:click="actionOrder('plus',client, order)"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </v-tab>
@@ -94,24 +102,6 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-6">
-                                        <input type="text" class="form-control" id="buscarCliente" minlength="1" required disable="true">
-                                    </div>
-                                    <div class="col-6">
-                                        <button type="button" class="btn btn-warning pull-right">
-                                        Buscar
-                                    </button>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="container clients-detail-area">
-                                <div class="client-row col-12" v-for="client in clients" :key="client">
-                                    {{client.name}}
-                                </div>
-                            </div>
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-6">
                                         <input type="text" class="form-control" id="nombreCliente" minlength="1" required disable="true" placeholder="Nombre del cliente">
                                     </div>
                                     <div class="col-6">
@@ -119,8 +109,11 @@
                                         <button type="button" class="btn btn-warning pull-right" data-dismiss="modal">Cerrar</button>
                                     </div>
                                 </div>
-
-
+                            </div>
+                            <div class="container clients-detail-area">
+                                <div class="client-row col-12" v-for="client in clients" :key="client">
+                                    {{client.name}}
+                                </div>
                             </div>
                         </form>
                     </div>

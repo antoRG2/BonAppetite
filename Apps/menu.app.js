@@ -1,10 +1,11 @@
 import './vue-tabs/vue-tabs.js';
 import './vue-tabs/vue-tabs.css';
 import './menu/styles/menu.css';
+import "./node_modules/simple-line-icons/less/simple-line-icons.less";
 
 import menuService from './menu/service/menu.service';
 import ClientsService from './menu/service/clients.service';
-
+import './menu/components/inline-edit.component';
 
 $(document).ready(function () {
 
@@ -14,36 +15,6 @@ $(document).ready(function () {
         activeClient: {},
         activeTabIndex: -1
     };
-
-
-    Vue.component('inline-edit', {
-        props:[
-            'text'
-        ],
-        template: `
-            <div>
-                <span v-if="!editVisible">
-                    {{text}}
-                    <span v-on:click="editVisible = true">&#9998;</span>
-                </span>
-                <div v-if="editVisible">
-                    <input type="text" v-model="text">
-                    <span v-on:click="updateText()">&#10004;</span>
-                </div>
-            </div>
-        `,
-        data: function () {
-            return {
-                editVisible:false
-            }
-        },
-        methods: {
-            updateText: function() {
-                this.editVisible = false;
-                this.$emit('changed', this.text);
-            }
-        }
-    })
 
     var app = new Vue({
         el: '#app',
@@ -61,6 +32,13 @@ $(document).ready(function () {
                 this.activeTabIndex = activeTabIndex;
                 this.activeClient = this.clients[activeTabIndex];
                 this.clientsService.activeClient = this.activeClient;
+            },
+            actionOrder: function(action, client, order) {
+                if(action== 'plus') {
+                    this.clientsService.addOrderToClient(client, order);
+                } else if(action == 'minus') {
+                    this.clientsService.substractOrderToClient(client, order);
+                }
             }
         }
     })
