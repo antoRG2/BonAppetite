@@ -1,0 +1,54 @@
+
+@primary-bg-color-50: #E0F2F1;
+@primary-bg-color-100: #B2DFDB;
+@primary-bg-color-300: #4DB6AC;
+@primary-bg-color-500: #009688;
+@primary-bg-color-700: #00796B;
+@primary-bg-color-900: #004D40;
+
+@primary-bg-color:@primary-bg-color-500;
+
+@font-color-dark: rgba(0,0,0,.87);;
+@font-color-light: rgba(255,255,255,.87);;
+
+
+* {
+    font-weight: 300;
+}
+
+html, body {
+    font-family: 'Roboto', sans-serif;
+
+    .bg-primary {
+        background-color: @primary-bg-color!important;
+    }
+
+    a, a:active, a:hover {
+        color: @font-color-light;
+    }
+
+    .navbar-toggler-icon {
+        font-family: 'simple-line-icons';
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        color: @font-color-light;
+
+        &:before {
+            content: "\E601";
+            display: flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    .main {
+        margin: 20px;
+    }
+}
