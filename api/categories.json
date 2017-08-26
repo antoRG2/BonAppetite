@@ -1,0 +1,20 @@
+{
+    "data": [
+        {
+            "id": "1",
+            "name": "carnes"
+        },
+        {
+            "id": "2",
+            "name": "ensaladas"
+        },
+        {
+            "id": "3",
+            "name": "postres"
+        },
+        {
+            "id": "4",
+            "name": "otros"
+        }
+    ]
+}
