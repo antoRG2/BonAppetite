@@ -3,26 +3,34 @@ import 'roboto-npm-webfont';
 import "./node_modules/simple-line-icons/less/simple-line-icons.less";
 import Vuetable from 'vuetable-2';
 Vue.use(Vuetable);
-
+Vue.use(VueRouter)
 import Home from './maintenance/components/home.vue';
 import Categories from './maintenance/components/categories.vue';
 import Dishes from './maintenance/components/dishes.vue';
+import ApiService from './maintenance/services/api.service';
 
 const Ingredients = { template: '<div>Ingredientes</div>' }
 
-const routes = [
-  { path: '/', component: Home },
-  { path: '/categorias', component: Categories },
-  { path: '/platillos', component: Dishes },
-  { path: '/ingredientes', component: Ingredients }
-]
-
-
+let api = new ApiService();
+let categories = api.categories;
+let dishes = api.dishes;
 
 const router = new VueRouter({
-  routes // short for `routes: routes`
+  routes: [
+    { path: '/', component: Home },
+    { path: '/categorias', component: Categories},
+    { path: '/platillos', component: Dishes },
+    { path: '/ingredientes', component: Ingredients }
+  ]
 })
 
 const app = new Vue({
-  router
+  router,
+  data: {
+    localCategories: categories,
+    localDishes: dishes
+  },
+  methods: {
+    
+  }
 }).$mount('#app')
