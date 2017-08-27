@@ -3,8 +3,8 @@ const webpack = require("webpack");
 
 module.exports = {
     entry: {
-       menu: "./menu.app.js",
-       maintenance: './maintenance.app.js'
+        menu: "./menu.app.js",
+        maintenance: './maintenance.app.js'
     },
     output: {
         filename: "[name].js",
@@ -37,6 +37,10 @@ module.exports = {
                 use: [{
                     loader: "vue-loader"
                 }]
+            },
+            {
+                test: /\.json$/,
+                loader: 'json-loader'
             },
             { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff", options: { outputPath: "../Views/" } },
             { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader", options: { outputPath: "../Views/" } }
