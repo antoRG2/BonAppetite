@@ -1995,7 +1995,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__maintenance_components_home_vue__ = __webpack_require__(78);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__maintenance_components_categories_vue__ = __webpack_require__(106);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__maintenance_components_dishes_vue__ = __webpack_require__(111);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__maintenance_services_api_service__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__maintenance_components_menu_vue__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__maintenance_services_api_service__ = __webpack_require__(116);
 
 
 
@@ -2007,9 +2008,10 @@ Vue.use(VueRouter)
 
 
 
+
 const Ingredients = { template: '<div>Ingredientes</div>' }
 
-let api = new __WEBPACK_IMPORTED_MODULE_7__maintenance_services_api_service__["a" /* default */]();
+let api = new __WEBPACK_IMPORTED_MODULE_8__maintenance_services_api_service__["a" /* default */]();
 let categories = api.categories;
 let dishes = api.dishes;
 
@@ -2018,7 +2020,7 @@ const router = new VueRouter({
     { path: '/', component: __WEBPACK_IMPORTED_MODULE_4__maintenance_components_home_vue__["a" /* default */] },
     { path: '/categorias', component: __WEBPACK_IMPORTED_MODULE_5__maintenance_components_categories_vue__["a" /* default */]},
     { path: '/platillos', component: __WEBPACK_IMPORTED_MODULE_6__maintenance_components_dishes_vue__["a" /* default */] },
-    { path: '/ingredientes', component: Ingredients }
+    { path: '/menu', component: __WEBPACK_IMPORTED_MODULE_7__maintenance_components_menu_vue__["a" /* default */] }
   ]
 })
 
@@ -5575,6 +5577,142 @@ module.exports = {"data":[{"id":"1","name":"carnes"},{"id":"2","name":"ensaladas
 /***/ (function(module, exports) {
 
 module.exports = {"data":[{"id":"1","name":"hamburguesa","price":"5000","category":{"id":"1"}},{"id":"2","name":"pollo asado","price":"60000","category":{"id":"1"}},{"id":"3","name":"pescado frito","price":"7000","category":{"id":"1"}},{"id":"4","name":"cerdo en salsa","price":"8000","category":{"id":"1"}},{"id":"21","name":"ensalada cesar","price":"2500","category":{"id":"2"}},{"id":"22","name":"ensalada de papa","price":"3000","category":{"id":"2"}},{"id":"23","name":"ensalada con pasta","price":"1500","category":{"id":"2"}}]}
+
+/***/ }),
+/* 119 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_selector_type_script_index_0_menu_vue__ = __webpack_require__(122);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_b5911066_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_menu_vue__ = __webpack_require__(123);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(120)
+}
+var normalizeComponent = __webpack_require__(5)
+/* script */
+
+/* template */
+
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_selector_type_script_index_0_menu_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_b5911066_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_menu_vue__["a" /* default */],
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "maintenance/components/menu.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] menu.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-b5911066", Component.options)
+  } else {
+    hotAPI.reload("data-v-b5911066", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 120 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(121);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("4d4b72e8", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-b5911066\",\"scoped\":false,\"hasInlineConfig\":false}!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./menu.vue", function() {
+     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-b5911066\",\"scoped\":false,\"hasInlineConfig\":false}!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./menu.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 121 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\niframe {\n    border: none;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 122 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+});
+
+
+/***/ }),
+/* 123 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _vm._m(0)
+}
+var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('iframe', {
+    attrs: {
+      "src": "../Views/menu.html",
+      "width": "100%",
+      "height": "700px"
+    }
+  })])
+}]
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-b5911066", esExports)
+  }
+}
 
 /***/ })
 /******/ ]);
