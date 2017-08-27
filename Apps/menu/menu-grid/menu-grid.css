@@ -15,7 +15,7 @@
 }
 
 .grid-wrapper > .grid-container > .grid-cell:nth-child(even) {
-    background-color: white;
+    background-color: #d6edc5;
 }
 
 .grid-wrapper > .grid-container > .grid-cell:nth-child(odd) {
