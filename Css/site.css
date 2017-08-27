@@ -2,8 +2,15 @@
   box-sizing: border-box;
 }
 body {
-  background-color: #D3E5D3 !important;
+  
 }
+.modal-backdrop.show {
+    opacity: 0.0!important;
+}
+article {
+    display: none!important;
+}
+
 header {
     background-color: #419641;
     color: #FFFFEB;
@@ -17,7 +24,6 @@ header p {
 
 .b-cont {
     margin-top: -2%;
-    margin-left: 0;
 }
 
 @media (min-width: 768px) {
@@ -27,7 +33,6 @@ header p {
 
     .b-cont {
         margin-top: 0;
-        margin-left: 17%;
     }
 
     h1 {
@@ -43,7 +48,6 @@ header p {
 
     .b-cont {
         margin-top: 0;
-        margin-left: 10%;
     }
 
 

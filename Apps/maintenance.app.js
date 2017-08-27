@@ -7,6 +7,7 @@ Vue.use(VueRouter)
 import Home from './maintenance/components/home.vue';
 import Categories from './maintenance/components/categories.vue';
 import Dishes from './maintenance/components/dishes.vue';
+import Menu from './maintenance/components/menu.vue';
 import ApiService from './maintenance/services/api.service';
 
 const Ingredients = { template: '<div>Ingredientes</div>' }
@@ -20,7 +21,7 @@ const router = new VueRouter({
     { path: '/', component: Home },
     { path: '/categorias', component: Categories},
     { path: '/platillos', component: Dishes },
-    { path: '/ingredientes', component: Ingredients }
+    { path: '/menu', component: Menu }
   ]
 })
 
