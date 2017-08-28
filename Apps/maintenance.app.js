@@ -1,5 +1,4 @@
 import './maintenance/styles.less';
-import 'roboto-npm-webfont';
 import "./node_modules/simple-line-icons/less/simple-line-icons.less";
 import Vuetable from 'vuetable-2';
 Vue.use(Vuetable);
