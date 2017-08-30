@@ -39,33 +39,25 @@ import 'fabric';
 export default {
     data() {
         return {
-            message: 'Administracion de salones',
+            message: 'Administración de salones',
         }
     },
     mounted: function() {
 
         var canvas = new fabric.Canvas('canvas', { width: 500, height: 500 });//900 600
         var $self = this;
-        console.log(canvas);
         canvas.backgroundColor = "#FAF7F8";
         loadConfiguration();
         canvas.getObjects();
         canvas.renderAll();
 
-
-
-
         //select table event
         canvas.on({
             'object:selected': function() {
                 if (canvas._objects[0].active == true) {
-                    //$("#accountCheckModal").modal();
-                    console.log( 'checkModal' , $self );
                     $self.showTable();
                 }
                 if (canvas._objects[1].active == true) {
-                    //$("#openAccountModal").modal();
-                    console.log( 'accountModal' , $self );
                     $self.showAccount();
                 }
             }
