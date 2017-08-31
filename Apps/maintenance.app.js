@@ -1,13 +1,14 @@
 import './maintenance/styles.less';
-import 'roboto-npm-webfont';
 import "./node_modules/simple-line-icons/less/simple-line-icons.less";
 import Vuetable from 'vuetable-2';
 Vue.use(Vuetable);
 Vue.use(VueRouter)
+
 import Home from './maintenance/components/home.vue';
 import Categories from './maintenance/components/categories.vue';
 import Dishes from './maintenance/components/dishes.vue';
 import Menu from './maintenance/components/menu.vue';
+import Salon from './maintenance/components/salon.vue';
 import ApiService from './maintenance/services/api.service';
 
 const Ingredients = { template: '<div>Ingredientes</div>' }
@@ -21,7 +22,8 @@ const router = new VueRouter({
     { path: '/', component: Home },
     { path: '/categorias', component: Categories},
     { path: '/platillos', component: Dishes },
-    { path: '/menu', component: Menu }
+    { path: '/menu', component: Menu },
+    { path: '/salon', component: Salon }
   ]
 })
 
