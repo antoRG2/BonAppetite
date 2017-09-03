@@ -7645,17 +7645,816 @@ webpackEmptyContext.id = 41;
 
 /***/ }),
 /* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */,
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*!
+ * vue-nav-tabs v0.5.1
+ * (c) 2017-present cristij <joracristi@gmail.com>
+ * Released under the MIT License.
+ */
+(function (global, factory) {
+   true ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (factory((global.vueTabs = global.vueTabs || {})));
+}(this, (function (exports) { 'use strict';
+
+var VueTabs = {
+    name: 'vue-tabs',
+    props: {
+        activeTabColor: String,
+        activeTextColor: String,
+        /**
+         * Tab title position: center | bottom | top
+         */
+        textPosition: {
+            type: String,
+            default: 'center'
+        },
+        /**
+         * Tab type: tabs | pills
+         */
+        type: {
+            type: String,
+            default: 'tabs'
+        },
+        direction: {
+            type: String,
+            default: 'horizontal'
+        },
+        /**
+         * Centers the tabs and makes the container div full width
+         */
+        centered: Boolean,
+        value: [String, Number, Object]
+    },
+    data: function data() {
+        return {
+            activeTabIndex: 0,
+            tabs: []
+        };
+    },
+
+    computed: {
+        isTabShape: function isTabShape() {
+            return this.type === 'tabs';
+        },
+        isStacked: function isStacked() {
+            return this.direction === 'vertical';
+        },
+        classList: function classList() {
+            var navType = this.isTabShape ? 'nav-tabs' : 'nav-pills';
+            var centerClass = this.centered ? 'nav-justified' : '';
+            var isStacked = this.isStacked ? 'nav-stacked' : '';
+            return 'nav ' + navType + ' ' + centerClass + ' ' + isStacked;
+        },
+        stackedClass: function stackedClass() {
+            return this.isStacked ? 'stacked' : '';
+        },
+        activeTabStyle: function activeTabStyle() {
+            return {
+                backgroundColor: this.activeTabColor,
+                color: this.activeTextColor
+            };
+        }
+    },
+    methods: {
+        navigateToTab: function navigateToTab(index, route) {
+            this.changeTab(this.activeTabIndex, index, route);
+        },
+        activateTab: function activateTab(index) {
+            this.activeTabIndex = index;
+            var tab = this.tabs[index];
+            tab.active = true;
+            this.$emit('input', index);
+        },
+        changeTab: function changeTab(oldIndex, newIndex, route) {
+            this.activeTabIndex = newIndex;
+            var oldTab = this.tabs[oldIndex];
+            var newTab = this.tabs[newIndex];
+            oldTab.active = false;
+            newTab.active = true;
+            //this.$emit('input', newIndex);
+            this.$emit('tab-change', newIndex, newTab, oldTab);
+            this.tryChangeRoute(route);
+        },
+        tryChangeRoute: function tryChangeRoute(route) {
+            if (this.$router && route) {
+                this.$router.push(route);
+            }
+        },
+        addTab: function addTab(item) {
+            var index = this.$slots.default.indexOf(item.$vnode);
+            this.tabs.splice(index, 0, item);
+        },
+        removeTab: function removeTab(item) {
+            var tabs = this.tabs;
+            var index = tabs.indexOf(item);
+            if (index > -1) {
+                tabs.splice(index, 1);
+            }
+        },
+        getTabs: function getTabs() {
+            if (this.$slots.default) {
+                return this.$slots.default.filter(function (comp) {
+                    return comp.componentOptions;
+                });
+            }
+            return [];
+        },
+        findTabAndActivate: function findTabAndActivate(tabNameOrIndex) {
+            var indexToActivate = this.tabs.findIndex(function (tab, index) {
+                return tab.title === tabNameOrIndex || index === tabNameOrIndex;
+            });
+            if (indexToActivate != -1) {
+                this.changeTab(this.activeTabIndex, indexToActivate);
+            } else {
+                this.changeTab(this.activeTabIndex, 0);
+            }
+        },
+        renderTabTitle: function renderTabTitle(index) {
+            var position = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'top';
+            var h = this.$createElement;
+
+            if (this.tabs.length === 0) return;
+            var tab = this.tabs[index];
+            var active = tab.active,
+                title = tab.title;
+
+            var titleStyles = { color: this.activeTabColor };
+            if (position === 'center') titleStyles.color = this.activeTextColor;
+            var simpleTitle = h(
+                'span',
+                { 'class': 'title title_' + position, style: active ? titleStyles : {} },
+                [position === 'center' && this.renderIcon(index), '\xA0', title]
+            );
+
+            if (tab.$slots.title) return tab.$slots.title;
+            return simpleTitle;
+        },
+        renderIcon: function renderIcon(index) {
+            var h = this.$createElement;
+
+            if (this.tabs.length === 0) return;
+            var tab = this.tabs[index];
+            var icon = tab.icon;
+
+            var simpleIcon = h(
+                'i',
+                { 'class': icon },
+                []
+            );
+            if (!tab.$slots.title && icon) return simpleIcon;
+        },
+        renderTabs: function renderTabs() {
+            var _this = this;
+
+            var h = this.$createElement;
+
+            return this.tabs.map(function (tab, index) {
+                if (!tab) return;
+                var route = tab.route,
+                    id = tab.id,
+                    title = tab.title,
+                    icon = tab.icon;
+
+                var active = _this.activeTabIndex === index;
+                return h(
+                    'li',
+                    {
+                        attrs: { name: 'tab',
+                            role: 'presentation' },
+                        on: {
+                            'click': function click() {
+                                return _this.navigateToTab(index, route);
+                            }
+                        },
+                        'class': ['tab', { active: active }],
+                        key: title },
+                    [_this.textPosition === 'top' && _this.renderTabTitle(index, _this.textPosition), h(
+                        'a',
+                        {
+                            attrs: { href: 'javascript:void(0)',
+
+                                'aria-selected': active,
+                                'aria-controls': '#' + id,
+                                role: 'tab' },
+                            on: {
+                                'click': function click() {
+                                    return _this.navigateToTab(index);
+                                }
+                            },
+
+                            style: active ? _this.activeTabStyle : {},
+                            'class': { 'active_tab': active } },
+                        [_this.textPosition !== 'center' && !tab.$slots.title && _this.renderIcon(index), _this.textPosition === 'center' && _this.renderTabTitle(index, _this.textPosition)]
+                    ), _this.textPosition === 'bottom' && _this.renderTabTitle(index, _this.textPosition)]
+                );
+            });
+        }
+    },
+    render: function render() {
+        var h = arguments[0];
+
+        var tabList = this.renderTabs();
+        return h(
+            'div',
+            { 'class': ['vue-tabs', this.stackedClass] },
+            [h(
+                'div',
+                { 'class': [{ 'nav-tabs-navigation': !this.isStacked }, { 'left-vertical-tabs': this.isStacked }] },
+                [h(
+                    'div',
+                    { 'class': ['nav-tabs-wrapper', this.stackedClass] },
+                    [h(
+                        'ul',
+                        { 'class': this.classList, attrs: { role: 'tablist' }
+                        },
+                        [tabList]
+                    )]
+                )]
+            ), h(
+                'div',
+                { 'class': ['tab-content', { 'right-text-tabs': this.isStacked }] },
+                [this.$slots.default]
+            )]
+        );
+    },
+
+    watch: {
+        tabs: function tabs(newList) {
+            if (newList.length > 0 && !this.value) {
+                this.activateTab(this.activeTabIndex);
+            }
+            if (newList.length > 0 && this.value) {
+                this.findTabAndActivate(this.value);
+            }
+        },
+        value: function value(newVal) {
+            this.findTabAndActivate(newVal);
+        }
+    }
+};
+
+var VTab = {
+    name: 'v-tab',
+    props: {
+        title: {
+            type: String,
+            default: ''
+        },
+        icon: {
+            type: String,
+            default: ''
+        },
+        /***
+         * Function to execute before tab switch. Return value must be boolean
+         * If the return result is false, tab switch is restricted
+         */
+        beforeChange: {
+            type: Function
+        },
+        id: String,
+        route: {
+            type: [String, Object]
+        },
+        transitionName: String,
+        transitionMode: String
+    },
+    computed: {
+        isValidParent: function isValidParent() {
+            return this.$parent.$options.name === 'vue-tabs';
+        },
+        hash: function hash() {
+            return '#' + this.id;
+        }
+    },
+    data: function data() {
+        return {
+            active: false,
+            validationError: null
+        };
+    },
+    mounted: function mounted() {
+        this.$parent.addTab(this);
+    },
+    destroyed: function destroyed() {
+        if (this.$el && this.$el.parentNode) {
+            this.$el.parentNode.removeChild(this.$el);
+        }
+        this.$parent.removeTab(this);
+    },
+    render: function render() {
+        var h = arguments[0];
+
+        return h(
+            'section',
+            { 'class': 'tab-container',
+                attrs: { role: 'tabpanel' },
+                directives: [{
+                    name: 'show',
+                    value: this.active
+                }]
+            },
+            [this.$slots.default]
+        );
+    }
+};
+
+var VueTabsPlugin = {
+  install: function install(Vue) {
+    Vue.component('vue-tabs', VueTabs);
+    Vue.component('v-tab', VTab);
+  }
+};
+// Automatic installation if Vue has been added to the global scope.
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(VueTabsPlugin);
+  window.VueTabs = VueTabsPlugin;
+}
+
+exports['default'] = VueTabsPlugin;
+exports.VueTabs = VueTabs;
+exports.VTab = VTab;
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(45);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"attrs":{"id":"id"}}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../node_modules/css-loader/index.js!./vue-tabs.css", function() {
+			var newContent = require("!!../node_modules/css-loader/index.js!./vue-tabs.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".vue-tabs.stacked {\n  display: flex\n}\n\n.vue-tabs a {\n  text-decoration: none;\n  color: gray\n}\n\n.vue-tabs .nav {\n  margin-bottom: 0;\n  margin-top: 0;\n  padding-left: 0;\n  list-style: none\n}\n\n.vue-tabs .nav:before,\n.vue-tabs .nav:after {\n  content: \" \";\n  display: table\n}\n\n.vue-tabs .nav:after {\n  clear: both\n}\n\n.vue-tabs .nav>li {\n  position: relative;\n  display: block\n}\n\n.vue-tabs .nav>li>a {\n  position: relative;\n  display: block;\n  padding: 10px 15px\n}\n\n.vue-tabs .nav>li>a:hover,\n.vue-tabs .nav>li>a:focus {\n  text-decoration: none;\n  background-color: #eee\n}\n\n.vue-tabs .nav>li span.title {\n  display: flex;\n  justify-content: center\n}\n\n.vue-tabs .nav>li.disabled>a {\n  color: #777\n}\n\n.vue-tabs .nav>li.disabled>a:hover,\n.vue-tabs .nav>li.disabled>a:focus {\n  color: #777;\n  text-decoration: none;\n  background-color: transparent;\n  cursor: not-allowed\n}\n\n.vue-tabs .nav .nav-divider {\n  height: 1px;\n  margin: 9px 0;\n  overflow: hidden;\n  background-color: #e5e5e5\n}\n\n.vue-tabs .nav>li>a>img {\n  max-width: none\n}\n\n.vue-tabs .nav-tabs {\n  border-bottom: 1px solid #ddd\n}\n\n.vue-tabs .nav-tabs>li {\n  float: left;\n  margin-bottom: -1px\n}\n\n.vue-tabs .nav-tabs>li>a {\n  margin-right: 2px;\n  line-height: 1.42857;\n  border: 1px solid transparent;\n  border-radius: 4px 4px 0 0\n}\n\n.vue-tabs .nav-tabs>li>a:hover {\n  border-color: #eee #eee #ddd\n}\n\n.vue-tabs .nav-tabs>li.active>a,\n.vue-tabs .nav-tabs>li.active>a:hover,\n.vue-tabs .nav-tabs>li.active>a:focus {\n  color: #fff;\n  background-color: #f0ad4e;\n  border: 1px solid #ddd;\n  border-bottom-color: transparent;\n  cursor: default\n}\n\n.vue-tabs .nav-pills>li {\n  float: left\n}\n\n.vue-tabs .nav-pills>li>a {\n  border-radius: 4px\n}\n\n.vue-tabs .nav-pills>li+li {\n  margin-left: 2px\n}\n\n.vue-tabs .nav-pills>li.active>a,\n.vue-tabs .nav-pills>li.active>a:hover,\n.vue-tabs .nav-pills>li.active>a:focus {\n  color: #fff;\n  background-color: #337ab7\n}\n\n.vue-tabs .nav-stacked>li {\n  float: none\n}\n\n.vue-tabs .nav-stacked>li+li {\n  margin-top: 2px;\n  margin-left: 0\n}\n\n.vue-tabs .nav-justified,\n.vue-tabs .nav-tabs.nav-justified {\n  width: 100%\n}\n\n.vue-tabs .nav-justified>li,\n.vue-tabs .nav-tabs.nav-justified>li {\n  float: none\n}\n\n.vue-tabs .nav-justified>li>a,\n.vue-tabs .nav-tabs.nav-justified>li>a {\n  text-align: center;\n  margin-bottom: 5px\n}\n\n.vue-tabs .nav-justified>.dropdown .dropdown-menu {\n  top: auto;\n  left: auto\n}\n\n@media (min-width: 768px) {\n  .vue-tabs .nav-justified>li,\n  .vue-tabs .nav-tabs.nav-justified>li {\n    display: table-cell;\n    width: 1%\n  }\n  .vue-tabs .nav-justified>li>a,\n  .vue-tabs .nav-tabs.nav-justified>li>a {\n    margin-bottom: 0\n  }\n}\n\n.vue-tabs .nav-tabs-justified,\n.vue-tabs .nav-tabs.nav-justified {\n  border-bottom: 0\n}\n\n.vue-tabs .nav-tabs-justified>li>a,\n.vue-tabs .nav-tabs.nav-justified>li>a {\n  margin-right: 0;\n  border-radius: 4px\n}\n\n.vue-tabs .nav-tabs-justified>.active>a,\n.vue-tabs .nav-tabs.nav-justified>.active>a,\n.vue-tabs .nav-tabs-justified>.active>a:hover,\n.vue-tabs .nav-tabs.nav-justified>.active>a:hover,\n.vue-tabs .nav-tabs-justified>.active>a:focus,\n.vue-tabs .nav-tabs.nav-justified>.active>a:focus {\n  border: 1px solid #ddd\n}\n\n@media (min-width: 768px) {\n  .vue-tabs .nav-tabs-justified>li>a,\n  .vue-tabs .nav-tabs.nav-justified>li>a {\n    border-bottom: 1px solid #ddd;\n    border-radius: 4px 4px 0 0\n  }\n  .vue-tabs .nav-tabs-justified>.active>a,\n  .vue-tabs .nav-tabs.nav-justified>.active>a,\n  .vue-tabs .nav-tabs-justified>.active>a:hover,\n  .vue-tabs .nav-tabs.nav-justified>.active>a:hover,\n  .vue-tabs .nav-tabs-justified>.active>a:focus,\n  .vue-tabs .nav-tabs.nav-justified>.active>a:focus {\n    border-bottom-color: #fff\n  }\n}\n\n.vue-tabs .tab-content>.tab-pane {\n  display: none\n}\n\n.vue-tabs .tab-content>.active {\n  display: block\n}\n\n.vue-tabs section[aria-hidden=\"true\"] {\n  display: none\n}", ""]);
+
+// exports
+
+
+/***/ }),
 /* 46 */,
 /* 47 */,
-/* 48 */,
-/* 49 */,
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */,
+/* 48 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+let MenuGrid = __webpack_require__(49);
+
+function gridInit( _addOrderCallback ) {
+    //TODO: esta lista deberia ser una lista de objetos con el nombre y el id de la categoria
+    var categorias = ["carnes", "arroz", "ensaladas", "entradas", "postres"]
+    var productos = ["tiramisu", "brownie", "helado", "pastel"]
+    var alter = [
+        {
+            id: '1', value: 'carnes', children: [
+                { id: '12', value: 'hamburguesa' },
+                { id: '13', value: 'filet' },
+                { id: '14', value: 'pescado' },
+                { id: '15', value: 'pollo' }
+            ]
+        },
+        {
+            id: '2', value: 'arroz', children: [
+                { id: '22', value: 'arroz frito' },
+                { id: '23', value: 'arroz con coco' },
+                { id: '24', value: 'chino' },
+                { id: '25', value: 'arroz y salsa' }
+            ]
+        },
+        { id: '3', value: 'ensaladas' },
+        { id: '4', value: 'entradas' },
+        { id: '5', value: 'postres' }
+    ];
+
+    var grid = new MenuGrid.MenuGridComponent(3, 4, alter);
+
+    grid.rowsDef = {
+        autoRows: true,
+        height: 'auto',
+        minmax: '80px'
+    };
+
+    // si los items enviados no son texto o numero hay que crear un dataformatter
+    grid.itemsDef.dataFormatter = function (item) {
+        // este formater es exclusivo para los objetos de alter
+        return item.value;
+    }
+
+    // evento que se ejecuta cuando uno de los divs internos recibe un click
+    grid.columnsDef.itemsCallback = (function (event, item) {
+        if (item.children) {
+            this.updateContent(item.children);
+        } else { // no children
+            // TODO: Make this return callback to decouple logic
+            if(_addOrderCallback) {
+                _addOrderCallback( item );
+            } else {
+                alert('no active client');
+            }
+        }
+    }).bind(grid);
+
+    grid.actionsDef = [{
+        value: 'Atras',
+        action: function () {
+            grid.updateContent(alter);
+        }
+    }];
+
+    // si create no tiene parametros usa la configuracion por defecto
+    var gridElement = grid.create();
+    grid.toString();
+
+
+    var container = document.getElementById("container");
+    container.appendChild(gridElement);
+
+    //
+
+    return grid;
+}
+
+/* harmony default export */ __webpack_exports__["a"] = ({ gridInit });
+
+/***/ }),
+/* 49 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MenuGridComponent", function() { return MenuGridComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__menu_grid_css__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__menu_grid_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__menu_grid_css__);
+
+
+function MenuGrid(columns, rows, items) {
+    this.domElement;
+    this.columns = columns;
+    this.rows = rows;
+    this.items = items;
+    this.itemsDef = {
+        dataFormatter: function (item) {
+            if (typeof (item) === 'string' || typeof (item) === 'number') {
+                return item;
+            }
+        }
+    };
+    
+    this.rowsDef = {
+        autoRows: false,
+        height: 'auto',
+        minmax: '80px'
+    };
+    
+    this.columnsDef = {
+        width: 'auto'
+    };
+
+    this.defaultProps = {
+        columns: 1,
+        rows: 0,
+        rowsDef: {
+            autoRows: false,
+            height: 'auto',
+            minmax: '80px'
+        },
+        columnsDef: {
+            width: 'auto'
+        }
+    }
+}
+
+MenuGrid.prototype.create = function (gridConfiguration) {
+    let gConf = gridConfiguration || this.defaultProps;
+
+    if (!gridConfiguration) {
+        gConf.columns = this.columns || this.defaultProps.columns;
+        gConf.rows = this.rows || this.defaultProps.rows;
+        gConf.rowsDef = this.rowsDef || this.defaultProps.rowsDef;
+    }
+
+    let grid = {
+        columns: gConf.columns || this.columns,
+        rows: gConf.rows || this.rows,
+        items: gConf.items || this.items || [],
+        rowsDef: gConf.rowsDef || this.defaultProps.rowsDef,
+        columnsDef: gConf.columnsDef || this.defaultProps.columnsDef,
+        actionsDef: gConf.actionsDef || this.actionsDef
+    }
+
+    this.domElement = this.generateDom(grid);
+    return this.domElement;
+}
+
+MenuGrid.prototype.valueFormatterCallback = function (item) {
+    if (this.itemsDef && this.itemsDef.dataFormatter) {
+        return this.itemsDef.dataFormatter(item);
+    } else {
+        return item;
+    }
+}
+
+
+MenuGrid.prototype.createContentContainer = function (gridConfiguration) {
+    let cols = gridConfiguration.columns;
+    let rows = gridConfiguration.rows;
+
+    let grid = document.createElement('div');
+    grid.classList.add('grid-container');
+    let styles = `
+        display: grid;
+        grid-gap: 10px;
+    `;
+    let stylesCol = `grid-template-columns: repeat(${cols}, 1fr);`;
+    let stylesRows = '';
+    if (gridConfiguration.rowsDef.autoRows) {
+        stylesRows += `grid-auto-rows: minmax(${gridConfiguration.rowsDef.minmax}, auto);`;
+    } else {
+        stylesRows += `grid-template-rows: repeat(${rows}, 1fr);`
+    }
+
+    grid.setAttribute('style', [styles, stylesCol, stylesRows].join(';'));
+
+    return { grid, styles, stylesCol, stylesRows };
+}
+
+MenuGrid.prototype.createContent = function (gridContentDomElement, items) {
+    if (items) {
+        items.forEach((element) => {
+            let gItem = document.createElement('div');
+            gItem.setAttribute('clickable', 'true');
+            gItem.data = element;
+            gItem.classList.add(['grid-cell']);
+            if (this.valueFormatterCallback) {
+                gItem.innerText = this.valueFormatterCallback(element);
+            }
+
+            gridContentDomElement.appendChild(gItem);
+        });
+    }
+}
+
+MenuGrid.prototype.updateContent = function (items) {
+    let content = this.domElement.querySelector('.grid-container');
+    this.clearContent();
+    this.createContent(content, items);
+}
+
+MenuGrid.prototype.createActions = function (actionsDef, styles, stylesCol) {
+    let actionsRow = document.createElement('div');
+
+    actionsRow.classList.add(['grid-actions']);
+    let actions = actionsDef;
+
+    if (actions && actions.length) {
+        actions.forEach((action) => {
+            let gItem = document.createElement('div');
+            gItem.data = action;
+            gItem.classList.add(['action-cell']);
+            gItem.innerText = action.value;
+            gItem.addEventListener('click', function () {
+                action.action();
+            });
+
+            actionsRow.appendChild(gItem);
+        });
+    }
+
+    actionsRow.setAttribute('style', [styles, stylesCol].join(';'));
+
+    return actionsRow;
+}
+
+
+MenuGrid.prototype.generateDom = function (gridConfiguration) {
+
+    let gridProps = this.createContentContainer(gridConfiguration);
+    let content = this.createContent(gridProps.grid, gridConfiguration.items);
+    let actionsRow = this.createActions(gridConfiguration.actionsDef,
+        gridProps.styles, gridProps.stylesCol);
+
+    // event listeners
+    gridProps.grid.addEventListener('click', (event) => {
+        if (event.target && event.target.hasAttribute('clickable')) {
+            if (typeof (this.itemsCallback) === 'function') {
+                this.itemsCallback(event, event.target.data);
+            }
+        }
+    }, true);
+
+
+    let wrapper = document.createElement('div');
+    wrapper.classList.add(['grid-wrapper']);
+
+    wrapper.appendChild(gridProps.grid);
+    wrapper.appendChild(actionsRow);
+
+    return wrapper;
+}
+
+MenuGrid.prototype.clearContent = function () {
+    let content = this.domElement.querySelector('.grid-container');
+    content.innerHTML = '';
+}
+
+MenuGrid.prototype.itemsCallback = function () {
+    if (this.columnsDef && typeof (this.columnsDef.itemsCallback) === 'function') {
+        this.columnsDef.itemsCallback(event, event.target.data);
+    }
+}
+
+MenuGrid.prototype.toString = function () {
+    console.log(`
+        columns: ${this.columns}
+        rows: ${this.rows}
+        items: ${this.items}
+    `);
+}
+
+let MenuGridComponent = MenuGrid;
+
+
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(51);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"attrs":{"id":"id"}}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!./menu-grid.css", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!./menu-grid.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".grid-wrapper {\n    width: 100%;\n}\n\n.grid-wrapper > .grid-container > .grid-cell {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    overflow: hidden;\n    word-break: break-word;\n    padding: 5px;\n    box-sizing: border-box;\n    user-select: none;\n    cursor: pointer;\n}\n\n.grid-wrapper > .grid-container > .grid-cell:nth-child(even) {\n    background-color: #d6edc5;\n}\n\n.grid-wrapper > .grid-container > .grid-cell:nth-child(odd) {\n    background-color: green;\n}\n\n.grid-actions {\n    margin-top: 10px;\n}\n\n.grid-actions > .action-cell {\n    height: 80px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    overflow: hidden;\n    word-break: break-word;\n    padding: 5px;\n    box-sizing: border-box;\n    background-color: rosybrown;\n    user-select: none;\n    cursor: pointer;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 52 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+
+let ClientsService = function () {
+    this.clients = [];
+}
+
+ClientsService.prototype.buildClient = function (_name) {
+
+    let _client = {
+        id: this.clients.length + 1,
+        name: _name,
+        orders: []
+    };
+
+    return _client;
+}
+
+ClientsService.prototype.addClient = function (_client) {
+    this.clients.push(_client);
+}
+
+ClientsService.prototype.createClient = function (_name) {
+    let client = this.buildClient(_name);
+    this.addClient(client);
+    return client;
+}
+
+ClientsService.prototype.addOrderToClient = function (_client, _order) {
+    let found = _client.orders.filter(order => {
+        return order.id == _order.id;
+    });
+
+    if (found.length > 0) {
+        found[0].amount = found[0].amount + 1;
+    } else {
+        _order.amount = 1;
+        _client.orders.push(_order);
+    }
+}
+
+ClientsService.prototype.substractOrderToClient = function (_client, _order) {
+    let found = _client.orders.filter(order => {
+        return order.id == _order.id;
+    });
+
+    if (found.length > 0) {
+        if(_order.amount == 1){
+            _client.orders.splice( _client.orders.indexOf(_order), 1);
+        } else {
+            found[0].amount = found[0].amount - 1;
+        }
+    }
+}
+
+
+let service = new ClientsService();
+
+/* harmony default export */ __webpack_exports__["a"] = ({ service });
+
+
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports) {
+
+Vue.component('inline-edit', {
+    props: [
+        'text'
+    ],
+    template: `
+            <div>
+                <span v-if="!editVisible">
+                    {{text}}
+                    <span v-on:click="editVisible = true">&#9998;</span>
+                </span>
+                <div v-if="editVisible">
+                    <input type="text" v-model="text">
+                    <span v-on:click="updateText()">&#10004;</span>
+                </div>
+            </div>
+        `,
+    data: function () {
+        return {
+            editVisible: false
+        }
+    },
+    methods: {
+        updateText: function () {
+            this.editVisible = false;
+            this.$emit('changed', this.text);
+        }
+    }
+});
+
+/***/ }),
 /* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -7753,7 +8552,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, "@font-face {\n  font-family: 'Roboto';\n  src: local('Roboto Light'), local('Roboto-Light'), url(" + __webpack_require__(57) + ") format('woff2'), url(" + __webpack_require__(58) + ") format('woff'), url(" + __webpack_require__(59) + ") format('truetype');\n  font-weight: 300;\n  font-style: normal;\n}\n@font-face {\n  font-family: 'Roboto';\n  src: local('Roboto'), local('Roboto-Regular'), url(" + __webpack_require__(60) + ") format('woff2'), url(" + __webpack_require__(61) + ") format('woff'), url(" + __webpack_require__(62) + ") format('truetype');\n  font-weight: 400;\n  font-style: normal;\n}\n* {\n  font-weight: 300;\n}\nhtml,\nbody {\n  font-family: 'Roboto', sans-serif;\n}\nhtml .bg-primary,\nbody .bg-primary {\n  background-color: #009688 !important;\n}\nhtml a,\nbody a,\nhtml a:active,\nbody a:active,\nhtml a:hover,\nbody a:hover {\n  color: rgba(255, 255, 255, 0.87);\n}\nhtml .navbar-toggler-icon,\nbody .navbar-toggler-icon {\n  font-family: 'simple-line-icons';\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  -webkit-font-smoothing: antialiased;\n  color: rgba(255, 255, 255, 0.87);\n}\nhtml .navbar-toggler-icon:before,\nbody .navbar-toggler-icon:before {\n  content: \"\\E601\";\n  display: flex;\n  width: 100%;\n  height: 100%;\n  justify-content: center;\n  align-items: center;\n}\nhtml .main,\nbody .main {\n  margin: 20px;\n}\n", ""]);
+exports.push([module.i, "@font-face {\n  font-family: 'Roboto';\n  src: local('Roboto Light'), local('Roboto-Light'), url(" + __webpack_require__(57) + ") format('woff2'), url(" + __webpack_require__(58) + ") format('woff'), url(" + __webpack_require__(59) + ") format('truetype');\n  font-weight: 300;\n  font-style: normal;\n}\n@font-face {\n  font-family: 'Roboto';\n  src: local('Roboto'), local('Roboto-Regular'), url(" + __webpack_require__(60) + ") format('woff2'), url(" + __webpack_require__(61) + ") format('woff'), url(" + __webpack_require__(62) + ") format('truetype');\n  font-weight: 400;\n  font-style: normal;\n}\n* {\n  font-weight: 300;\n}\nhtml,\nbody {\n  font-family: 'Roboto', sans-serif;\n}\nhtml .bg-primary,\nbody .bg-primary {\n  background-color: #009688 !important;\n}\nhtml nav a,\nbody nav a,\nhtml nav a:active,\nbody nav a:active,\nhtml nav a:hover,\nbody nav a:hover {\n  color: rgba(255, 255, 255, 0.87);\n}\nhtml a,\nbody a,\nhtml a:active,\nbody a:active,\nhtml a:hover,\nbody a:hover {\n  color: rgba(0, 0, 0, 0.87);\n}\nhtml .navbar-toggler-icon,\nbody .navbar-toggler-icon {\n  font-family: 'simple-line-icons';\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  -webkit-font-smoothing: antialiased;\n  color: rgba(255, 255, 255, 0.87);\n}\nhtml .navbar-toggler-icon:before,\nbody .navbar-toggler-icon:before {\n  content: \"\\E601\";\n  display: flex;\n  width: 100%;\n  height: 100%;\n  justify-content: center;\n  align-items: center;\n}\nhtml .main,\nbody .main {\n  margin: 20px;\n}\n", ""]);
 
 // exports
 
@@ -11061,7 +11860,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, "\niframe {\n    border: none;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -11071,15 +11870,186 @@ exports.push([module.i, "\niframe {\n    border: none;\n}\n", ""]);
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_tabs_vue_tabs_js__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_tabs_vue_tabs_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__vue_tabs_vue_tabs_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vue_tabs_vue_tabs_css__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vue_tabs_vue_tabs_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__vue_tabs_vue_tabs_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menu_service_menu_service__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__menu_service_clients_service__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__menu_components_inline_edit_component__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__menu_components_inline_edit_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__menu_components_inline_edit_component__);
 //
 //
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
+    data() {
+        return {
+            message: 'Administración de menus',
+            clients: [],
+            clientsService: __WEBPACK_IMPORTED_MODULE_3__menu_service_clients_service__["a" /* default */].service,
+            activeClient: {},
+            activeTabIndex: -1,
+            newClientName: ''
+        }
+    },
+    created: function() {
+        // application init
+        this.clientsService.clients = this.clients;
+
+        //create an initial client and set it as active
+        this.activeClient = this.clientsService.createClient('Client 1');
+        this.clientsService.activeClient = this.activeClient;
+    },
+    mounted: function() {
+        var $self = this;
+
+        let addOrderToClientCallback = function(_order) {
+            if ($self.$data.activeClient && $self.$data.activeClient.orders) {
+                $self.$data.clientsService.addOrderToClient($self.$data.activeClient, _order);
+            } else {
+                alert('There are no selected clients')
+            }
+        }
+
+        // execute the menu-service init 
+        __WEBPACK_IMPORTED_MODULE_2__menu_service_menu_service__["a" /* default */].gridInit(addOrderToClientCallback);
+
+    },
+    computed: {
+
+    },
+    components: {
+    },
+    methods: {
+        tabChanged: function(activeTabIndex, newTab, oldTab) {
+            this.activeTabIndex = activeTabIndex;
+            this.activeClient = this.clients[activeTabIndex];
+            this.clientsService.activeClient = this.activeClient;
+        },
+        actionOrder: function(action, client, order) {
+            if (action == 'plus') {
+                this.clientsService.addOrderToClient(client, order);
+            } else if (action == 'minus') {
+                this.clientsService.substractOrderToClient(client, order);
+            }
+        },
+        showClientModal: function() {
+            this.$root.$emit('show::modal', 'addClientModal');
+        },
+        showBillModal: function() {
+            this.$root.$emit('show::modal', 'checkAccountModal');
+        },
+        addClient: function(_name) {
+            let name = _name;
+
+            this.$data.clientsService.createClient(_name);
+
+            if (this.$data.clientsService.clients.length === 1) {
+                this.$data.activeClient = this.$data.clients[0];
+                this.$data.clientsService.activeClient = this.$data.activeClient;
+            }
+            this.$data.newClientName = '';
+        }
+    }
 });
+
 
 
 /***/ }),
@@ -11088,14 +12058,201 @@ exports.push([module.i, "\niframe {\n    border: none;\n}\n", ""]);
 
 "use strict";
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _vm._m(0)
+  return _c('div', [_c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "col-md-6 accounts-open"
+  }, [_c('div', {
+    staticClass: "actions-row"
+  }, [_c('button', {
+    staticClass: "btn btn-warning pull-right",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.showClientModal
+    }
+  }, [_vm._v("Nuevo clientes")])]), _vm._v(" "), _c('div', {
+    staticClass: "tabs-container"
+  }, [_c('vue-tabs', {
+    on: {
+      "tab-change": _vm.tabChanged
+    }
+  }, _vm._l((_vm.clients), function(client) {
+    return _c('v-tab', {
+      key: client
+    }, [_c('div', {
+      slot: "title"
+    }, [_c('inline-edit', {
+      attrs: {
+        "text": client.name
+      },
+      on: {
+        "changed": function (val) { return client.name = val; }
+      }
+    })], 1), _vm._v(" "), _c('div', {
+      staticClass: "container-fluid orders-table"
+    }, [_c('div', {
+      staticClass: "row orders-table-header"
+    }, [_c('div', {
+      staticClass: "col-7"
+    }, [_vm._v("Orden")]), _vm._v(" "), _c('div', {
+      staticClass: "col-3 text-center"
+    }, [_vm._v("Cantidad")]), _vm._v(" "), _c('div', {
+      staticClass: "col-2"
+    })]), _vm._v(" "), _vm._l((client.orders), function(order) {
+      return _c('div', {
+        key: order,
+        staticClass: "row orders-table-row"
+      }, [_c('div', {
+        staticClass: "col-7"
+      }, [_vm._v(_vm._s(order.value))]), _vm._v(" "), _c('div', {
+        staticClass: "col-3 text-center"
+      }, [_vm._v("x" + _vm._s(order.amount) + " ")]), _vm._v(" "), _c('div', {
+        staticClass: "col-2"
+      }, [_c('i', {
+        staticClass: "icon-minus icons",
+        on: {
+          "click": function($event) {
+            _vm.actionOrder('minus', client, order)
+          }
+        }
+      }), _vm._v(" "), _c('i', {
+        staticClass: "icon-plus icons",
+        on: {
+          "click": function($event) {
+            _vm.actionOrder('plus', client, order)
+          }
+        }
+      })])])
+    })], 2)])
+  }))], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "text-center"
+  }, [_c('button', {
+    staticClass: "btn btn-success",
+    attrs: {
+      "type": "button",
+      "id": "payButton"
+    },
+    on: {
+      "click": _vm.showBillModal
+    }
+  }, [_vm._v("Pagar Factura")])])]), _vm._v(" "), _c('b-modal', {
+    ref: "addClientModal",
+    attrs: {
+      "id": "addClientModal",
+      "title": "Agregar Cliente",
+      "hide-footer": "true"
+    },
+    on: {
+      "ok": _vm.addClient
+    }
+  }, [_c('form', {
+    on: {
+      "submit": function($event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        _vm.submit($event)
+      }
+    }
+  }, [_c('div', {
+    staticClass: "modal-body"
+  }, [_c('form', [_c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-6"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.newClientName),
+      expression: "newClientName"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "minlength": "1",
+      "required": "",
+      "disable": "true",
+      "placeholder": "Nombre del cliente"
+    },
+    domProps: {
+      "value": (_vm.newClientName)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.newClientName = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-6"
+  }, [_c('button', {
+    staticClass: "btn btn-success",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.addClient(_vm.newClientName)
+      }
+    }
+  }, [_vm._v("Agregar")])])])]), _vm._v(" "), _c('div', {
+    staticClass: "container clients-detail-area"
+  }, _vm._l((_vm.clients), function(client) {
+    return _c('div', {
+      key: client,
+      staticClass: "client-row col-12"
+    }, [_vm._v("\n                            " + _vm._s(client.name) + "\n                        ")])
+  }))])])])]), _vm._v(" "), _c('b-modal', {
+    ref: "checkAccountModal",
+    attrs: {
+      "id": "checkAccountModal",
+      "title": "Pago de Factura",
+      "close-title": "Cancelar",
+      "ok-title": "Pagar"
+    },
+    on: {
+      "ok": _vm.payBill
+    }
+  }, [_c('form', {
+    on: {
+      "submit": function($event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        _vm.submit($event)
+      }
+    }
+  }, [_c('div', {
+    staticClass: "modal-body"
+  }, [_c('form', [_c('input', {
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("Cliente 1"), _c('br'), _vm._v(" "), _c('input', {
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("Cliente 2"), _c('br'), _vm._v(" "), _c('input', {
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("Cliente 3"), _c('br'), _vm._v(" "), _c('input', {
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("Cliente 4"), _c('br')])])])])], 1)
 }
 var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('iframe', {
+  return _c('div', {
+    staticClass: "col-md-6 menu"
+  }, [_c('div', {
     attrs: {
-      "src": "../Views/menu.html",
-      "width": "100%",
-      "height": "700px"
+      "id": "container"
     }
   })])
 }]
