@@ -12371,7 +12371,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.canvas-container {\n    display: flex;\n    justify-content: center;\n}\n", ""]);
 
 // exports
 
@@ -12383,6 +12383,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fabric__ = __webpack_require__(112);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fabric___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_fabric__);
+//
 //
 //
 //
@@ -42103,7 +42104,9 @@ https.request = function (params, cb) {
 
 "use strict";
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._v("\n    " + _vm._s(_vm.message) + "\n    "), _vm._m(0), _vm._v(" "), _c('section', [_c('b-button', {
+  return _c('div', [_vm._v("\n    " + _vm._s(_vm.message) + "\n    "), _vm._m(0), _vm._v(" "), _c('br'), _vm._v(" "), _c('section', {
+    staticClass: "text-center"
+  }, [_c('b-button', {
     attrs: {
       "variant": "warning",
       "size": "sm"
@@ -42516,7 +42519,7 @@ exports.push([module.i, "\n.canvas-container {\n    display: flex;\n    justify-
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_vm._v("\n    " + _vm._s(_vm.message) + "\n    "), _c('div', {
     staticClass: "container"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
+  }, [_vm._m(0), _vm._v(" "), _c('br'), _vm._v(" "), _c('div', {
     staticClass: "text-center"
   }, [_c('div', [_c('b-button', {
     directives: [{

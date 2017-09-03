@@ -7,7 +7,7 @@
                     <canvas id="canvasConfiguration"></canvas>
                 </div>
             </section>
-
+            <br>
             <div class="text-center">
                 <div>
                     <b-button variant="success" size="sm" v-b-modal.addTableModal>

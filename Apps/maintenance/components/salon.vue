@@ -4,7 +4,8 @@
         <div class="canvas-container">
             <canvas id="canvasFloor"></canvas>
         </div>
-        <section>
+        <br>
+        <section class="text-center">
             <b-button variant="warning" size="sm" @click="openAccount">
                 <i class="icon-pin icons"></i>Abrir Cuenta</button>
             </b-button>
@@ -142,5 +143,8 @@ export default {
 }
 </script>
 <style>
-
+.canvas-container {
+    display: flex;
+    justify-content: center;
+}
 </style>
