@@ -177,11 +177,7 @@ MenuGrid.prototype.itemsCallback = function () {
 }
 
 MenuGrid.prototype.toString = function () {
-    console.log(`
-        columns: ${this.columns}
-        rows: ${this.rows}
-        items: ${this.items}
-    `);
+    
 }
 
 let MenuGridComponent = MenuGrid;
