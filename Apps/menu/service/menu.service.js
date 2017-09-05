@@ -1,4 +1,4 @@
-let MenuGrid = require('../menu-grid/menu-grid.js');
+const MenuGrid = require('../menu-grid/menu-grid.js');
 
 function gridInit( _addOrderCallback ) {
     //TODO: esta lista deberia ser una lista de objetos con el nombre y el id de la categoria
@@ -74,4 +74,4 @@ function gridInit( _addOrderCallback ) {
     return grid;
 }
 
-export default { gridInit };
+export default { gridInit: gridInit };

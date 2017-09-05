@@ -56,4 +56,4 @@ const app = new Vue({
       console.log( args );
     }
   }
-}).$mount('#app')
+}).$mount('#app');
