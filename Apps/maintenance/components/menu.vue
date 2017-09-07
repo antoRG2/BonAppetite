@@ -1,8 +1,7 @@
 <template>
     <div>
-        
-        <div class="container">
-
+        <div class="container" v-show="selectedTable.tableNumber">
+            <h4 class="text-right"><b-badge pill variant="success">Mesa #{{selectedTable.tableNumber}}</b-badge> </h4>
             <div class="row">
                 <div class="col-md-6 menu">
                     <div id="container"></div>
@@ -43,6 +42,10 @@
                 <button type="button" id="payButton" class="btn btn-success" v-on:click="showBillModal">Pagar Factura</button>
             </div>
         </div>
+
+            <b-alert variant="warning" show v-if="message">
+                {{message}}
+            </b-alert>
 
         <!-- Agregar Cliente Modal-->
 
@@ -99,38 +102,36 @@ import ClientsService from '../../menu/service/clients.service';
 import '../../menu/components/inline-edit.component';
 
 export default {
+    props: ['tables'],
     data() {
         return {
-            message: 'Administración de menus',
+            message: '',
             clients: [],
             clientsService: ClientsService.service,
             activeClient: {},
             activeTabIndex: -1,
-            newClientName: ''
+            newClientName: '',
+            selectedTable: {}
         }
     },
     created: function() {
-        // application init
-        this.clientsService.clients = this.clients;
 
-        //create an initial client and set it as active
-        this.activeClient = this.clientsService.createClient('Client 1');
-        this.clientsService.activeClient = this.activeClient;
     },
     mounted: function() {
-        var $self = this;
-
-        let addOrderToClientCallback = function(_order) {
-            if ($self.$data.activeClient && $self.$data.activeClient.orders) {
-                $self.$data.clientsService.addOrderToClient($self.$data.activeClient, _order);
+        const tableNumber = this.$route.params.id;
+        if (tableNumber) {
+            const table = this.getTableByNumber(tableNumber);
+            if (table) {
+                this.selectedTable = table;
+                this.message = '';
+                let clients = this.buildTableClients(tableNumber);
+                this.initMenuGrid();
             } else {
-                alert('There are no selected clients')
+                this.message = `Mesa número ${tableNumber} no existe.`;
             }
+        } else {
+            this.message = 'Por favor seleccione un numero de mesa en la pagina del salón.' ;
         }
-
-        // execute the menu-service init 
-        menuService.gridInit(addOrderToClientCallback);
-
     },
     computed: {
 
@@ -149,6 +150,17 @@ export default {
             } else if (action == 'minus') {
                 this.clientsService.substractOrderToClient(client, order);
             }
+        }, buildTableClients: function(tableNumber) {
+            if (tableNumber) {
+                // application init
+                this.clientsService.clients = this.clients;
+
+                //create an initial client and set it as active
+                this.activeClient = this.clientsService.createClient('Client 1');
+                this.clientsService.activeClient = this.activeClient;
+            }
+
+            return this.clientsService.clients;
         },
         showClientModal: function() {
             this.$root.$emit('show::modal', 'addClientModal');
@@ -166,6 +178,31 @@ export default {
                 this.$data.clientsService.activeClient = this.$data.activeClient;
             }
             this.$data.newClientName = '';
+        },
+        getTableByNumber: function(_tableNumber) {
+            let table;
+            if (_tableNumber) {
+                if (this.tables) {
+                    table = this.tables.filter((t) => {
+                        return t.tableNumber === _tableNumber;
+                    })[0];
+                }
+            }
+            return table;
+        },
+        initMenuGrid: function() {
+            const _self = this;
+
+            let addOrderToClientCallback = function(_order) {    
+                if (_self.$data.activeClient && _self.$data.activeClient.orders) {
+                    _self.$data.clientsService.addOrderToClient(_self.$data.activeClient, _order);
+                } else {
+                    alert('There are no selected clients')
+                }
+            }
+
+            // execute the menu-service init 
+            menuService.gridInit(addOrderToClientCallback);
         }
     }
 }

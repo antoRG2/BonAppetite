@@ -1,6 +1,7 @@
 <template>
     <div>
         {{message}}
+        
         <div class="canvas-container">
             <canvas id="canvasFloor"></canvas>
         </div>
@@ -133,11 +134,11 @@ export default {
             openTable.rect.set('fill', 'rgb(255,30,30)');
             openTable.occupied = true;
             this.canvas.renderAll();
-
+            console.log( 'open table', openTable);
             this.$router.app.$emit('save:configuration', this.tableArray, this.floor);
-            this.goToMenu();
-        }, goToMenu: function() {
-            this.$router.push('menu');
+            this.goToMenu(openTable.tableNumber);
+        }, goToMenu: function(_id) {
+            this.$router.push(`/menu/${_id}`);
         }
     }
 }
