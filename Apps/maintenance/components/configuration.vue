@@ -29,7 +29,7 @@
 
         <!-- Table Modal-->
 
-        <b-modal ref="addTableModal" id="addTableModal" title="Agregar Mesa" @shown="clearData" @ok="addTable(canvas, table.number, table.chairs)" ok-title="Agregar">
+        <b-modal ref="addTableModal" id="addTableModal" title="Agregar Mesa" @shown="clearData" @ok="createTableListener" ok-title="Agregar">
             <form @submit.stop.prevent="submit">
                 <div class="form-group">
                     <label for="numeroMesa">Numero de Mesa</label>
@@ -127,6 +127,18 @@ export default {
                     self.objectsSelected(objects);
                 }
             });
+        },
+        createTableListener: function( _event ) {
+            const _table = this.table;
+            const _canvas = this.canvas;
+            console.log( _event, _table, _canvas );
+            if(!_table || !_table.number || !_table.chairs) {
+                _event.cancel();
+                alert('Por favor ingrese un número valido de mesas y sillas.');
+                return;
+            }
+
+            this.addTable(_canvas, _table.chairs, _table.number);
         },
         addTable: function(_canvas, _tableSits, _tableNumber, tablePosX, tablePosY) {
             let rect = this.createTableRect(_canvas, tablePosX || 50, tablePosY || 50);
