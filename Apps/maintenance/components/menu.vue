@@ -126,7 +126,7 @@ export default {
             if (table) {
                 this.selectedTable = table;
                 this.message = '';
-                let clients = this.buildTableClients(tableNumber);
+                let clients = this.buildTableClients(table);
                 this.initMenuGrid(this.computedCategories);
             } else {
                 this.message = `Mesa número ${tableNumber} no existe.`;
@@ -174,13 +174,23 @@ export default {
             } else if (action == 'minus') {
                 this.clientsService.substractOrderToClient(client, order);
             }
-        }, buildTableClients: function(tableNumber) {
-            if (tableNumber) {
+        }, buildTableClients: function(table) {
+            if (table) {
                 // application init
+                if (!table.clients) {
+                    table.clients = [];
+                } 
+
+                this.clients = table.clients;
                 this.clientsService.clients = this.clients;
 
-                //create an initial client and set it as active
-                this.activeClient = this.clientsService.createClient('Client 1');
+                // sets the active client
+                if(this.clients.length === 0) {
+                    this.activeClient = this.clientsService.createClient('Client 1');
+                } else {
+                    this.activeClient = this.clients[0];
+                }
+                
                 this.clientsService.activeClient = this.activeClient;
             }
 
