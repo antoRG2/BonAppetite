@@ -102,7 +102,7 @@ import ClientsService from '../../menu/service/clients.service';
 import '../../menu/components/inline-edit.component';
 
 export default {
-    props: ['tables'],
+    props: ['tables','dishes', 'categories'],
     data() {
         return {
             message: '',
@@ -125,7 +125,7 @@ export default {
                 this.selectedTable = table;
                 this.message = '';
                 let clients = this.buildTableClients(tableNumber);
-                this.initMenuGrid();
+                this.initMenuGrid( this.computedCategories );
             } else {
                 this.message = `Mesa número ${tableNumber} no existe.`;
             }
@@ -134,7 +134,31 @@ export default {
         }
     },
     computed: {
-
+      computedCategories: function(){
+            var alter = [
+                {
+                    id: '1', value: 'carnes', children: [
+                        { id: '12', value: 'hamburguesa' },
+                        { id: '13', value: 'filet' },
+                        { id: '14', value: 'pescado' },
+                        { id: '15', value: 'pollo' }
+                    ]
+                },
+                {
+                    id: '2', value: 'arroz', children: [
+                        { id: '22', value: 'arroz frito' },
+                        { id: '23', value: 'arroz con coco' },
+                        { id: '24', value: 'chino' },
+                        { id: '25', value: 'arroz y salsa' }
+                    ]
+                },
+                { id: '3', value: 'ensaladas' },
+                { id: '4', value: 'entradas' },
+                { id: '5', value: 'postres' }
+            ];
+        console.log(this.categories, this.dishes)
+        return alter;
+      }
     },
     components: {
     },
@@ -190,7 +214,7 @@ export default {
             }
             return table;
         },
-        initMenuGrid: function() {
+        initMenuGrid: function( _computedCategories ) {
             const _self = this;
 
             let addOrderToClientCallback = function(_order) {    
@@ -202,7 +226,7 @@ export default {
             }
 
             // execute the menu-service init 
-            menuService.gridInit(addOrderToClientCallback);
+            menuService.gridInit(addOrderToClientCallback, _computedCategories);
         }
     }
 }

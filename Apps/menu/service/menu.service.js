@@ -1,30 +1,31 @@
 const MenuGrid = require('../menu-grid/menu-grid.js');
 
-function gridInit( _addOrderCallback ) {
+function gridInit( _addOrderCallback , categoriesData) {
     //TODO: esta lista deberia ser una lista de objetos con el nombre y el id de la categoria
-    var categorias = ["carnes", "arroz", "ensaladas", "entradas", "postres"]
-    var productos = ["tiramisu", "brownie", "helado", "pastel"]
-    var alter = [
-        {
-            id: '1', value: 'carnes', children: [
-                { id: '12', value: 'hamburguesa' },
-                { id: '13', value: 'filet' },
-                { id: '14', value: 'pescado' },
-                { id: '15', value: 'pollo' }
-            ]
-        },
-        {
-            id: '2', value: 'arroz', children: [
-                { id: '22', value: 'arroz frito' },
-                { id: '23', value: 'arroz con coco' },
-                { id: '24', value: 'chino' },
-                { id: '25', value: 'arroz y salsa' }
-            ]
-        },
-        { id: '3', value: 'ensaladas' },
-        { id: '4', value: 'entradas' },
-        { id: '5', value: 'postres' }
-    ];
+//     var categorias = ["carnes", "arroz", "ensaladas", "entradas", "postres"]
+//     var productos = ["tiramisu", "brownie", "helado", "pastel"]
+//     var alter = [
+//         {
+//             id: '1', value: 'carnes', children: [
+//                 { id: '12', value: 'hamburguesa' },
+//                 { id: '13', value: 'filet' },
+//                 { id: '14', value: 'pescado' },
+//                 { id: '15', value: 'pollo' }
+//             ]
+//         },
+//         {
+//             id: '2', value: 'arroz', children: [
+//                 { id: '22', value: 'arroz frito' },
+//                 { id: '23', value: 'arroz con coco' },
+//                 { id: '24', value: 'chino' },
+//                 { id: '25', value: 'arroz y salsa' }
+//             ]
+//         },
+//         { id: '3', value: 'ensaladas' },
+//         { id: '4', value: 'entradas' },
+//         { id: '5', value: 'postres' }
+//     ];
+    let alter = categoriesData;
 
     var grid = new MenuGrid.MenuGridComponent(3, 4, alter);
 
