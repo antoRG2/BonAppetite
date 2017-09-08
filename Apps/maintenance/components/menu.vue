@@ -1,7 +1,9 @@
 <template>
     <div>
         <div class="container" v-show="selectedTable.tableNumber">
-            <h4 class="text-right"><b-badge pill variant="success">Mesa #{{selectedTable.tableNumber}}</b-badge> </h4>
+            <h4 class="text-right">
+                <b-badge pill variant="success">Mesa #{{selectedTable.tableNumber}}</b-badge>
+            </h4>
             <div class="row">
                 <div class="col-md-6 menu">
                     <div id="container"></div>
@@ -43,9 +45,9 @@
             </div>
         </div>
 
-            <b-alert variant="warning" show v-if="message">
-                {{message}}
-            </b-alert>
+        <b-alert variant="warning" show v-if="message">
+            {{message}}
+        </b-alert>
 
         <!-- Agregar Cliente Modal-->
 
@@ -59,7 +61,7 @@
                                     <input type="text" class="form-control" v-model="newClientName" minlength="1" required disable="true" placeholder="Nombre del cliente">
                                 </div>
                                 <div class="col-6">
-                                    <button type="button" v-on:click="addClient(newClientName)" class="btn btn-success">Agregar</button>
+                                    <button type="button" v-on:click="addClient" class="btn btn-success">Agregar</button>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +104,7 @@ import ClientsService from '../../menu/service/clients.service';
 import '../../menu/components/inline-edit.component';
 
 export default {
-    props: ['tables','dishes', 'categories'],
+    props: ['tables', 'dishes', 'categories'],
     data() {
         return {
             message: '',
@@ -125,40 +127,38 @@ export default {
                 this.selectedTable = table;
                 this.message = '';
                 let clients = this.buildTableClients(tableNumber);
-                this.initMenuGrid( this.computedCategories );
+                this.initMenuGrid(this.computedCategories);
             } else {
                 this.message = `Mesa número ${tableNumber} no existe.`;
             }
         } else {
-            this.message = 'Por favor seleccione un numero de mesa en la pagina del salón.' ;
+            this.message = 'Por favor seleccione un numero de mesa en la pagina del salón.';
         }
     },
     computed: {
-      computedCategories: function(){
-            var alter = [
-                {
-                    id: '1', value: 'carnes', children: [
-                        { id: '12', value: 'hamburguesa' },
-                        { id: '13', value: 'filet' },
-                        { id: '14', value: 'pescado' },
-                        { id: '15', value: 'pollo' }
-                    ]
-                },
-                {
-                    id: '2', value: 'arroz', children: [
-                        { id: '22', value: 'arroz frito' },
-                        { id: '23', value: 'arroz con coco' },
-                        { id: '24', value: 'chino' },
-                        { id: '25', value: 'arroz y salsa' }
-                    ]
-                },
-                { id: '3', value: 'ensaladas' },
-                { id: '4', value: 'entradas' },
-                { id: '5', value: 'postres' }
-            ];
-        console.log(this.categories, this.dishes)
-        return alter;
-      }
+        computedCategories: function() {
+            let root = this.categories.data.map((_cat) => {
+
+                let _children = this.dishes.data.filter(_d => {
+                    return _d.category.id == _cat.id;
+                }).map(_d => {
+                    return {
+                        id: _d.id,
+                        value: _d.name
+                    }
+                });
+
+                return {
+                    id: _cat.id,
+                    value: _cat.name,
+                    children: _children
+                }
+            });
+
+            console.log('root', root);
+
+            return root;
+        }
     },
     components: {
     },
@@ -192,16 +192,20 @@ export default {
         showBillModal: function() {
             this.$root.$emit('show::modal', 'checkAccountModal');
         },
-        addClient: function(_name) {
-            let name = _name;
+        addClient: function(event) {
+            if (this.newClientName) {
+                let name = this.newClientName;
 
-            this.$data.clientsService.createClient(_name);
+                this.$data.clientsService.createClient(name);
 
-            if (this.$data.clientsService.clients.length === 1) {
-                this.$data.activeClient = this.$data.clients[0];
-                this.$data.clientsService.activeClient = this.$data.activeClient;
+                if (this.$data.clientsService.clients.length === 1) {
+                    this.$data.activeClient = this.$data.clients[0];
+                    this.$data.clientsService.activeClient = this.$data.activeClient;
+                }
+                this.$data.newClientName = '';
+            } else {
+                alert('Por favor ingrese un nombre valido');
             }
-            this.$data.newClientName = '';
         },
         getTableByNumber: function(_tableNumber) {
             let table;
@@ -214,10 +218,10 @@ export default {
             }
             return table;
         },
-        initMenuGrid: function( _computedCategories ) {
+        initMenuGrid: function(_computedCategories) {
             const _self = this;
 
-            let addOrderToClientCallback = function(_order) {    
+            let addOrderToClientCallback = function(_order) {
                 if (_self.$data.activeClient && _self.$data.activeClient.orders) {
                     _self.$data.clientsService.addOrderToClient(_self.$data.activeClient, _order);
                 } else {
