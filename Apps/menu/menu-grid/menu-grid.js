@@ -38,21 +38,21 @@ function MenuGrid(columns, rows, items) {
 }
 
 MenuGrid.prototype.create = function (gridConfiguration) {
-    let gConf = gridConfiguration || this.defaultProps;
+    let gridConf = gridConfiguration || this.defaultProps;
 
     if (!gridConfiguration) {
-        gConf.columns = this.columns || this.defaultProps.columns;
-        gConf.rows = this.rows || this.defaultProps.rows;
-        gConf.rowsDef = this.rowsDef || this.defaultProps.rowsDef;
+        gridConf.columns = this.columns || this.defaultProps.columns;
+        gridConf.rows = this.rows || this.defaultProps.rows;
+        gridConf.rowsDef = this.rowsDef || this.defaultProps.rowsDef;
     }
 
     let grid = {
-        columns: gConf.columns || this.columns,
-        rows: gConf.rows || this.rows,
-        items: gConf.items || this.items || [],
-        rowsDef: gConf.rowsDef || this.defaultProps.rowsDef,
-        columnsDef: gConf.columnsDef || this.defaultProps.columnsDef,
-        actionsDef: gConf.actionsDef || this.actionsDef
+        columns: gridConf.columns || this.columns,
+        rows: gridConf.rows || this.rows,
+        items: gridConf.items || this.items || [],
+        rowsDef: gridConf.rowsDef || this.defaultProps.rowsDef,
+        columnsDef: gridConf.columnsDef || this.defaultProps.columnsDef,
+        actionsDef: gridConf.actionsDef || this.actionsDef
     }
 
     this.domElement = this.generateDom(grid);
@@ -177,13 +177,9 @@ MenuGrid.prototype.itemsCallback = function () {
 }
 
 MenuGrid.prototype.toString = function () {
-    console.log(`
-        columns: ${this.columns}
-        rows: ${this.rows}
-        items: ${this.items}
-    `);
+    
 }
 
 let MenuGridComponent = MenuGrid;
 
-export { MenuGridComponent }
+export { MenuGridComponent };

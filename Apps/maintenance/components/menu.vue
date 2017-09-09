@@ -1,8 +1,9 @@
 <template>
     <div>
-        
-        <div class="container">
-
+        <div class="container" v-show="selectedTable.tableNumber">
+            <h4 class="text-right">
+                <b-badge pill variant="success">Mesa #{{selectedTable.tableNumber}}</b-badge>
+            </h4>
             <div class="row">
                 <div class="col-md-6 menu">
                     <div id="container"></div>
@@ -44,6 +45,10 @@
             </div>
         </div>
 
+        <b-alert variant="warning" show v-if="message">
+            {{message}}
+        </b-alert>
+
         <!-- Agregar Cliente Modal-->
 
         <b-modal ref="addClientModal" id="addClientModal" title="Agregar Cliente" @ok="addClient" hide-footer="true">
@@ -56,7 +61,7 @@
                                     <input type="text" class="form-control" v-model="newClientName" minlength="1" required disable="true" placeholder="Nombre del cliente">
                                 </div>
                                 <div class="col-6">
-                                    <button type="button" v-on:click="addClient(newClientName)" class="btn btn-success">Agregar</button>
+                                    <button type="button" v-on:click="addClient" class="btn btn-success">Agregar</button>
                                 </div>
                             </div>
                         </div>
@@ -99,41 +104,61 @@ import ClientsService from '../../menu/service/clients.service';
 import '../../menu/components/inline-edit.component';
 
 export default {
+    props: ['tables', 'dishes', 'categories'],
     data() {
         return {
-            message: 'Administración de menus',
+            message: '',
             clients: [],
             clientsService: ClientsService.service,
             activeClient: {},
             activeTabIndex: -1,
-            newClientName: ''
+            newClientName: '',
+            selectedTable: {}
         }
     },
     created: function() {
-        // application init
-        this.clientsService.clients = this.clients;
 
-        //create an initial client and set it as active
-        this.activeClient = this.clientsService.createClient('Client 1');
-        this.clientsService.activeClient = this.activeClient;
     },
     mounted: function() {
-        var $self = this;
-
-        let addOrderToClientCallback = function(_order) {
-            if ($self.$data.activeClient && $self.$data.activeClient.orders) {
-                $self.$data.clientsService.addOrderToClient($self.$data.activeClient, _order);
+        const tableNumber = this.$route.params.id;
+        if (tableNumber) {
+            const table = this.getTableByNumber(tableNumber);
+            if (table) {
+                this.selectedTable = table;
+                this.message = '';
+                let clients = this.buildTableClients(table);
+                this.initMenuGrid(this.computedCategories);
             } else {
-                alert('There are no selected clients')
+                this.message = `Mesa número ${tableNumber} no existe.`;
             }
+        } else {
+            this.message = 'Por favor seleccione un numero de mesa en la pagina del salón.';
         }
-
-        // execute the menu-service init 
-        menuService.gridInit(addOrderToClientCallback);
-
     },
     computed: {
+        computedCategories: function() {
+            let root = this.categories.data.map((_cat) => {
 
+                let _children = this.dishes.data.filter(_d => {
+                    return _d.category.id == _cat.id;
+                }).map(_d => {
+                    return {
+                        id: _d.id,
+                        value: _d.name
+                    }
+                });
+
+                return {
+                    id: _cat.id,
+                    value: _cat.name,
+                    children: _children
+                }
+            });
+
+            console.log('root', root);
+
+            return root;
+        }
     },
     components: {
     },
@@ -149,6 +174,27 @@ export default {
             } else if (action == 'minus') {
                 this.clientsService.substractOrderToClient(client, order);
             }
+        }, buildTableClients: function(table) {
+            if (table) {
+                // application init
+                if (!table.clients) {
+                    table.clients = [];
+                } 
+
+                this.clients = table.clients;
+                this.clientsService.clients = this.clients;
+
+                // sets the active client
+                if(this.clients.length === 0) {
+                    this.activeClient = this.clientsService.createClient('Client 1');
+                } else {
+                    this.activeClient = this.clients[0];
+                }
+                
+                this.clientsService.activeClient = this.activeClient;
+            }
+
+            return this.clientsService.clients;
         },
         showClientModal: function() {
             this.$root.$emit('show::modal', 'addClientModal');
@@ -156,16 +202,45 @@ export default {
         showBillModal: function() {
             this.$root.$emit('show::modal', 'checkAccountModal');
         },
-        addClient: function(_name) {
-            let name = _name;
+        addClient: function(event) {
+            if (this.newClientName) {
+                let name = this.newClientName;
 
-            this.$data.clientsService.createClient(_name);
+                this.$data.clientsService.createClient(name);
 
-            if (this.$data.clientsService.clients.length === 1) {
-                this.$data.activeClient = this.$data.clients[0];
-                this.$data.clientsService.activeClient = this.$data.activeClient;
+                if (this.$data.clientsService.clients.length === 1) {
+                    this.$data.activeClient = this.$data.clients[0];
+                    this.$data.clientsService.activeClient = this.$data.activeClient;
+                }
+                this.$data.newClientName = '';
+            } else {
+                alert('Por favor ingrese un nombre valido');
             }
-            this.$data.newClientName = '';
+        },
+        getTableByNumber: function(_tableNumber) {
+            let table;
+            if (_tableNumber) {
+                if (this.tables) {
+                    table = this.tables.filter((t) => {
+                        return t.tableNumber === _tableNumber;
+                    })[0];
+                }
+            }
+            return table;
+        },
+        initMenuGrid: function(_computedCategories) {
+            const _self = this;
+
+            let addOrderToClientCallback = function(_order) {
+                if (_self.$data.activeClient && _self.$data.activeClient.orders) {
+                    _self.$data.clientsService.addOrderToClient(_self.$data.activeClient, _order);
+                } else {
+                    alert('There are no selected clients')
+                }
+            }
+
+            // execute the menu-service init 
+            menuService.gridInit(addOrderToClientCallback, _computedCategories);
         }
     }
 }
