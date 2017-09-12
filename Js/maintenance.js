@@ -36195,6 +36195,10 @@ const router = new VueRouter({
   ]
 })
 
+const initialTables = `[{"arrayNumber":0,"rect":{"type":"rect","originX":"left","originY":"top","left":136.86,"top":144.31,"width":50,"height":50,"fill":"rgb(146,99,5)","stroke":null,"strokeWidth":1,"strokeDashArray":null,"strokeLineCap":"butt","strokeLineJoin":"miter","strokeMiterLimit":10,"scaleX":4.73,"scaleY":4.73,"angle":29.47,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"clipTo":null,"backgroundColor":"","fillRule":"nonzero","globalCompositeOperation":"source-over","transformMatrix":null,"skewX":0,"skewY":0,"rx":0,"ry":0},"tableSits":"3","tableNumber":"2","occupied":false,"disabled":false},{"arrayNumber":1,"rect":{"type":"rect","originX":"left","originY":"top","left":331,"top":43,"width":50,"height":50,"fill":"rgb(146,99,5)","stroke":null,"strokeWidth":1,"strokeDashArray":null,"strokeLineCap":"butt","strokeLineJoin":"miter","strokeMiterLimit":10,"scaleX":2.51,"scaleY":2.51,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"clipTo":null,"backgroundColor":"","fillRule":"nonzero","globalCompositeOperation":"source-over","transformMatrix":null,"skewX":0,"skewY":0,"rx":0,"ry":0},"tableSits":"9","tableNumber":"8","occupied":false,"disabled":false}]`
+
+
+
 const app = new Vue({
   router,
   data: {
@@ -36211,6 +36215,8 @@ const app = new Vue({
     }
   },
   created: function() {
+    // // TODO: Remove temporal table configuration 
+    this.localTables = JSON.parse(initialTables);
     this.$on('save:configuration', ( _tablesConfiguration, _floorConfiguration) => {
       console.log( _tablesConfiguration, _floorConfiguration );
       this.localTables = _tablesConfiguration;
@@ -39536,7 +39542,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.menu-section .alert {\n    margin-top: 1rem;\n}\n", ""]);
 
 // exports
 
@@ -39554,6 +39560,10 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__menu_service_clients_service__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__menu_components_inline_edit_component__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__menu_components_inline_edit_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__menu_components_inline_edit_component__);
+//
+//
+//
+//
 //
 //
 //
@@ -39669,7 +39679,9 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
             activeClient: {},
             activeTabIndex: -1,
             newClientName: '',
-            selectedTable: {}
+            selectedTable: {},
+            billSelected: [],
+            billFeedback: ''
         }
     },
     created: function() {
@@ -39718,6 +39730,17 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
     },
     components: {
     },
+    watch: {
+        billSelected(newVal, oldVal) {
+            console.log('bill selected', newVal);
+            if (newVal.length === 0) {
+                this.billFeedback = 'Seleccione almenos un cliente para generar factura';
+            } else {
+                this.billFeedback = '';
+            }
+        }
+    }
+    ,
     methods: {
         tabChanged: function(activeTabIndex, newTab, oldTab) {
             this.activeTabIndex = activeTabIndex;
@@ -39735,18 +39758,18 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
                 // application init
                 if (!table.clients) {
                     table.clients = [];
-                } 
+                }
 
                 this.clients = table.clients;
                 this.clientsService.clients = this.clients;
 
                 // sets the active client
-                if(this.clients.length === 0) {
+                if (this.clients.length === 0) {
                     this.activeClient = this.clientsService.createClient('Client 1');
                 } else {
                     this.activeClient = this.clients[0];
                 }
-                
+
                 this.clientsService.activeClient = this.activeClient;
             }
 
@@ -39809,7 +39832,9 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('div', {
+  return _c('div', {
+    staticClass: "menu-section"
+  }, [_c('div', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -39996,23 +40021,32 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
     }
   }, [_c('div', {
     staticClass: "modal-body"
-  }, [_c('form', [_c('input', {
+  }, [_c('form', [_c('div', {
+    staticClass: "custom-controls-stacked",
     attrs: {
-      "type": "checkbox"
+      "id": "clientsCheckboxed"
     }
-  }), _vm._v("Cliente 1"), _c('br'), _vm._v(" "), _c('input', {
+  }, _vm._l((_vm.clients), function(client) {
+    return _c('b-form-checkbox', {
+      key: client,
+      attrs: {
+        "name": "client-bill-checks",
+        "value": client.id
+      },
+      model: {
+        value: (_vm.billSelected),
+        callback: function($$v) {
+          _vm.billSelected = $$v
+        },
+        expression: "billSelected"
+      }
+    }, [_vm._v("\n                            " + _vm._s(client.name) + "\n                        ")])
+  })), _vm._v(" "), (_vm.billFeedback) ? _c('b-alert', {
     attrs: {
-      "type": "checkbox"
+      "variant": "warning",
+      "show": ""
     }
-  }), _vm._v("Cliente 2"), _c('br'), _vm._v(" "), _c('input', {
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("Cliente 3"), _c('br'), _vm._v(" "), _c('input', {
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("Cliente 4"), _c('br')])])])])], 1)
+  }, [_vm._v("\n                        " + _vm._s(_vm.billFeedback) + "\n                    ")]) : _vm._e()], 1)])])])], 1)
 }
 var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
@@ -40192,6 +40226,7 @@ exports.push([module.i, "\n.canvas-container {\n    display: flex;\n    justify-
         var canvas = new fabric.Canvas('canvasFloor', this.floor.size);
         canvas.backgroundColor = this.floor.backgroundColor;
         this.loadConfiguration(canvas, JSON.parse(JSON.stringify(this.tables)), this.floor);
+        
         canvas.renderAll();
         this.canvas = canvas;
         //select table event
