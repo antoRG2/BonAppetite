@@ -1,8 +1,13 @@
 import './maintenance/styles.less';
 import "./node_modules/simple-line-icons/less/simple-line-icons.less";
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+import BootstrapVue from 'bootstrap-vue';
 import Vuetable from 'vuetable-2';
+
 Vue.use(Vuetable);
-Vue.use(VueRouter)
+Vue.use(VueRouter);
+Vue.use(BootstrapVue);
 
 import Home from './maintenance/components/home.vue';
 import Categories from './maintenance/components/categories.vue';
