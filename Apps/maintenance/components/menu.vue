@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="menu-section">
         <div class="container" v-show="selectedTable.tableNumber">
             <h4 class="text-right">
                 <b-badge pill variant="success">Mesa #{{selectedTable.tableNumber}}</b-badge>
@@ -83,10 +83,14 @@
             <form @submit.stop.prevent="submit">
                 <div class="modal-body">
                     <form>
-                        <input type="checkbox">Cliente 1<br>
-                        <input type="checkbox">Cliente 2<br>
-                        <input type="checkbox">Cliente 3<br>
-                        <input type="checkbox">Cliente 4<br>
+                        <div id="clientsCheckboxed" class="custom-controls-stacked">
+                            <b-form-checkbox v-for="client in clients" v-model="billSelected" :key="client" name="client-bill-checks" :value="client.id">
+                                {{client.name}}
+                            </b-form-checkbox>
+                        </div>
+                        <b-alert variant="warning" show v-if="billFeedback">
+                            {{billFeedback}}
+                        </b-alert>
                     </form>
                 </div>
             </form>
@@ -113,7 +117,9 @@ export default {
             activeClient: {},
             activeTabIndex: -1,
             newClientName: '',
-            selectedTable: {}
+            selectedTable: {},
+            billSelected: [],
+            billFeedback: ''
         }
     },
     created: function() {
@@ -162,6 +168,17 @@ export default {
     },
     components: {
     },
+    watch: {
+        billSelected(newVal, oldVal) {
+            console.log('bill selected', newVal);
+            if (newVal.length === 0) {
+                this.billFeedback = 'Seleccione almenos un cliente para generar factura';
+            } else {
+                this.billFeedback = '';
+            }
+        }
+    }
+    ,
     methods: {
         tabChanged: function(activeTabIndex, newTab, oldTab) {
             this.activeTabIndex = activeTabIndex;
@@ -179,18 +196,18 @@ export default {
                 // application init
                 if (!table.clients) {
                     table.clients = [];
-                } 
+                }
 
                 this.clients = table.clients;
                 this.clientsService.clients = this.clients;
 
                 // sets the active client
-                if(this.clients.length === 0) {
+                if (this.clients.length === 0) {
                     this.activeClient = this.clientsService.createClient('Client 1');
                 } else {
                     this.activeClient = this.clients[0];
                 }
-                
+
                 this.clientsService.activeClient = this.activeClient;
             }
 
@@ -247,6 +264,8 @@ export default {
 
 </script>
 <style>
-
+.menu-section .alert {
+    margin-top: 1rem;
+}
 </style>
 

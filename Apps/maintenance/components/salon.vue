@@ -57,6 +57,7 @@ export default {
         var canvas = new fabric.Canvas('canvasFloor', this.floor.size);
         canvas.backgroundColor = this.floor.backgroundColor;
         this.loadConfiguration(canvas, JSON.parse(JSON.stringify(this.tables)), this.floor);
+        
         canvas.renderAll();
         this.canvas = canvas;
         //select table event
