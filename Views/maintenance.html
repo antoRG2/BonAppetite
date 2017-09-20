@@ -19,16 +19,13 @@
         <b-navbar type="inverse" variant="primary" toggleable>
             <b-navbar-brand href="#"><router-link to="/">Restaurante</router-link></b-navbar-brand>
             <b-nav-toggle target="nav_dropdown_collapse"></b-nav-toggle>
-            <b-collapse is-nav id="nav_dropdown_collapse">
+            <b-collapse is-nav id="nav_dropdown_collapse" v-if="isLogged">
                 <b-nav is-nav-bar>
                     <b-nav-item>
                         <router-link to="/categorias">Categorias</router-link>
                     </b-nav-item>
                     <b-nav-item>
                         <router-link to="/platillos">Platillos</router-link>
-                    </b-nav-item>
-                    <b-nav-item>
-                        <router-link to="/menu">Menu</router-link>
                     </b-nav-item>
                     <b-nav-item>
                         <router-link to="/salon">Salón</router-link>

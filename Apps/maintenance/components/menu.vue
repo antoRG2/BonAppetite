@@ -41,7 +41,7 @@
             </div>
 
             <div class="text-center">
-                <button type="button" id="payButton" class="btn btn-success" v-on:click="showBillModal">Pagar Factura</button>
+                <button type="button" id="payButton" class="btn btn-success" v-on:click="showBillModal">Facturar</button>
             </div>
         </div>
 
