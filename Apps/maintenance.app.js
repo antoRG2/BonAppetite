@@ -1,13 +1,21 @@
 import './maintenance/styles.less';
 import "./node_modules/simple-line-icons/less/simple-line-icons.less";
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-
 import BootstrapVue from 'bootstrap-vue';
 import Vuetable from 'vuetable-2';
+
+// TODO: just for testing
+Vue.config.devtools = true;
 
 Vue.use(Vuetable);
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
+
+
+import {
+  MaintenanceStore
+} from './maintenance/store/maintenance';
+
 
 import Home from './maintenance/components/home.vue';
 import Login from './maintenance/components/login.vue';
@@ -16,6 +24,8 @@ import Dishes from './maintenance/components/dishes.vue';
 import Menu from './maintenance/components/menu.vue';
 import Salon from './maintenance/components/salon.vue';
 import Configuration from './maintenance/components/configuration.vue';
+import Measurements from './maintenance/components/measurements.vue';
+
 import ApiService from './maintenance/services/api.service';
 
 const Ingredients = {
@@ -60,6 +70,10 @@ const router = new VueRouter({
       component: Home
     },
     {
+      path: '/unidadesmedida',
+      component: Measurements
+    },
+    {
       path: '**',
       redirect: '/login'
     }
@@ -70,6 +84,7 @@ const initialTables = `[{"arrayNumber":0,"rect":{"type":"rect","originX":"left",
 
 const app = new Vue({
   router,
+  store: MaintenanceStore,
   data: {
     localCategories: categories,
     localDishes: dishes,
