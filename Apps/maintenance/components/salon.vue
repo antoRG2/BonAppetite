@@ -6,12 +6,7 @@
             <canvas id="canvasFloor"></canvas>
         </div>
         <br>
-        <section class="text-center">
-            <b-button variant="warning" size="sm" @click="openAccount">
-                <i class="icon-pin icons"></i>Abrir Cuenta</button>
-            </b-button>
-        </section>
-
+        
         <b-modal ref="modalTable" id="modalTable" title="Cuenta Mesa 1" @ok="submit" @shown="clearName" close-title="Cerrar" ok-title="Pagar">
             <form @submit.stop.prevent="submit">
 
@@ -71,8 +66,10 @@ export default {
                         objects = [event.target];
                     }
                     this.objectsSelected(objects);
-                    this.$root.$emit('show::modal', 'openAccountModal');
+                    //this.$root.$emit('show::modal', 'openAccountModal');
                     canvas.renderAll();
+                    this.openAccount();
+                    
                 }
             }
         });
@@ -133,9 +130,18 @@ export default {
             // change the color of the selected object
             let openTable = this.selectedObjects[0];
             openTable.rect.set('fill', 'rgb(255,30,30)');
+
+            
+            var text = new fabric.Text('hello world', {
+              fontSize: 30,
+              originX: 'center',
+              originY: 'center'
+            });
+
+            
             openTable.occupied = true;
             this.canvas.renderAll();
-            console.log( 'open table', openTable);
+
             this.$router.app.$emit('save:configuration', this.tableArray, this.floor);
             this.goToMenu(openTable.tableNumber);
         }, goToMenu: function(_id) {
