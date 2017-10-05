@@ -1,37 +1,42 @@
 const Measurements = {
-    namespaced:true,
-    state: {
-        list: [],
-        message: 'Unidades de medida' 
+  namespaced: true,
+  state: {
+    list: [],
+    message: "Unidades de medida"
+  },
+  mutations: {
+    add: (state, payload) => {
+      state.list.push({
+        description: payload.description,
+        id: Math.floor(Math.random() * 1e6),
+        unity: payload.unity
+      });
     },
-    mutations: {
-        add: (state, payload) => {
-            state.list.push(
-                {
-                    description: payload.description,
-                    id: Math.floor( Math.random() * 1e6)
-                }
-            )
-        },
-        delete: (state, payload) => {
-            state.list = state.list.filter( element => {
-                return element.id != payload.id;
-            });
-        }
+    delete: (state, payload) => {
+      state.list = state.list.filter(element => {
+        return element.id != payload.id;
+      });
     },
-    actions: {
+    update: (state, payload) => {
+      let element = state.list.filter(item => {
+        return item.id === payload.id;
+      })[0];
 
-    },
-    getters: {
-        getMessage: (state) => {
-            return state.message;
-        },
-        getList: (state) => {
-            return Object.assign([],state.list);
-        }
+      element.description = payload.description;
+      element.unity = payload.unity;
+
+      return element;
     }
-}
-
-export {
-    Measurements
+  },
+  actions: {},
+  getters: {
+    getMessage: state => {
+      return state.message;
+    },
+    getList: state => {
+      return Object.assign([], state.list);
+    }
+  }
 };
+
+export { Measurements };
