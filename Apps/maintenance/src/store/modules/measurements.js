@@ -26,9 +26,19 @@ const Measurements = {
       element.unity = payload.unity;
 
       return element;
+    },
+    init: (state, payload) => {
+      state.list = Object.assign([],payload);
     }
   },
-  actions: {},
+  actions: {
+    load({commit, state}, list) {
+      return new Promise((resolve, reject) => {
+        commit('init', list);
+        resolve(list);
+      });
+    }
+  },
   getters: {
     getMessage: state => {
       return state.message;

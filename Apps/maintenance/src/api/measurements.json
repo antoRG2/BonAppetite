@@ -1,0 +1,22 @@
+[
+  {
+    "id": "11125",
+    "description": "Kilogramos",
+    "unity": "kg"
+  },
+  {
+    "id": "11133",
+    "description": "gramos",
+    "unity": "g"
+  },
+  {
+    "id": "11144",
+    "description": "Cucharadas",
+    "unity": "cucharadas"
+  },
+  {
+    "id": "11166",
+    "description": "Pizcas",
+    "unity": "pz"
+  }
+]
