@@ -9,7 +9,7 @@ const Measurements = {
       state.list.push({
         description: payload.description,
         id: Math.floor(Math.random() * 1e6),
-        unity: payload.unity
+        symbol: payload.symbol
       });
     },
     delete: (state, payload) => {
@@ -23,7 +23,7 @@ const Measurements = {
       })[0];
 
       element.description = payload.description;
-      element.unity = payload.unity;
+      element.symbol = payload.symbol;
 
       return element;
     },

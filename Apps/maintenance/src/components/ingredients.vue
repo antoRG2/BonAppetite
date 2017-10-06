@@ -15,10 +15,33 @@
           </b-button>
         </div>
       </template>
+      <template slot="measurement" scope="props">
+        <div>
+          {{computeMeasurement(props ? props.row : '')}}
+        </div>
+      </template>
     </v-client-table>
-    <b-button variant="success" size="sm" @click="newIngredient">
+    <b-button variant="success" size="sm" v-b-modal.modalCreate>
       Agregar Ingrediente
     </b-button>
+
+    <b-modal ref="modalCreate" id="modalCreate" title="Crear Unidad de Medida" @ok="create" @shown="clearName" close-title="Cerrar">
+      <form @submit.stop.prevent="submit">
+        <b-form-input type="text" placeholder="Descripción" v-model="payload.description"></b-form-input>
+        <b-form-select v-model="payload.measurement.id" :options="measurementsList">
+        </b-form-select>
+      </form>
+    </b-modal>
+
+    <b-modal ref="modalUpdate" id="modalUpdate" title="Editar Unidad de Medida" @ok="update" close-title="Cerrar">
+      <form @submit.stop.prevent="submit">
+        <b-form-input type="text" placeholder="Id" v-model="payload.id" readonly></b-form-input>
+        <b-form-input type="text" placeholder="Descripción" v-model="payload.description"></b-form-input>
+        <b-form-select v-model="payload.measurement.id" :options="measurementsList">
+        </b-form-select>
+      </form>
+    </b-modal>
+
   </div>
 </template>
 <script>
@@ -28,6 +51,13 @@ export default {
     return {
       options: {
 
+      },
+      payload: {
+        id: '',
+        description: '',
+        measurement: {
+          id: ''
+        }
       }
     }
   },
@@ -36,21 +66,71 @@ export default {
       return this.$store.getters['ingredients/getMessage'];
     },
     fields() {
-      return ['id', 'description', 'actions']
+      return ['id', 'description', 'measurement', 'actions']
     },
     items() {
       return this.$store.getters['ingredients/getList'].map(element => {
-        return { id: element.id, description: element.description };
+
+        return { ...element };
+      })
+    },
+    measurementsList() {
+      return this.$store.getters['measurements/getList'].map(element => {
+        const option = { value: element.id, text: `${element.description}/${element.symbol}` };
+        return option;
       })
     }
   },
   methods: {
-    newIngredient($event) {
+    addIngredient(payload) {
       this.$store.commit({
         type: 'ingredients/add',
-        description: Date.now().toString()
+        ...payload
       })
     },
+    deleteIngredient(payload) {
+      this.$store.commit({
+        type: 'ingredients/delete',
+        ...payload
+      })
+    },
+    updateIngredient(payload) {
+      this.$store.commit({
+        type: 'ingredients/update',
+        ...payload
+      })
+    },
+    clearName() {
+      this.payload = {
+        id: '',
+        description: '',
+        measurement: {
+          id: ''
+        }
+      };
+    },
+    create() {
+      this.addIngredient(this.payload);
+    },
+    editRow(_row) {
+      this.payload = {
+        ..._row
+      };
+      this.$refs.modalUpdate.show();
+    },
+    deleteRow(_row) {
+      this.deleteIngredient(_row);
+    },
+    update() {
+      this.updateIngredient(this.payload);
+    },
+    computeMeasurement(_row) {
+      if (_row && this.measurementsList) {
+        return this.measurementsList.find( element => {
+          return element.value == _row.measurement.id;
+        }).text;
+      }
+    }
   }
 }
 </script>
