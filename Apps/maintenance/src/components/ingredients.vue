@@ -25,7 +25,7 @@
       Agregar Ingrediente
     </b-button>
 
-    <b-modal ref="modalCreate" id="modalCreate" title="Crear Unidad de Medida" @ok="create" @shown="clearName" close-title="Cerrar">
+    <b-modal ref="modalCreate" id="modalCreate" title="Crear Ingrediente" @ok="create" @shown="clearName" close-title="Cerrar">
       <form @submit.stop.prevent="submit">
         <b-form-input type="text" placeholder="Descripción" v-model="payload.description"></b-form-input>
         <b-form-select v-model="payload.measurement.id" :options="measurementsList">
@@ -33,7 +33,7 @@
       </form>
     </b-modal>
 
-    <b-modal ref="modalUpdate" id="modalUpdate" title="Editar Unidad de Medida" @ok="update" close-title="Cerrar">
+    <b-modal ref="modalUpdate" id="modalUpdate" title="Editar Ingrediente" @ok="update" close-title="Cerrar">
       <form @submit.stop.prevent="submit">
         <b-form-input type="text" placeholder="Id" v-model="payload.id" readonly></b-form-input>
         <b-form-input type="text" placeholder="Descripción" v-model="payload.description"></b-form-input>
