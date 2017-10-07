@@ -9,7 +9,7 @@ const Measurements = {
       state.list.push({
         description: payload.description,
         id: Math.floor(Math.random() * 1e6),
-        unity: payload.unity
+        symbol: payload.symbol
       });
     },
     delete: (state, payload) => {
@@ -23,12 +23,22 @@ const Measurements = {
       })[0];
 
       element.description = payload.description;
-      element.unity = payload.unity;
+      element.symbol = payload.symbol;
 
       return element;
+    },
+    init: (state, payload) => {
+      state.list = Object.assign([],payload);
     }
   },
-  actions: {},
+  actions: {
+    load({commit, state}, list) {
+      return new Promise((resolve, reject) => {
+        commit('init', list);
+        resolve(list);
+      });
+    }
+  },
   getters: {
     getMessage: state => {
       return state.message;

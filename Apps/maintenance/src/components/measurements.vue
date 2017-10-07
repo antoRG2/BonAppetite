@@ -25,7 +25,7 @@
     <b-modal ref="modalCreate" id="modalCreate" title="Crear Unidad de Medida" @ok="create" @shown="clearName" close-title="Cerrar">
       <form @submit.stop.prevent="submit">
         <b-form-input type="text" placeholder="Descripción" v-model="payload.description"></b-form-input>
-        <b-form-input type="text" placeholder="Unidad de Medida" v-model="payload.unity"></b-form-input>
+        <b-form-input type="text" placeholder="Simbolo" v-model="payload.symbol"></b-form-input>
       </form>
     </b-modal>
 
@@ -33,7 +33,7 @@
       <form @submit.stop.prevent="submit">
         <b-form-input type="text" placeholder="Id" v-model="payload.id" readonly></b-form-input>
         <b-form-input type="text" placeholder="Descripción" v-model="payload.description"></b-form-input>
-        <b-form-input type="text" placeholder="Unidad de Medida" v-model="payload.unity"></b-form-input>
+        <b-form-input type="text" placeholder="Simbolo" v-model="payload.symbol"></b-form-input>
       </form>
     </b-modal>
 
@@ -49,7 +49,7 @@ export default {
       },
       payload: {
         id: '',
-        unity: '',
+        symbol: '',
         description: ''
       }
     }
@@ -59,11 +59,11 @@ export default {
       return this.$store.getters['measurements/getMessage'];
     },
     fields() {
-      return ['id', 'description', 'unity', 'actions']
+      return ['id', 'description', 'symbol', 'actions']
     },
     items() {
       return this.$store.getters['measurements/getList'].map(element => {
-        return { id: element.id, description: element.description, unity: element.unity };
+        return { id: element.id, description: element.description, symbol: element.symbol };
       })
     }
   },
@@ -89,7 +89,7 @@ export default {
     clearName() {
       this.payload = {
         id: '',
-        unity: '',
+        symbol: '',
         description: ''
       }
     },
