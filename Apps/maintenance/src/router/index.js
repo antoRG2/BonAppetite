@@ -45,7 +45,7 @@ export default new Router({
       component: Measurements
     },
     {
-      path: '/recetas',
+      path: '/recetas/:id?',
       component: Recipes
     },
     {
