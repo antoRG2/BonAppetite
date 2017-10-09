@@ -10,13 +10,18 @@ import {
     Recipes
 } from './modules/recipes'
 
+import {
+    Dishes
+} from './modules/dishes'
+
 Vue.use(Vuex)
 
 const MaintenanceStore = new Vuex.Store({
     modules: {
         measurements: Measurements,
         ingredients: Ingredients,
-        recipes: Recipes
+        recipes: Recipes,
+        dishes: Dishes
     }
 })
 

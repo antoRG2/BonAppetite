@@ -25,9 +25,6 @@
           <b-nav-item>
             <router-link to="/ingredientes">Ingredientes</router-link>
           </b-nav-item>
-          <b-nav-item>
-            <router-link to="/recetas">Recetas</router-link>
-          </b-nav-item>
         </b-nav>
       </b-collapse>
     </b-navbar>
@@ -87,6 +84,10 @@ export default {
     });
 
     this.$store.dispatch('ingredients/load', ingredients).then(result => {
+      
+    });
+
+    this.$store.dispatch('dishes/load', dishes.data).then(result => {
       
     });
   },
