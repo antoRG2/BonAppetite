@@ -14,6 +14,11 @@ import {
     Dishes
 } from './modules/dishes'
 
+import {
+    Configuration
+} from './modules/configuration'
+
+
 Vue.use(Vuex)
 
 const MaintenanceStore = new Vuex.Store({
@@ -21,7 +26,8 @@ const MaintenanceStore = new Vuex.Store({
         measurements: Measurements,
         ingredients: Ingredients,
         recipes: Recipes,
-        dishes: Dishes
+        dishes: Dishes,
+        configuration: Configuration
     }
 })
 

@@ -59,7 +59,7 @@
 </template>
 <script>
 export default {
-    props: ['tables', 'floor'],
+    props: [],
     data() {
         return {
             message: 'Configuracion de salones',
@@ -74,17 +74,16 @@ export default {
     },
     created: function() {
         this.$on('hook:afterDestroy', function() {
-            
+
         })
     },
     route: {
         deactivate: function() {
             //stop sending requests
-            
+
         }
     },
     mounted: function() {
-
         var canvas = new fabric.Canvas('canvasConfiguration', this.floor.size);
         canvas.backgroundColor = this.floor.backgroundColor;
         this.loadConfiguration(canvas, JSON.parse(JSON.stringify(this.tables)), this.floor);
@@ -93,6 +92,14 @@ export default {
         this.canvas = canvas;
     },
     computed: {
+        tables() {
+            return this.$store.getters['configuration/getTables'].map(element => {
+                return { ...element };
+            });
+        },
+        floor() {
+            return this.$store.getters['configuration/getFloor'];
+        }
     },
     components: {
     },
@@ -126,11 +133,11 @@ export default {
                 }
             });
         },
-        createTableListener: function( _event ) {
+        createTableListener: function(_event) {
             const _table = this.table;
             const _canvas = this.canvas;
-            
-            if(!_table || !_table.number || !_table.chairs) {
+
+            if (!_table || !_table.number || !_table.chairs) {
                 _event.cancel();
                 alert('Por favor ingrese un número valido de mesas y sillas.');
                 return;
@@ -185,7 +192,7 @@ export default {
             let objectsData = this.tableArray.filter((ta, index) => {
                 return ta.rect.active;
             })
-            
+
             this.selectedObjects = objectsData;
         }, disableSelectedTables: function() {
             this.selectedObjects.forEach(so => {
@@ -200,7 +207,14 @@ export default {
             });
             this.canvas.renderAll();
         }, saveConfiguration: function() {
-            this.$emit('save:configuration', this.tableArray, this.floor);
+            this.$store.dispatch('configuration/loadTables', this.tableArray).then(result => {
+
+            });
+
+            this.$store.dispatch('configuration/loadFloor', this.floor).then(result => {
+
+            });
+
             this.$refs.successModal.show();
         }
     }

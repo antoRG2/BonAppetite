@@ -37,7 +37,7 @@
 
 <script>
 export default {
-    props: ['tables', 'floor'],
+    props: [],
     data() {
         return {
             message: 'Administración de salones',
@@ -73,7 +73,14 @@ export default {
 
     },
     computed: {
-
+        tables() {
+            return this.$store.getters['configuration/getTables'].map(element => {
+                return { ...element };
+            });
+        },
+        floor() {
+            return this.$store.getters['configuration/getFloor'];
+        }
     },
     components: {
     },
