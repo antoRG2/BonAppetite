@@ -25,14 +25,12 @@
           <b-nav-item>
             <router-link to="/ingredientes">Ingredientes</router-link>
           </b-nav-item>
-          <b-nav-item>
-            <router-link to="/recetas">Recetas</router-link>
-          </b-nav-item>
         </b-nav>
       </b-collapse>
     </b-navbar>
-
-    <router-view :categories="localCategories" :dishes="localDishes" :tables="localTables" :floor="localFloor"></router-view>
+    <section class="master-section container">
+      <router-view :categories="localCategories" :dishes="localDishes" :tables="localTables" :floor="localFloor"></router-view>
+    </section>
   </div>
 </template>
 
@@ -72,22 +70,34 @@ export default {
   created: function() {
     // // TODO: Remove temporal table configuration 
     this.localTables = JSON.parse(initialTables);
-    this.$on('save:configuration', (_tablesConfiguration, _floorConfiguration) => {
-      this.localTables = _tablesConfiguration;
-      this.localFloor = _floorConfiguration;
-    });
+    
+    // this.$on('save:configuration', (_tablesConfiguration, _floorConfiguration) => {
+    //   this.localTables = _tablesConfiguration;
+    //   this.localFloor = _floorConfiguration;
+    // });
 
-    this.$on('login:access', (user, password) => {
-      this.isLogged = true;
-      this.$router.push(`/home`);
-    });
+    // this.$on('login:access', (user, password) => {
+    //   this.isLogged = true;
+    //   this.$router.push(`/home`);
+    // });
 
     this.$store.dispatch('measurements/load', measurements).then(result => {
-      
+
     });
 
     this.$store.dispatch('ingredients/load', ingredients).then(result => {
-      
+
+    });
+
+    this.$store.dispatch('dishes/load', dishes.data).then(result => {
+
+    });
+
+    this.$store.dispatch('configuration/loadTables', this.localTables).then(result => {
+
+    });
+    this.$store.dispatch('configuration/loadFloor', this.localFloor).then(result => {
+
     });
   },
   methods: {
@@ -104,5 +114,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+.master-section {
+  padding-top: 15px;
 }
 </style>
