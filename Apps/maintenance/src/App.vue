@@ -29,7 +29,7 @@
       </b-collapse>
     </b-navbar>
     <section class="master-section container">
-      <router-view :categories="localCategories" :dishes="localDishes" :tables="localTables" :floor="localFloor"></router-view>
+      <router-view :dishes="localDishes" :tables="localTables" :floor="localFloor"></router-view>
     </section>
   </div>
 </template>
@@ -53,7 +53,6 @@ export default {
   store: MaintenanceStore,
   data() {
     return {
-      localCategories: categories,
       localDishes: dishes,
       localTables: [],
       localFloor: {
@@ -70,16 +69,6 @@ export default {
   created: function() {
     // // TODO: Remove temporal table configuration 
     this.localTables = JSON.parse(initialTables);
-    
-    // this.$on('save:configuration', (_tablesConfiguration, _floorConfiguration) => {
-    //   this.localTables = _tablesConfiguration;
-    //   this.localFloor = _floorConfiguration;
-    // });
-
-    // this.$on('login:access', (user, password) => {
-    //   this.isLogged = true;
-    //   this.$router.push(`/home`);
-    // });
 
     this.$store.dispatch('measurements/load', measurements).then(result => {
 
@@ -99,10 +88,12 @@ export default {
     this.$store.dispatch('configuration/loadFloor', this.localFloor).then(result => {
 
     });
+
+    this.$store.dispatch('categories/load', categories.data).then(result => {
+
+    });
   },
   methods: {
-    tablesListener: function(args) {
-    }
   }
 }
 </script>

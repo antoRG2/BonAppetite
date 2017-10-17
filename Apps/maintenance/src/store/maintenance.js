@@ -18,6 +18,10 @@ import {
     Configuration
 } from './modules/configuration'
 
+import {
+    Categories
+} from './modules/categories'
+
 
 Vue.use(Vuex)
 
@@ -27,7 +31,8 @@ const MaintenanceStore = new Vuex.Store({
         ingredients: Ingredients,
         recipes: Recipes,
         dishes: Dishes,
-        configuration: Configuration
+        configuration: Configuration,
+        categories: Categories
     }
 })
 
