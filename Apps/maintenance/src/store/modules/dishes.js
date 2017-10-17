@@ -26,7 +26,6 @@ const Dishes = {
       })[0];
 
       element.name = payload.name,
-      element.id = Math.floor(Math.random() * 1e6),
       element.price = payload.price,
       element.category = {
         id: payload.category.id

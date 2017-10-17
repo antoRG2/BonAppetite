@@ -107,7 +107,7 @@ import { VueTabs, VTab } from 'vue-nav-tabs'
 import 'vue-nav-tabs/themes/vue-tabs.css'
 
 export default {
-    props: ['tables'],
+    props: [],
     data() {
         return {
             message: '',
@@ -176,6 +176,11 @@ export default {
             return this.$store.getters['dishes/getList'].map(element => {
                 return { ...element };
             })
+        },
+        tables() {
+            return this.$store.getters['configuration/getTables'].map(element => {
+                return { ...element };
+            });
         }
     },
     components: {
