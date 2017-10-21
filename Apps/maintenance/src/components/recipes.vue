@@ -41,6 +41,17 @@
             <template slot="quantity" scope="props">
               {{ computeQuantity(props.row.ingredient) }}
             </template>
+
+            <template slot="h__ingredient" scope="props">
+              Ingrediente
+            </template>
+            <template slot="h__quantity" scope="props">
+              Cantidad
+            </template>
+            <template slot="h__actions" scope="props">
+
+            </template>
+
           </v-client-table>
 
         </div>
@@ -56,6 +67,13 @@
                 </b-button>
 
               </div>
+            </template>
+
+            <template slot="h__description" scope="props">
+              Descripción
+            </template>
+            <template slot="h__actions" scope="props">
+
             </template>
           </v-client-table>
 
@@ -241,7 +259,7 @@ export default {
 }
 </script>
 <style scoped>
-  .recipe-badge{
-    font-size: 1.3em;
-  }
+.recipe-badge {
+  font-size: 1.3em;
+}
 </style>

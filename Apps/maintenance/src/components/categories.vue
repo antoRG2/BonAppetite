@@ -8,12 +8,20 @@
             <i class="icon-pencil icons"></i>
             </button>
           </b-button>
-
           <b-button variant="danger" size="sm" @click="deleteRow(props.row)">
             <i class="icon-ban icons"></i>
             </button>
           </b-button>
         </div>
+      </template>
+      <template slot="h__id" scope="props">
+        Identificador
+      </template>
+      <template slot="h__name" scope="props">
+        Nombre
+      </template>
+      <template slot="h__actions" scope="props">
+        
       </template>
     </v-client-table>
     <b-button variant="success" size="sm" v-b-modal.modalCreate>

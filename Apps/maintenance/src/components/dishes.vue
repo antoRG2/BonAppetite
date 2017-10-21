@@ -20,6 +20,21 @@
           {{categoryFormatter(props.row.category)}}
         </div>
       </template>
+      <template slot="h__id" scope="props">
+        Identificador
+      </template>
+      <template slot="h__name" scope="props">
+        Nombre
+      </template>
+      <template slot="h__price" scope="props">
+        Precio
+      </template>
+      <template slot="h__category" scope="props">
+        Categoria
+      </template>
+      <template slot="h__actions" scope="props">
+        
+      </template>
     </v-client-table>
 
     <b-button variant="success" size="sm" v-b-modal.modalCreate>
