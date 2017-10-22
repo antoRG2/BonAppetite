@@ -20,6 +20,21 @@
           {{categoryFormatter(props.row.category)}}
         </div>
       </template>
+      <template slot="h__id" scope="props">
+        Identificador
+      </template>
+      <template slot="h__name" scope="props">
+        Nombre
+      </template>
+      <template slot="h__price" scope="props">
+        Precio
+      </template>
+      <template slot="h__category" scope="props">
+        Categoria
+      </template>
+      <template slot="h__actions" scope="props">
+        
+      </template>
     </v-client-table>
 
     <b-button variant="success" size="sm" v-b-modal.modalCreate>
@@ -48,13 +63,13 @@
       </form>
       <div slot="modal-footer" class="w-100 footer-buttons">
 
-        <b-button size="sm"  variant="warning" @click="editRecipe">
+        <b-button size="sm" variant="warning" @click="editRecipe">
           Editar Receta
         </b-button>
-        <b-button size="sm"  variant="primary" @click="update">
+        <b-button size="sm" variant="primary" @click="update">
           Actualizar
         </b-button>
-        <b-button size="sm"  variant="danger" @click="hideUpdateModal">
+        <b-button size="sm" variant="danger" @click="hideUpdateModal">
           Cancel
         </b-button>
 
@@ -66,25 +81,11 @@
 import { ClientTable, Event } from 'vue-tables-2';
 
 export default {
-  props: ['categories'],
+  props: [],
   data() {
-
-    let categoriesOptions = [];
-    categoriesOptions.push({ value: null, text: 'Seleccione una categoria', disabled: true });
-
-    this.categories.data.map(c => {
-      let co = {
-        value: c.id,
-        text: c.name
-      }
-
-      categoriesOptions.push(co);
-    });
-
     return {
       fields: [
         'id', 'name', 'price', 'category', 'actions'],
-      localCategories: categoriesOptions,
       dish: {
         name: '',
         price: '',
@@ -104,6 +105,21 @@ export default {
       return this.$store.getters['dishes/getList'].map(element => {
         return { ...element };
       })
+    },
+    localCategories() {
+      return this.categories.map(element => {
+        return {
+          value: element.id,
+          text: element.name
+        };
+      })
+    },
+    categories() {
+      return this.$store.getters['categories/getList'].map(element => {
+        return {
+          ...element
+        };
+      })
     }
   },
   components: {
@@ -112,7 +128,7 @@ export default {
   methods: {
     categoryFormatter: function(value) {
       if (value) {
-        let result = this.categories.data.filter(c => {
+        let result = this.categories.filter(c => {
           return c.id == value.id;
         })[0];
         return result.name;

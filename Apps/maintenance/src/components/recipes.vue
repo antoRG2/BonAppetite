@@ -4,8 +4,8 @@
       No se encontro receta para el platillo seleccionado.
     </div>
     <div class="main-tables container" v-if="dish.id">
-      <div class="row text-left">
-        <b-badge pill variant="success">{{message}} / Platillo Id: #{{dish.id}}</b-badge>
+      <div class="row text-left recipe-badge">
+        <b-badge pill variant="success">Platillo: {{dish.name}}, Id: #{{dish.id}}</b-badge>
       </div>
       <div class="row">
         <div class="col-md-6 text-left">
@@ -41,6 +41,17 @@
             <template slot="quantity" scope="props">
               {{ computeQuantity(props.row.ingredient) }}
             </template>
+
+            <template slot="h__ingredient" scope="props">
+              Ingrediente
+            </template>
+            <template slot="h__quantity" scope="props">
+              Cantidad
+            </template>
+            <template slot="h__actions" scope="props">
+
+            </template>
+
           </v-client-table>
 
         </div>
@@ -56,6 +67,13 @@
                 </b-button>
 
               </div>
+            </template>
+
+            <template slot="h__description" scope="props">
+              Descripción
+            </template>
+            <template slot="h__actions" scope="props">
+
             </template>
           </v-client-table>
 
@@ -240,6 +258,8 @@ export default {
   }
 }
 </script>
-<style>
-
+<style scoped>
+.recipe-badge {
+  font-size: 1.3em;
+}
 </style>

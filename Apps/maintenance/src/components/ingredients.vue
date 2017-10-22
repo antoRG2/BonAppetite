@@ -20,6 +20,18 @@
           {{computeMeasurement(props ? props.row : '')}}
         </div>
       </template>
+      <template slot="h__id" scope="props">
+        Identificador
+      </template>
+      <template slot="h__description" scope="props">
+        Descripción
+      </template>
+      <template slot="h__measurement" scope="props">
+        Unidad de medida
+      </template>
+      <template slot="h__actions" scope="props">
+        
+      </template>
     </v-client-table>
     <b-button variant="success" size="sm" v-b-modal.modalCreate>
       Agregar Ingrediente

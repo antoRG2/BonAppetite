@@ -17,6 +17,18 @@
           </b-button>
         </div>
       </template>
+      <template slot="h__id" scope="props">
+        Identificador
+      </template>
+      <template slot="h__symbol" scope="props">
+        Simbolo
+      </template>
+      <template slot="h__description" scope="props">
+        Descripción
+      </template>
+      <template slot="h__actions" scope="props">
+        
+      </template>
     </v-client-table>
     <b-button variant="success" size="sm" v-b-modal.modalCreate>
       Agregar Unidad de Medida

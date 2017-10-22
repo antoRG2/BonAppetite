@@ -107,7 +107,7 @@ import { VueTabs, VTab } from 'vue-nav-tabs'
 import 'vue-nav-tabs/themes/vue-tabs.css'
 
 export default {
-    props: ['tables', 'dishes', 'categories'],
+    props: [],
     data() {
         return {
             message: '',
@@ -146,9 +146,9 @@ export default {
     },
     computed: {
         computedCategories: function() {
-            let root = this.categories.data.map((_cat) => {
+            let root = this.categories.map((_cat) => {
 
-                let _children = this.dishes.data.filter(_d => {
+                let _children = this.dishes.filter(_d => {
                     return _d.category.id == _cat.id;
                 }).map(_d => {
                     return {
@@ -164,6 +164,23 @@ export default {
                 }
             });
             return root;
+        },
+        categories() {
+            return this.$store.getters['categories/getList'].map(element => {
+                return {
+                    ...element
+                };
+            })
+        },
+        dishes() {
+            return this.$store.getters['dishes/getList'].map(element => {
+                return { ...element };
+            })
+        },
+        tables() {
+            return this.$store.getters['configuration/getTables'].map(element => {
+                return { ...element };
+            });
         }
     },
     components: {

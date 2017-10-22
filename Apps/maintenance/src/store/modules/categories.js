@@ -1,18 +1,14 @@
-const Dishes = {
+const Categories = {
   namespaced: true,
   state: {
     list: [],
-    message: "Dishes"
+    message: "Categories"
   },
   mutations: {
     add: (state, payload) => {
       state.list.push({
         name: payload.name,
-        id: Math.floor(Math.random() * 1e6),
-        price: payload.price,
-        category: {
-          id: payload.category.id
-        }
+        id: Math.floor(Math.random() * 1e6)
       });
     },
     delete: (state, payload) => {
@@ -25,12 +21,7 @@ const Dishes = {
         return item.id === payload.id;
       })[0];
 
-      element.name = payload.name,
-      element.price = payload.price,
-      element.category = {
-        id: payload.category.id
-      }
-
+      element.name = payload.name;
       return element;
     },
     init: (state, payload) => {
@@ -38,12 +29,12 @@ const Dishes = {
     }
   },
   actions: {
-    load({commit, state}, list) {
-        return new Promise((resolve, reject) => {
-          commit('init', list);
-          resolve(list);
-        });
-      }
+    load({ commit, state }, list) {
+      return new Promise((resolve, reject) => {
+        commit("init", list);
+        resolve(list);
+      });
+    }
   },
   getters: {
     getMessage: state => {
@@ -55,4 +46,4 @@ const Dishes = {
   }
 };
 
-export { Dishes };
+export { Categories };
